@@ -39,7 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'apps.service_book',
+
+    'apps.complaint',
+    'apps.service_company',
+    'apps.technic',
+    'apps.technical_maintenance',
+
+
 
 ]
 
