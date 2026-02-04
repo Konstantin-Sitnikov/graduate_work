@@ -1,7 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 from ..service_company.models import ServiceCompany
 
-class ModelTechnic(models.Model):
+class Technic(models.Model):
+    class Meta:
+        verbose_name = 'Техника'
     name = models.CharField(unique=True, max_length=200)
     description = models.CharField(max_length=400)
 
@@ -9,7 +12,9 @@ class ModelTechnic(models.Model):
         return self.name
 
 
-class ModelEngine(models.Model):
+class Engine(models.Model):
+    class Meta:
+        verbose_name = 'Двигатель'
     name = models.CharField(unique=True, max_length=200)
     description = models.CharField(max_length=400)
 
@@ -17,7 +22,9 @@ class ModelEngine(models.Model):
         return self.name
 
 
-class ModelTransmission(models.Model):
+class Transmission(models.Model):
+    class Meta:
+        verbose_name = 'Трансмиссия'
     name = models.CharField(unique=True, max_length=200)
     description = models.CharField(max_length=400)
 
@@ -25,7 +32,9 @@ class ModelTransmission(models.Model):
         return self.name
 
 
-class ModelDrivingBridge(models.Model):
+class DrivingBridge(models.Model):
+    class Meta:
+        verbose_name = 'Ведущий мост'
     name = models.CharField(unique=True, max_length=200)
     description = models.CharField(max_length=400)
 
@@ -33,7 +42,9 @@ class ModelDrivingBridge(models.Model):
         return self.name
 
 
-class ModelControlledBridge(models.Model):
+class ControlledBridge(models.Model):
+    class Meta:
+        verbose_name = 'Управляемый мост'
     name = models.CharField(unique=True, max_length=200)
     description = models.CharField(max_length=400)
 
@@ -41,30 +52,24 @@ class ModelControlledBridge(models.Model):
         return self.name
 
 
-class User(models.Model):
-    name = models.CharField(max_length=200)
 
-    def __str__(self):
-        return self.name
+class Machine(models.Model):
+    class Meta:
+        verbose_name = 'Машина'
 
+    number_machine = models.CharField(unique=True, max_length=200, primary_key=True) # Зав. № машины
+    model_technic = models.ForeignKey(Technic, on_delete=models.CASCADE) # Модель техники
 
-
-
-
-class Machine(models):
-    number_machine = models.CharField(unique=True, max_length=200) # Зав. № машины
-    model_technic = models.ForeignKey(ModelTechnic, on_delete=models.CASCADE) # Модель техники
-
-    model_engine = models.ForeignKey(ModelEngine, on_delete=models.CASCADE) # Модель двигателя
+    model_engine = models.ForeignKey(Engine, on_delete=models.CASCADE) # Модель двигателя
     number_engine = models.CharField(unique=True, max_length=200) # Зав. № двигателя
 
-    model_transmission = models.ForeignKey(ModelTransmission, on_delete=models.CASCADE) # Модель трансмиссии
+    model_transmission = models.ForeignKey(Transmission, on_delete=models.CASCADE) # Модель трансмиссии
     number_transmission = models.CharField(unique=True, max_length=200) # Зав. № трансмиссии
 
-    model_driving_bridge = models.ForeignKey(ModelDrivingBridge, on_delete=models.CASCADE) # Модель ведущего моста
+    model_driving_bridge = models.ForeignKey(DrivingBridge, on_delete=models.CASCADE) # Модель ведущего моста
     number_driving_bridge = models.CharField(unique=True, max_length=200) # Зав. № ведущего моста
 
-    model_controlled_bridge = models.ForeignKey(ModelControlledBridge, on_delete=models.CASCADE) # Модель управляемого моста
+    model_controlled_bridge = models.ForeignKey(ControlledBridge, on_delete=models.CASCADE) # Модель управляемого моста
     number_controlled_bridge = models.CharField(unique=True, max_length=200) # Зав. № управляемого моста
 
     delivery_agreement = models.CharField(max_length=300) # Договор поставки №, дата
