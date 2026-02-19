@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
+
     'apps.complaint',
     'apps.service_company',
     'apps.technic',
     'apps.technical_maintenance',
-
 
 
 ]
@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "ru" #'en-us'
 
 TIME_ZONE = 'UTC'
 

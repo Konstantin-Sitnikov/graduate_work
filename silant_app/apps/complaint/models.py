@@ -7,8 +7,10 @@ from ..service_company.models import ServiceCompany
 class FailureNode(models.Model):
     class Meta:
         verbose_name = 'Узел отказа'
-    name = models.CharField(unique=True, max_length=200)
-    description = models.CharField(max_length=400)
+        verbose_name_plural = 'Узлы отказа'
+
+    name = models.CharField(unique=True, max_length=200, verbose_name = 'Название')
+    description = models.CharField(max_length=400, verbose_name = 'Описание')
 
     def __str__(self):
         return self.name
@@ -16,10 +18,11 @@ class FailureNode(models.Model):
 
 class RecoveryMethod(models.Model):
     class Meta:
-        verbose_name = 'Способ восстановления'
+        verbose_name = 'Метод восстановления'
+        verbose_name_plural = 'Методы восстановления'
 
-    name = models.CharField(unique=True, max_length=200)
-    description = models.CharField(max_length=400)
+    name = models.CharField(unique=True, max_length=200, verbose_name = 'Название')
+    description = models.CharField(max_length=400, verbose_name = 'Описание')
 
     def __str__(self):
         return self.name
@@ -29,28 +32,27 @@ class RecoveryMethod(models.Model):
 class Complaint(models.Model):
     class Meta:
         verbose_name = 'Рекламация'
+        verbose_name_plural = 'Рекламации'
 
-    id = models.ForeignKey(Machine, on_delete=models.CASCADE, primary_key=True)
+    date_failure = models.DateField(verbose_name = 'Дата отказа')
 
-    date_failure = models.DateField()  # Дата отказа
+    operating_time = models.PositiveIntegerField(verbose_name = 'Наработка, м/час')
 
-    operating_time = models.PositiveIntegerField(default=0)  # наработка, м/час
+    failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE, verbose_name = 'Узел отказа')
 
-    failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE) #узел отказа
+    description_failure = models.TextField(verbose_name = 'Описание отказа')
 
-    description_failure = models.TextField() # Описание отказа
+    recovery_method = models.ForeignKey(RecoveryMethod, on_delete=models.CASCADE, verbose_name = 'Способ восстановления')
 
-    recovery_method = models.ForeignKey(RecoveryMethod, on_delete=models.CASCADE) # Способ восстановления
+    used_parts = models.TextField(verbose_name = 'Используемые запчасти')
 
-    used_parts = models.TextField() # используемые запчасти
+    date_restoration = models.DateField(verbose_name = 'Дата восстановления')
 
-    date_restoration = models.DateField() #Дата восстановления
+    downtime = models.PositiveIntegerField(default=0, verbose_name = 'Время простоя техники')
 
-    downtime = models.PositiveIntegerField(default=0) #Время простоя техники
+    machine = models.ForeignKey(Machine, on_delete=models.CASCADE, verbose_name = 'Машина')
 
-    machine = models.CharField(max_length=200) # Машина
-
-    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE) # Сервисная компания
+    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, verbose_name = 'Сервисная компания')
 
     def __str__(self):
-        return self.failure_node
+        return (self.machine.model_technic.model + " " + self.failure_node.name)
