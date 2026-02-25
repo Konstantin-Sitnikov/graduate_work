@@ -16,12 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
-from apps.technic import views
-
+from apps.technic import views as machines
+from apps.technical_maintenance import views as technical_maintenance
+from apps.complaint import views as complaint
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/machines/', views.machines),
-    path('api/information_machines/', views.information_machines),
+    path('api/machines/', machines.machines),
+    path('api/information_machines/', machines.information_machines),
+    path('api/technical_maintenance/', technical_maintenance.technical_maintenance),
+    path('api/complaint/', complaint.complaint),
+    path('api/information_technical_maintenance/', technical_maintenance.information_technical_maintenance),
+
+    path('csrf/', machines.get_csrf),
+
+    path('accounts/', include('allauth.urls')),
+
+    path("_allauth/", include("allauth.headless.urls")),
 ]

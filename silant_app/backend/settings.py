@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
+    'allauth',
+    'allauth.account',
+    'allauth.headless',
 
     'apps.complaint',
     'apps.service_company',
@@ -48,6 +51,9 @@ INSTALLED_APPS = [
 
 
 ]
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,6 +66,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "allauth.account.middleware.AccountMiddleware",
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -74,10 +83,34 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
+HEADLESS_ONLY = True
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "https://app.project.org/account/verify-email/{ключ}",
+    "account_reset_password_from_key": "https://app.org/account/password/reset/key/{ключ}",
+    "регистрация учетной записи": "https://app.org/account/signup",
+}
+
+
+
+SESSION_COOKIE_DOMAIN = "http://127.0.0.1:8000/"
+CSRF_COOKIE_DOMAIN = "http://127.0.0.1:8000/"
+
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
@@ -134,7 +167,17 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:8000/'
+]
+
+
+
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = (
     "accept",
@@ -142,5 +185,13 @@ CORS_ALLOW_HEADERS = (
     "content-type",
     "user-agent",
     "x-csrftoken",
+    "X-CSRFToken",
     "x-requested-with",
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}

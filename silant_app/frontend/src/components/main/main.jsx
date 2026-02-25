@@ -1,91 +1,338 @@
 import  style  from "./style.module.scss"
-import { useState, useEffect } from "react";
-import { getMachine, getInformationMachines } from "../PostService";
-
-function reformatData(arr) {
-    let dict = {}
-    for (let item of arr) {
-        let id = item.id
-        delete item.id
-        dict[id] = item
-    } return dict
-}   
-
-const Main = () =>  {
-    const [machine, setMachine] = useState([])
-    const [tableFields, setTableFields] = useState([])
-    const [machineData, setMachineData] = useState({})
-    const [engine, setEngine] = useState()
-    const [transmission, setTransmission] = useState()
-    const [drivingBridge, setDrivingBridge] = useState()
-    const [controlledBridge, setControlledBridge] = useState()
-    const [user, setUser] = useState()
+import { useState, useEffect, useContext } from "react";
+import { getData, getExtendedData } from "../PostService";
+import { Routes, Route, Link, useLocation, data } from 'react-router-dom'
+import axios from 'axios';
 
 
-    function getData() {
-        getInformationMachines().then(result => {
-           setMachineData(result)
-        }
 
-        )
+const Table = ({path}) => {
+    const [dataTable, setDataTable] = useState([])
+    const [tableFieldsHeaders, setTableFieldsHeaders] = useState([])
+    const [extendedTableData, setExtendedTableData] = useState({})
+
+
+    function getTableData(path) {
+        
+        getData(path).then(result => {
+            setDataTable(result.data)
+            setTableFieldsHeaders(result.fields)
+        })
+
+        getExtendedData(path).then(result => {
+            setExtendedTableData(result)
+        })
     }
 
-    function getMachineData() {
-        getMachine().then(result => {
-            setMachine(result.machine)
-            setTableFields(result.fields)
 
-        })
-      }
+
 
 
     useEffect(()=>{
-        getData()
-        getMachineData()
+        getTableData(path)
     },[])
 
 
 
-        let columnTableHeaders = tableFields.map(function(column) {
+
+        let columnTableHeaders = tableFieldsHeaders.map(function(column) {
             return <td key={column} className={style.table__column}>{column}</td>
         })
 
-        let machines = machine.map(function(row) {
+        let rowTable = dataTable.map(function(row) {
             
-            let column = Object.entries(row).map(function([key, value]){
-                if (machineData[key]){
+            let columnTable = Object.entries(row).map(function([key, value]){
+                if (extendedTableData[key]){
                     let test = null
-                    if (key === "client") {
-                        machineData[key].map(function(item){
-                        if (item.id === value) { test = item["username"]}
-                    })} else {
-                        machineData[key].map(function(item){
+                    if (key === "client" || key === "service_company") {
+                        if (key === "client") {extendedTableData[key].map(function(item){if (item.id === value) { test = item["username"]}})}
+                        if (key === "service_company") {extendedTableData[key].map(function(item){if (item.id === value) { test = item["name"]}})}
+
+                } else {
+                        extendedTableData[key].map(function(item){
 
                             if (item.id === value) { 
                                 test = item["model"]
                                 
                             }})
                     } 
-                    return <td className={style.table__column}>{test}</td>
+                        return <td className={style.table__column}>{test}</td>
                     } else {
                         return <td className={style.table__column}>{value}</td>
                     }              
                 })
-                
-                
-    
-         
         return  <tr className={style.table__row} key={row.number_machine}>
                 
-                {column}
+                {columnTable}
 
                 </tr> 
       })
 
-        console.log(machines)
-     
+return (
+    <table className={style.table}>
+                <caption>Таблица с данными (выдача результата)</caption>
+                
+                
+                <thead>
+                    
+                    {columnTableHeaders}
 
-        //<tr className={style.table__row}>{columnTableHeaders}</tr>
+                </thead>
+
+                <tbody>
+
+                    {rowTable}
+
+                </tbody>
+
+            </table>
+    )
+
+}
+
+
+
+
+
+const NewTable = ({path}) => {
+    const [dataTable, setDataTable] = useState([])
+    const [tableFieldsHeaders, setTableFieldsHeaders] = useState([])
+    
+
+
+    useEffect(()=>{
+        getData(path).then(result => {
+            setDataTable(result.data)
+            setTableFieldsHeaders(result.fields)
+        })
+        
+    },[path])
+
+        let columnTableHeaders = tableFieldsHeaders.map(function(column) {
+            return <td key={column} className={style.table__column}>{column}</td>
+        })
+
+        let rowTable = dataTable.map(function(row) {
+            
+            let columnTable = Object.entries(row).map(
+                
+                function([key, value]) {
+                    if (typeof(value) === "object"){
+                        let test = (Object.values(value)[1])
+
+                        if (typeof(test) === "object") {
+                             
+                            return <td className={style.table__column}><Link className={style.link} to="/detail">{Object.values(test)[1]}</Link></td>
+                        } else {
+                            return <td className={style.table__column}><Link className={style.link} to="/detail" state={{keys:key, values:value}}>{Object.values(value)[1]}</Link></td>
+                        }
+                        
+
+                    } else { 
+
+                        if (key === "number_machine") {
+
+                            return <td className={style.table__column}><Link className={style.link} to="/detail" state={{keys:key, values:value}}>{value}</Link></td>
+                        }
+                        else {
+                            return <td className={style.table__column}>{value}</td>
+                        }
+
+                        }})
+                                    
+                        
+                        
+                return  <tr className={style.table__row} > {columnTable} </tr> 
+      })
+
+return (
+
+    <>
+    
+
+    <table className={style.table}>
+                <caption>Таблица с данными (выдача результата)</caption>
+                
+                
+                <thead>
+                    
+                    {columnTableHeaders}
+
+                </thead>
+
+                <tbody>
+
+                    {rowTable}
+
+                </tbody>
+
+            </table>
+    </>
+    )
+
+}
+
+const Detail = () => {
+    let location = useLocation()
+    let data = location.state
+    let values =  data.values
+
+    console.log()
+    return (
+        <>
+            <Link className={style.link} to="/">Выход</Link>
+            <span>{values.model}</span>
+            <span>{values.description}</span>
+
+        </>
+
+
+    )
+    
+    
+
+
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Main = () =>  {
+        const [path, setPath] = useState("machines")
+        const [isCSRF, setIsCSRF] = useState("")
+
+    
+        function clickButton1 () {
+            setPath("machines")
+        }
+        
+        function clickButton2 () {
+            setPath("technical_maintenance")
+        }
+
+        function clickButton3 () {
+            setPath("complaint")
+    }
+
+
+
+    function getCookie (name) {
+        let cookieValue = null
+        console.log(document.cookie && document.cookie !== '')
+        if (document.cookie && document.cookie !== '') {
+
+        const cookies = document.cookie.split(';')
+        for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim()
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+        break
+                }
+            }
+            }
+        return cookieValue
+        }
+
+    /*function getCSRFToken () {
+        
+    return getCookie('csrftoken')
+    }*/
+
+ function getCSRFToken () {
+    
+
+    axios.get('http://localhost:8000/csrf/', {withCredentials: true}).then((response) => {
+        
+
+        const token = response.data["X-CSRFToken"]
+        setIsCSRF(token)
+        
+    }
+    
+)
+    
+
+}
+
+useEffect(()=>{
+ getCSRFToken ()
+
+},[])
+console.log(isCSRF)
+
+
+function onLogin(){
+    axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
+        "username": "Константин",
+        "password": "Лще_Еукьштфещк_1",
+       }, {
+    headers: {
+        "accept": "application/json",
+        'Content-Type': "application/json",
+        "X-CSRFToken": isCSRF,
+            }
+     }).then(data => console.log(data)     
+     )
+
+}
+
+
+
+
+
+
+    const BASE_URL = `/_allauth/browser/v1`
+
+    const SESSIONS =  '/auth/sessions'
+
+    const session = {
+        username: null,
+        is_authenticated: false
+        }
+
+
+
+
+
+       // https://docs.allauth.org/_allauth/browser/v1/auth/session
+
+    const updateSession = async () => {
+    const {data} = await axios.get('http://localhost:8000/_allauth/browser/v1/auth/session', {
+    headers: {
+    "accept": "application/json",
+    'Content-Type': "application/json",
+            }
+        }).catch(error=>{
+    return error.response
+        })
+
+    if (data.status === 200){
+            session.username = data.data.user.username
+            session.is_authenticated = true
+        }else if(data.status === 401){
+            session.username = null
+            session.is_authenticated = false
+        }
+
+    }
+
+
+
 
 
 
@@ -94,26 +341,29 @@ const Main = () =>  {
             <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
             <div className={style.container__input_button}>
                 <input className={style.input} type="text" />
-                <button className={style.button}onClick={getMachineData}>Поиск машин</button>
+                <button className={style.button}>Поиск машин</button>
+                <div>
+                    <button onClick={clickButton1}>Машины</button>
+                    <button onClick={clickButton2}>ТО</button>
+                    <button onClick={clickButton3}>Ремонты</button>
+                    <button onClick={onLogin}>Проверка сессии</button>
+                </div>
+
+
+
+
             </div>
             <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
-            <table className={style.table}>
-                <caption>Таблица с данными (выдача результата)</caption>
-                
-                
-                <thead>
+            
+            <div>
+
+                <Routes>
+                    <Route path="/" element={<NewTable path={path}/>}></Route>
+                    <Route path="/detail" element={<Detail />}></Route>
+                </Routes>
+
+            </div>
                     
-                        {columnTableHeaders}
-
-                </thead>
-
-                <tbody>
-
-                    {machines}
-
-                </tbody>
-
-            </table>
 
         </main>
     );

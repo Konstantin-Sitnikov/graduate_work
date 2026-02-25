@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User
+from ..service_company.serializers import ServiceCompanySerializer
 
 class TechnicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,6 +42,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MachineSerializer(serializers.ModelSerializer):
+    model_technic = TechnicSerializer()
+    model_engine = EngineSerializer()
+    model_transmission = TransmissionSerializer()
+    model_driving_bridge = DrivingBridgeSerializer()
+    model_controlled_bridge = ControlledBridgeSerializer()
+    client = UserSerializer()
+    service_company = ServiceCompanySerializer()
+
 
     class Meta:
         model = Machine
@@ -48,7 +57,7 @@ class MachineSerializer(serializers.ModelSerializer):
                   'model_transmission', 'number_transmission', 'model_driving_bridge',
                   'number_driving_bridge', 'model_controlled_bridge', 'number_controlled_bridge',
                   'delivery_agreement', 'date_shipment', 'end_user', 'delivery_address', 'Equipment',
-                  'client', 'service_company'
+                   "client", 'service_company'
                   )
 
 

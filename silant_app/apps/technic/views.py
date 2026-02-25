@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from http.client import responses
 
+from django.shortcuts import render
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
+from ..service_company.serializers import ServiceCompanySerializer, ServiceCompany
 
 
 
@@ -15,6 +19,7 @@ def information_machines(request):
     driving_bridge = DrivingBridgeSerializer(DrivingBridge.objects.all(), many=True)
     controlled_bridge = ControlledBridgeSerializer(ControlledBridge.objects.all(), many=True)
     user = UserSerializer(User.objects.all(), many=True)
+    service_company = ServiceCompanySerializer(ServiceCompany.objects.all(), many=True)
 
     return (Response({"model_technic": technic.data,
                       "model_engine": engine.data,
@@ -22,6 +27,7 @@ def information_machines(request):
                       "model_driving_bridge":driving_bridge.data,
                       "model_controlled_bridge": controlled_bridge.data,
                       "client": user.data,
+                      "service_company": service_company.data
                       }))
 
 
@@ -32,8 +38,15 @@ def machines(request):
         machine = MachineSerializer(Machine.objects.all(), many=True)
         fields = [field.verbose_name for field in Machine._meta.fields]
 
-        return (Response({"machine": machine.data,
+        return (Response({"data": machine.data,
                           "fields": fields}
                          ))
 
 
+@api_view(["GET"])
+def get_csrf(request):
+    response = JsonResponse({"X-CSRFToken": get_token(request)})
+    print(response)
+
+
+    return response

@@ -35,7 +35,7 @@ class TechnicalMaintenance(models.Model):
 
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE, verbose_name = 'Машина')
 
-    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, verbose_name = 'Техническое обслуживание') # Сервисная компания
+    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, verbose_name = 'Сервисная компания') # Сервисная компания
 
     def __str__(self):
         return (self.type_technical_maintenance.name +" "+ self.machine.model_technic.model)

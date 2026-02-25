@@ -2,13 +2,13 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8000';
 
 
-export function getMachine() {
-const url = `${API_URL}/api/machines/`
+export function getData(paht) {
+const url = `${API_URL}/api/${paht}/`
 return axios.get(url).then(response => response.data)
 }
 
 
-export function getInformationMachines() {
-const url = `${API_URL}/api/information_machines/`
+export function getExtendedData(paht) {
+const url = `${API_URL}/api/information_${paht}/`
 return axios.get(url).then(response => response.data)
 }
