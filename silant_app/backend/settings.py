@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.headless',
+    'allauth.usersessions',
 
     'apps.complaint',
     'apps.service_company',
@@ -62,7 +63,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -91,9 +92,18 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = [
 
-    'django.contrib.auth.backends.ModelBackend',
+    #'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_LOGIN_METHODS = {"username"}
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = False
+ACCOUNT_LOGIN_BY_CODE_ENABLED = False
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = False
+ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*"]
+
+
 
 
 HEADLESS_ONLY = True
@@ -104,12 +114,17 @@ HEADLESS_FRONTEND_URLS = {
 }
 
 
-
+''' 
 SESSION_COOKIE_DOMAIN = "http://127.0.0.1:8000/"
 CSRF_COOKIE_DOMAIN = "http://127.0.0.1:8000/"
 
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'Lax'
+
+
+'''
+
+
 
 
 WSGI_APPLICATION = 'backend.wsgi.application'
@@ -170,14 +185,8 @@ CORS_ALLOWED_ORIGINS = [
 
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:8000/'
-]
 
-
-
-CORS_ALLOW_CREDENTIALS = True
+#CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = (
     "accept",
@@ -189,9 +198,13 @@ CORS_ALLOW_HEADERS = (
     "x-requested-with",
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
-}
+
+
+
+#REST_FRAMEWORK = {
+ #   'DEFAULT_AUTHENTICATION_CLASSES': [
+  #      'rest_framework.authentication.BasicAuthentication',
+   #     'rest_framework.authentication.SessionAuthentication',
+    #]
+#}
+

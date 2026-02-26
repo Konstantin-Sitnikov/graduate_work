@@ -230,7 +230,7 @@ const Main = () =>  {
 
 
 
-    function getCookie (name) {
+/*    function getCookie (name) {
         let cookieValue = null
         console.log(document.cookie && document.cookie !== '')
         if (document.cookie && document.cookie !== '') {
@@ -251,7 +251,7 @@ const Main = () =>  {
     /*function getCSRFToken () {
         
     return getCookie('csrftoken')
-    }*/
+    }
 
  function getCSRFToken () {
     
@@ -273,18 +273,36 @@ useEffect(()=>{
  getCSRFToken ()
 
 },[])
-console.log(isCSRF)
+console.log(isCSRF)*/
 
 
 function onLogin(){
     axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
-        "username": "Константин",
-        "password": "Лще_Еукьштфещк_1",
+        "username": "Василий",
+        "password": "Kot_Terminator_1",
+
        }, {
     headers: {
         "accept": "application/json",
         'Content-Type': "application/json",
-        "X-CSRFToken": isCSRF,
+       //"X-CSRFToken": isCSRF,
+            }
+     }).then(data => console.log(data)     
+     )
+
+}
+
+function signUp(){
+    axios.post('http://localhost:8000/_allauth/browser/v1/auth/signup', {
+
+        "username": "Василий",
+        "password": "Kot_Terminator_1",
+
+       }, {
+    headers: {
+        "accept": "application/json",
+        'Content-Type': "application/json",
+       //"X-CSRFToken": isCSRF,
             }
      }).then(data => console.log(data)     
      )
@@ -324,9 +342,11 @@ function onLogin(){
     if (data.status === 200){
             session.username = data.data.user.username
             session.is_authenticated = true
+            console.log(data)
         }else if(data.status === 401){
             session.username = null
             session.is_authenticated = false
+            console.log(data)
         }
 
     }
@@ -346,7 +366,10 @@ function onLogin(){
                     <button onClick={clickButton1}>Машины</button>
                     <button onClick={clickButton2}>ТО</button>
                     <button onClick={clickButton3}>Ремонты</button>
-                    <button onClick={onLogin}>Проверка сессии</button>
+                    <button onClick={onLogin}>Войти</button>
+                    <button onClick={updateSession}>Проверка сессии</button>
+                    <button onClick={signUp}>Зарегестрироватся</button>    
+
                 </div>
 
 
