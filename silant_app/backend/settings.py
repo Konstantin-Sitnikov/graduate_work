@@ -190,10 +190,14 @@ CSRF_COOKIE_NAME = 'csrftoken'
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 
-#REST_FRAMEWORK = {
- #   'DEFAULT_AUTHENTICATION_CLASSES': [
-  #      'rest_framework.authentication.BasicAuthentication',
-   #     'rest_framework.authentication.SessionAuthentication',
-    #]
-#}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+
+
 

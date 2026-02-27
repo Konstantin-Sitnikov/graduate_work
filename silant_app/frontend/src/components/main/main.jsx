@@ -15,6 +15,7 @@ const Table = ({path}) => {
     function getTableData(path) {
         
         getData(path).then(result => {
+            console.log(result)
             setDataTable(result.data)
             setTableFieldsHeaders(result.fields)
         })
@@ -271,7 +272,7 @@ function onLogin() {
         .then(() => {
             // Теперь отправляем логин с CSRF токеном
             return axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
-                username: "Василий",
+                username: "ИПТрудниковС.В.",
                 password: "Kot_Terminator_1",
             }, {
                 headers: {
@@ -291,24 +292,26 @@ function onLogin() {
 }
 
 
-
-
-
-function signUp(){
-    axios.post('http://localhost:8000/_allauth/browser/v1/auth/signup', {
-
-        "username": "Василий",
-        "password": "Kot_Terminator_1",
-
-       }, {
-    headers: {
-        "accept": "application/json",
-        'Content-Type': "application/json",
-       //"X-CSRFToken": isCSRF,
-            }
-     }).then(data => console.log(data)     
-     )
-
+function logOut() {
+    // Сначала получаем CSRF токен (он устанавливается при GET запросе)
+    axios.get('http://localhost:8000/csrf/', { withCredentials: true })
+        .then(() => {
+            // Теперь отправляем логин с CSRF токеном
+            return axios.delete('http://localhost:8000/_allauth/browser/v1/auth/session', {
+                headers: {
+                    "accept": "application/json",
+                    'Content-Type': "application/json",
+                },
+                withCredentials: true
+            });
+        })
+        .then(data => {
+            console.log("Вы вышли из сесии:", data.status);
+            updateSession(); // Обновляем информацию о сессии
+        })
+        .catch(error => {
+            console.error("Ошибка входа:", error.response || error);
+        });
 }
 
 
@@ -324,6 +327,10 @@ function signUp(){
         username: null,
         is_authenticated: false
         }
+
+
+
+
 
 
 
@@ -371,7 +378,7 @@ function signUp(){
                     <button onClick={clickButton3}>Ремонты</button>
                     <button onClick={onLogin}>Войти</button>
                     <button onClick={updateSession}>Проверка сессии</button>
-                    <button onClick={signUp}>Зарегестрироватся</button>    
+                    <button onClick={logOut}>Выйти</button>    
 
                 </div>
 
