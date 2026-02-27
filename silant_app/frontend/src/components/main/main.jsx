@@ -213,8 +213,6 @@ const Detail = () => {
 
 const Main = () =>  {
         const [path, setPath] = useState("machines")
-        const [isCSRF, setIsCSRF] = useState("")
-
     
         function clickButton1 () {
             setPath("machines")
@@ -230,7 +228,7 @@ const Main = () =>  {
 
 
 
-/*    function getCookie (name) {
+    function getCookie (name) {
         let cookieValue = null
         console.log(document.cookie && document.cookie !== '')
         if (document.cookie && document.cookie !== '') {
@@ -245,52 +243,56 @@ const Main = () =>  {
                 }
             }
             }
+            console.log(cookieValue)
         return cookieValue
         }
+// Настройка axios с интерцептором для автоматической отправки CSRF токена
+axios.defaults.withCredentials = true; // Важно для отправки кук
 
-    /*function getCSRFToken () {
-        
-    return getCookie('csrftoken')
+// Добавляем CSRF токен ко всем POST запросам
+axios.interceptors.request.use(config => {
+    if (config.method === 'post' || config.method === 'put' || config.method === 'delete') {
+        const csrfToken = getCookie('csrftoken');
+        if (csrfToken) {
+            config.headers['X-CSRFToken'] = csrfToken;
+        }
     }
+    return config;
+});
 
- function getCSRFToken () {
-    
 
-    axios.get('http://localhost:8000/csrf/', {withCredentials: true}).then((response) => {
-        
 
-        const token = response.data["X-CSRFToken"]
-        setIsCSRF(token)
-        
-    }
-    
-)
-    
 
+
+
+function onLogin() {
+    // Сначала получаем CSRF токен (он устанавливается при GET запросе)
+    axios.get('http://localhost:8000/csrf/', { withCredentials: true })
+        .then(() => {
+            // Теперь отправляем логин с CSRF токеном
+            return axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
+                username: "Василий",
+                password: "Kot_Terminator_1",
+            }, {
+                headers: {
+                    "accept": "application/json",
+                    'Content-Type': "application/json",
+                },
+                withCredentials: true
+            });
+        })
+        .then(data => {
+            console.log("Успешный вход:", data);
+            updateSession(); // Обновляем информацию о сессии
+        })
+        .catch(error => {
+            console.error("Ошибка входа:", error.response || error);
+        });
 }
 
-useEffect(()=>{
- getCSRFToken ()
-
-},[])
-console.log(isCSRF)*/
 
 
-function onLogin(){
-    axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
-        "username": "Василий",
-        "password": "Kot_Terminator_1",
 
-       }, {
-    headers: {
-        "accept": "application/json",
-        'Content-Type': "application/json",
-       //"X-CSRFToken": isCSRF,
-            }
-     }).then(data => console.log(data)     
-     )
-
-}
 
 function signUp(){
     axios.post('http://localhost:8000/_allauth/browser/v1/auth/signup', {
@@ -330,26 +332,27 @@ function signUp(){
        // https://docs.allauth.org/_allauth/browser/v1/auth/session
 
     const updateSession = async () => {
-    const {data} = await axios.get('http://localhost:8000/_allauth/browser/v1/auth/session', {
-    headers: {
-    "accept": "application/json",
-    'Content-Type': "application/json",
-            }
-        }).catch(error=>{
-    return error.response
-        })
-
-    if (data.status === 200){
-            session.username = data.data.user.username
-            session.is_authenticated = true
-            console.log(data)
-        }else if(data.status === 401){
-            session.username = null
-            session.is_authenticated = false
-            console.log(data)
+    try {
+        const response = await axios.get('http://localhost:8000/_allauth/browser/v1/auth/session', {
+            headers: {
+                "accept": "application/json",
+                'Content-Type': "application/json",
+            },
+            withCredentials: true
+        });
+        
+        
+        if (response.data.data && response.data.data.user) {
+            session.username = response.data.data.user.username;
+            session.is_authenticated = true;
+            console.log(session.username);
         }
-
+    } catch (error) {
+        console.error("Не авторизован:", error.response || error);
+        session.username = null;
+        session.is_authenticated = false;
     }
+};
 
 
 

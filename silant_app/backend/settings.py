@@ -63,7 +63,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -112,18 +112,6 @@ HEADLESS_FRONTEND_URLS = {
     "account_reset_password_from_key": "https://app.org/account/password/reset/key/{ключ}",
     "регистрация учетной записи": "https://app.org/account/signup",
 }
-
-
-''' 
-SESSION_COOKIE_DOMAIN = "http://127.0.0.1:8000/"
-CSRF_COOKIE_DOMAIN = "http://127.0.0.1:8000/"
-
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'Lax'
-
-
-'''
-
 
 
 
@@ -182,11 +170,10 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-
 ]
 
 
-#CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = (
     "accept",
@@ -194,11 +181,13 @@ CORS_ALLOW_HEADERS = (
     "content-type",
     "user-agent",
     "x-csrftoken",
-    "X-CSRFToken",
     "x-requested-with",
 )
 
-
+CSRF_COOKIE_SAMESITE = 'Lax'  # или 'None' если используете HTTPS
+CSRF_COOKIE_HTTPONLY = False  # Чтобы JS мог читать CSRF токен
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 
 #REST_FRAMEWORK = {

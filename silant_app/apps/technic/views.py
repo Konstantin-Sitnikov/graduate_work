@@ -46,7 +46,4 @@ def machines(request):
 @api_view(["GET"])
 def get_csrf(request):
     response = JsonResponse({"X-CSRFToken": get_token(request)})
-    print(response)
-
-
     return response
