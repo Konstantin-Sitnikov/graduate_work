@@ -11,7 +11,7 @@ class Technic(models.Model):
         verbose_name_plural = 'Техника'
 
     model = models.CharField(unique=True, max_length=200, verbose_name = 'Модель')
-    description = models.CharField(max_length=400, verbose_name = 'Описание')
+    description = models.TextField(verbose_name = 'Описание')
 
     def __str__(self):
         return self.model
@@ -23,7 +23,7 @@ class Engine(models.Model):
         verbose_name_plural = 'Двигатели'
 
     model = models.CharField(unique=True, max_length=200, verbose_name = 'Модель')
-    description = models.CharField(max_length=400, verbose_name = 'Описание')
+    description = models.TextField(verbose_name = 'Описание')
 
     def __str__(self):
         return self.model
@@ -35,7 +35,7 @@ class Transmission(models.Model):
         verbose_name_plural = 'Трансмиссии'
 
     model = models.CharField(unique=True, max_length=200, verbose_name = 'Модель')
-    description = models.CharField(max_length=400, verbose_name = 'Описание')
+    description = models.TextField( verbose_name = 'Описание')
 
     def __str__(self):
         return self.model
@@ -47,7 +47,7 @@ class DrivingBridge(models.Model):
         verbose_name_plural = 'Ведущие мосты'
 
     model = models.CharField(unique=True, max_length=200, verbose_name = 'Модель')
-    description = models.CharField(max_length=400, verbose_name = 'Описание')
+    description = models.TextField(verbose_name = 'Описание')
 
     def __str__(self):
         return self.model
@@ -59,7 +59,7 @@ class ControlledBridge(models.Model):
         verbose_name_plural = 'Управляемые мосты'
 
     model = models.CharField(unique=True, max_length=200, verbose_name = 'Модель')
-    description = models.CharField(max_length=400, verbose_name = 'Описание')
+    description = models.TextField(verbose_name = 'Описание')
 
     def __str__(self):
         return self.model
@@ -102,4 +102,4 @@ class Machine(models.Model):
     service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, verbose_name = 'Сервисная компания')
 
     def __str__(self):
-        return self.model_technic.model
+        return self.number_machine
