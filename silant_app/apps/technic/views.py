@@ -38,7 +38,6 @@ def information_machines(request):
 
 
 
-
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def machines(request):

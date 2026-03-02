@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { getData, getExtendedData } from "../PostService";
 import { Routes, Route, Link, useLocation, data } from 'react-router-dom'
 import axios from 'axios';
-import {onLogin, logOut, updateSession} from "../authorization/authorization" 
+import {onLogin, logOut, updateSession} from "../authn/authn" 
  
 
 
