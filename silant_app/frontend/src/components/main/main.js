@@ -2,19 +2,16 @@ import  style  from "./style.module.scss"
 import { useState, useEffect, useContext } from "react";
 import { getData, getExtendedData } from "../PostService";
 import { Routes, Route, Link, useLocation, data } from 'react-router-dom'
-import axios from 'axios';
-import {onLogin, logOut, updateSession} from "../authn/authn" 
- 
 
 
 
 
-const NewTable = ({path}) => {
+const NewTable = ({path, userId}) => {
     const [dataTable, setDataTable] = useState([])
     const [tableFieldsHeaders, setTableFieldsHeaders] = useState([])
 
     useEffect(()=>{
-        getData(path).then(result => {
+        getData(path, userId).then(result => {
             setDataTable(result.data)
             setTableFieldsHeaders(result.fields)
         })
@@ -109,21 +106,7 @@ const Detail = () => {
 
 
 
-const Main = () =>  {
-
-    const [user, setUser] = useState('')
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-    useEffect(()=>{
-        updateSession(setUser, setIsAuthenticated)
-    },[])
-
-console.log(user, isAuthenticated)
-
-
-
-
-
+const Main = ({isAuthN, userId}) =>  {
 
         const [path, setPath] = useState("machines")
     
@@ -140,33 +123,6 @@ console.log(user, isAuthenticated)
     }
 
 
-
-
-
-
-
-
-
-    const BASE_URL = `/_allauth/browser/v1`
-
-    const SESSIONS =  '/auth/sessions'
-
-
-
-
-
-
-
-
-
-       // https://docs.allauth.org/_allauth/browser/v1/auth/session
-
-    
-
-
-
-
-
     return (
         <main className={style.main}>
             <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
@@ -177,9 +133,7 @@ console.log(user, isAuthenticated)
                     <button onClick={clickButton1}>Машины</button>
                     <button onClick={clickButton2}>ТО</button>
                     <button onClick={clickButton3}>Ремонты</button>
-                    <button onClick={onLogin}>Войти</button>
-                    <button onClick={updateSession}>Проверка сессии</button>
-                    <button onClick={logOut}>Выйти</button>    
+                        
 
                 </div>
 
@@ -188,15 +142,20 @@ console.log(user, isAuthenticated)
 
             </div>
             <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
-            
+            { isAuthN? ( 
+                
             <div>
-
                 <Routes>
-                    <Route path="/" element={<NewTable path={path}/>}></Route>
+                    <Route path="/" element={<NewTable path={path} userId={userId}/>}></Route>
                     <Route path="/detail" element={<Detail />}></Route>
                 </Routes>
 
-            </div>
+            </div>):null
+
+
+
+            }
+            
                     
 
         </main>

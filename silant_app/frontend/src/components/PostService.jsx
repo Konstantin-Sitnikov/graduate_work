@@ -39,8 +39,8 @@ function getCookie (name) {
 
 
 
-export function getData(paht) {
-const url = `${API_URL}/api/${paht}/`
+export function getData(paht, userId) {
+const url = `${API_URL}/api/${paht}/` + userId
 return axios.get(url).then(response => response.data)
 }
 

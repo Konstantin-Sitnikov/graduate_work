@@ -40,10 +40,11 @@ def information_machines(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def machines(request):
+def machines(request, user_id):
+    print(request)
     if request.method == "GET":
 
-        machine = MachineSerializer(Machine.objects.all(), many=True)
+        machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
         fields = [field.verbose_name for field in Machine._meta.fields]
 
         return (Response({"data": machine.data,

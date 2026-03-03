@@ -23,7 +23,7 @@ from apps.complaint import views as complaint
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/machines/', machines.machines),
+    path('api/machines/<int:user_id>/', machines.machines),
     path('api/information_machines/', machines.information_machines),
     path('api/technical_maintenance/', technical_maintenance.technical_maintenance),
     path('api/complaint/', complaint.complaint),
