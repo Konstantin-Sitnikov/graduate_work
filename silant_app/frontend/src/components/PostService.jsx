@@ -36,6 +36,45 @@ function getCookie (name) {
         }
 
 
+export function getCSRF(foo) {
+    axios.get('http://localhost:8000/csrf/', { withCredentials: true })
+        .then(() => { 
+            return foo})}
+
+
+
+
+/*
+export function logIn () {
+    (()=>{ return axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
+                username: refName.current.value,
+                password: refPassword.current.value,
+            }, {
+                headers: {
+                    "accept": "application/json",
+                    'Content-Type': "application/json",
+                },
+                withCredentials: true
+            });
+        })
+        .then(data => { 
+
+            updateSession()
+        })
+        .catch(error => {
+
+            if (error.response.status === 400) {
+                console.log("Неправильный логин или пароль");
+            }
+            if (error.response.status === 409) {
+                console.log("Вы уже авторизованы");
+            }
+
+
+        });
+}            
+
+*/
 
 
 
@@ -45,7 +84,9 @@ return axios.get(url).then(response => response.data)
 }
 
 
-export function getExtendedData(paht) {
-const url = `${API_URL}/api/information_${paht}/`
+export function getExtendedData() {
+const url = `${API_URL}/api/information_for_complaint/`
 return axios.get(url).then(response => response.data)
 }
+
+

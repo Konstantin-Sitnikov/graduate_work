@@ -1,7 +1,9 @@
 import  style  from "./style.module.scss"
-import { useState, useEffect, useContext } from "react";
-import { getData, getExtendedData } from "../PostService";
+import { useState, useEffect, } from "react";
+import { getData, } from "../PostService";
 import { Routes, Route, Link, useLocation, data } from 'react-router-dom'
+
+import {CreateComplaint} from "../../components/CreateComplaint/CreateComplaint"
 
 
 
@@ -106,6 +108,17 @@ const Detail = () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 const Main = ({isAuthN, userId}) =>  {
 
         const [path, setPath] = useState("machines")
@@ -123,12 +136,33 @@ const Main = ({isAuthN, userId}) =>  {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <main className={style.main}>
             <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
             <div className={style.container__input_button}>
                 <input className={style.input} type="text" />
-                <button className={style.button}>Поиск машин</button>
+                <button className={style.button} >Поиск машин</button>
                 <div>
                     <button onClick={clickButton1}>Машины</button>
                     <button onClick={clickButton2}>ТО</button>
@@ -149,6 +183,9 @@ const Main = ({isAuthN, userId}) =>  {
                     <Route path="/" element={<NewTable path={path} userId={userId}/>}></Route>
                     <Route path="/detail" element={<Detail />}></Route>
                 </Routes>
+
+
+                <CreateComplaint/>
 
             </div>):null
 

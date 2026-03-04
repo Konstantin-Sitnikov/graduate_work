@@ -27,6 +27,9 @@ urlpatterns = [
     path('api/information_machines/', machines.information_machines),
     path('api/technical_maintenance/', technical_maintenance.technical_maintenance),
     path('api/complaint/', complaint.complaint),
+    path('api/create_complaint/', complaint.create_complaint),
+    path('api/information_for_complaint/', complaint.information_for_complaint),
+
     path('api/information_technical_maintenance/', technical_maintenance.information_technical_maintenance),
 
     path('csrf/', machines.get_csrf),

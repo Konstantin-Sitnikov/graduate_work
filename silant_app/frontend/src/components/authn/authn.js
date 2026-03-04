@@ -68,7 +68,6 @@ export function AuthN({setShowModal, updateSession}) {
 
 
 function logOut() {
-    console.log("start")
     // Сначала получаем CSRF токен (он устанавливается при GET запросе)
     axios.get('http://localhost:8000/csrf/', { withCredentials: true })
         .then(() => {
@@ -85,6 +84,22 @@ function logOut() {
            updateSession()
         });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 return (
