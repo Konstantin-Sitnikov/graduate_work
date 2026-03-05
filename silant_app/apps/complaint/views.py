@@ -1,17 +1,20 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Complaint, FailureNode, RecoveryMethod
-from .serializers import ComplaintSerializer,FailureNodeSerializer,RecoveryMethodSerializer
+from .models import Complaint, FailureNode, RecoveryMethod, ServiceCompany
+from .serializers import ComplaintSerializer,FailureNodeSerializer,RecoveryMethodSerializer, ServiceCompanySerializer
 
 
 @api_view(["GET"])
 def information_for_complaint(request):
     failure_node = FailureNodeSerializer(FailureNode.objects.all(), many=True)
     recovery_method = RecoveryMethodSerializer(RecoveryMethod.objects.all(), many=True)
+    service_company = ServiceCompanySerializer(ServiceCompany.objects.all(), many=True)
+
     return Response({
         "failure_node": failure_node.data,
-        "recovery_method": recovery_method.data
+        "recovery_method": recovery_method.data,
+        "service_company": service_company.data
     })
 
 

@@ -8,17 +8,22 @@ import {CreateComplaint} from "../../components/CreateComplaint/CreateComplaint"
 
 
 
-const NewTable = ({path, userId}) => {
+const NewTable = ({userId}) => {
+            
     const [dataTable, setDataTable] = useState([])
     const [tableFieldsHeaders, setTableFieldsHeaders] = useState([])
 
     useEffect(()=>{
-        getData(path, userId).then(result => {
+
+        if(userId) {
+            getData(userId).then(result => {
             setDataTable(result.data)
             setTableFieldsHeaders(result.fields)
         })
+        }
         
-    },[path])
+        
+    },[userId])
 
         let columnTableHeaders = tableFieldsHeaders.map(function(column) {
             return <td key={column} className={style.table__column}>{column}</td>
@@ -134,28 +139,7 @@ const Main = ({isAuthN, userId}) =>  {
         function clickButton3 () {
             setPath("complaint")
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//
 
     return (
         <main className={style.main}>
@@ -185,7 +169,7 @@ const Main = ({isAuthN, userId}) =>  {
                 </Routes>
 
 
-                <CreateComplaint/>
+                <CreateComplaint userId={userId}/>
 
             </div>):null
 

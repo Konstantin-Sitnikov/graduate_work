@@ -78,8 +78,8 @@ export function logIn () {
 
 
 
-export function getData(paht, userId) {
-const url = `${API_URL}/api/${paht}/` + userId
+export function getData(userId) {
+const url = `${API_URL}/api/machines/` + userId
 return axios.get(url).then(response => response.data)
 }
 
