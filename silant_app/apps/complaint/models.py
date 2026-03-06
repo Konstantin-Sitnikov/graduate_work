@@ -34,7 +34,7 @@ class Complaint(models.Model):
         verbose_name = 'Рекламация'
         verbose_name_plural = 'Рекламации'
 
-    date_failure = models.DateField(verbose_name = 'Дата отказа')
+    date_failure = models.DateTimeField(verbose_name = 'Дата отказа')
 
     operating_time = models.PositiveIntegerField(verbose_name = 'Наработка, м/час')
 
@@ -46,7 +46,7 @@ class Complaint(models.Model):
 
     used_parts = models.TextField(verbose_name = 'Используемые запчасти')
 
-    date_restoration = models.DateField(verbose_name = 'Дата восстановления')
+    date_restoration = models.DateTimeField(verbose_name = 'Дата восстановления')
 
     downtime = models.PositiveIntegerField(default=0, verbose_name = 'Время простоя техники')
 

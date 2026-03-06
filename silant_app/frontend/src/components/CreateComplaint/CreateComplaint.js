@@ -4,16 +4,13 @@ import { getData, getExtendedData } from '../PostService';
 import  style  from "./style.module.scss"
 
 
-function create() {
+function create(data) {
 
     // Сначала получаем CSRF токен (он устанавливается при GET запросе)
     axios.get('http://localhost:8000/csrf/', { withCredentials: true })
         .then(() => {
             // Теперь отправляем логин с CSRF токеном
-            return axios.post('http://localhost:8000/api/create_complaint/', {
-                username: "fbvdsfbv",
-                password: "sdfvbzdsfv",
-            }, {
+            return axios.post('http://localhost:8000/api/create_complaint/', data, {
                 headers: {
                     "accept": "application/json",
                     'Content-Type': "application/json",
@@ -36,14 +33,6 @@ function create() {
 
         });
 }
-
-
-
-
-
-
-
-
 
 
 export function CreateComplaint ({userId}) {
@@ -91,15 +80,32 @@ export function CreateComplaint ({userId}) {
 
 
     function send() {
-        console.log(refFailureNode.current.value)
+        console.log(refDateFailure.current.value)
+        const dataComplaint = {
+            "date_failure": refDateFailure.current.value,
+            "operating_time": refOperatingTime.current.value,
+            "failure_node": refFailureNode.current.value,
+            "description_failure": refDescriptionFailure.current.value,
+            "recovery_method": refRecoveryMethod.current.value,
+            "used_parts": refUsedParts.current.value,
+            "date_restoration": refDateRestoration.current.value,
+            "downtime":refDowntime.current.value,
+            "machine": refMachine.current.value,
+            "service_company": refServiceCompany.current.value
+
+        }
+            create(dataComplaint)
+
+
     }
 
 
     return (
-            <>
+            <>  
+
                 <div> 
                     <label htmlFor="DateFailure">Дата отказа</label>
-                    <input id="DateFailure" ref={refDateFailure} type='date'/>
+                    <input id="DateFailure" ref={refDateFailure} type='datetime-local' required/>
 
                     <label htmlFor="OperatingTime">Наработка м/ч</label>
                     <input id="OperatingTime" ref={refOperatingTime} type='text'/>
@@ -131,7 +137,7 @@ export function CreateComplaint ({userId}) {
                     
 
                     <label htmlFor="DateRestoration">Дата восстановления</label>
-                    <input id="DateRestoration" ref={refDateRestoration} type='date'/>
+                    <input id="DateRestoration" ref={refDateRestoration} type='datetime-local'/>
 
                     <label htmlFor="Downtime">Время простоя техники</label>
                     <input id="Downtime" ref={refDowntime} type='text'/>
