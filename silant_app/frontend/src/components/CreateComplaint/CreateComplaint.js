@@ -67,6 +67,9 @@ export function CreateComplaint ({userId}) {
 
 
 
+
+
+
     const refDateFailure = useRef(null)
     const refOperatingTime = useRef(null)
     const refFailureNode = useRef(null)
@@ -92,7 +95,6 @@ export function CreateComplaint ({userId}) {
             "downtime":refDowntime.current.value,
             "machine": refMachine.current.value,
             "service_company": refServiceCompany.current.value
-
         }
             create(dataComplaint)
 
@@ -104,8 +106,12 @@ export function CreateComplaint ({userId}) {
             <>  
 
                 <div> 
-                    <label htmlFor="DateFailure">Дата отказа</label>
-                    <input id="DateFailure" ref={refDateFailure} type='datetime-local' required/>
+
+                    <div> 
+                    <span>Дата отказа</span>
+                    <input ref={refDateFailure} type='datetime-local'/>
+                    <span>Выберете дату!!!</span>
+                    </div> 
 
                     <label htmlFor="OperatingTime">Наработка м/ч</label>
                     <input id="OperatingTime" ref={refOperatingTime} type='text'/>

@@ -21,12 +21,14 @@ def information_technical_maintenance(request):
 
 
 @api_view(["GET"])
-def technical_maintenance(request):
+def technical_maintenance(request, user_id):
     if request.method == "GET":
 
-        maintenance = TechnicalMaintenanceSerializer(TechnicalMaintenance.objects.all(), many=True)
+        maintenance = TechnicalMaintenanceSerializer(TechnicalMaintenance.objects.filter(machine__client__id=user_id), many=True)
         fields = [field.verbose_name for field in TechnicalMaintenance._meta.fields]
 
         return (Response({"data": maintenance.data,
                           "fields": fields}
                          ))
+
+

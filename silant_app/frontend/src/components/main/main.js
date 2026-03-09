@@ -1,93 +1,10 @@
 import  style  from "./style.module.scss"
-import { useState, useEffect, } from "react";
-import { getData, } from "../PostService";
-import { Routes, Route, Link, useLocation, data } from 'react-router-dom'
+import { useState, } from "react";
+import { Routes, Route, Link, useLocation, } from 'react-router-dom'
+import { TableMachine,  } from "../table/table";
 
 import {CreateComplaint} from "../../components/CreateComplaint/CreateComplaint"
 
-
-
-
-const NewTable = ({userId}) => {
-            
-    const [dataTable, setDataTable] = useState([])
-    const [tableFieldsHeaders, setTableFieldsHeaders] = useState([])
-
-    useEffect(()=>{
-
-        if(userId) {
-            getData(userId).then(result => {
-            setDataTable(result.data)
-            setTableFieldsHeaders(result.fields)
-        })
-        }
-        
-        
-    },[userId])
-
-        let columnTableHeaders = tableFieldsHeaders.map(function(column) {
-            return <td key={column} className={style.table__column}>{column}</td>
-        })
-
-        let rowTable = dataTable.map(function(row) {
-            
-            let columnTable = Object.entries(row).map(
-                
-                function([key, value]) {
-                    if (typeof(value) === "object"){
-                        let test = (Object.values(value)[1])
-
-                        if (typeof(test) === "object") {
-                             
-                            return <td className={style.table__column}><Link className={style.link} to="/detail">{Object.values(test)[1]}</Link></td>
-                        } else {
-                            return <td className={style.table__column}><Link className={style.link} to="/detail" state={{keys:key, values:value}}>{Object.values(value)[1]}</Link></td>
-                        }
-                        
-
-                    } else { 
-
-                        if (key === "number_machine") {
-
-                            return <td className={style.table__column}><Link className={style.link} to="/detail" state={{keys:key, values:value}}>{value}</Link></td>
-                        }
-                        else {
-                            return <td className={style.table__column}>{value}</td>
-                        }
-
-                        }})
-                                    
-                        
-                        
-                return  <tr className={style.table__row} > {columnTable} </tr> 
-      })
-
-return (
-
-    <>
-    
-
-    <table className={style.table}>
-                <caption>Таблица с данными (выдача результата)</caption>
-                
-                
-                <thead>
-                    
-                    {columnTableHeaders}
-
-                </thead>
-
-                <tbody>
-
-                    {rowTable}
-
-                </tbody>
-
-            </table>
-    </>
-    )
-
-}
 
 const Detail = () => {
     let location = useLocation()
@@ -111,19 +28,6 @@ const Detail = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 const Main = ({isAuthN, userId}) =>  {
 
         const [path, setPath] = useState("machines")
@@ -140,7 +44,7 @@ const Main = ({isAuthN, userId}) =>  {
             setPath("complaint")
     }
 //
-
+    console.log(path)
     return (
         <main className={style.main}>
             <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
@@ -153,6 +57,12 @@ const Main = ({isAuthN, userId}) =>  {
                     <button onClick={clickButton3}>Ремонты</button>
                         
 
+
+                    <label> <input name="table" value={"machines"} type="radio" checked={path ==="machines"} onChange={()=>{setPath("machines")}}/> Машины </label> 
+                    <label> <input name="table" value={"technical_maintenance"} type="radio" checked={path ==="technical_maintenance"} onChange={()=>{setPath("technical_maintenance")}}/> ТО </label>
+                    <label> <input name="table" value={"complaint"} type="radio" checked={path ==="complaint"} onChange={()=>{setPath("complaint")}}/> Ремонты </label>
+
+
                 </div>
 
 
@@ -164,12 +74,11 @@ const Main = ({isAuthN, userId}) =>  {
                 
             <div>
                 <Routes>
-                    <Route path="/" element={<NewTable path={path} userId={userId}/>}></Route>
+                    <Route path="/" element={<TableMachine path={path} userId={userId}/>}></Route>
+
                     <Route path="/detail" element={<Detail />}></Route>
                 </Routes>
 
-
-                <CreateComplaint userId={userId}/>
 
             </div>):null
 

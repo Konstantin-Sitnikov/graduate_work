@@ -1,3 +1,5 @@
+from platform import machine
+
 from django.shortcuts import render
 from datetime import datetime
 from rest_framework.response import Response
@@ -5,6 +7,7 @@ from rest_framework.decorators import api_view
 from .models import Complaint, FailureNode, RecoveryMethod, ServiceCompany
 from .serializers import ComplaintSerializer,FailureNodeSerializer,RecoveryMethodSerializer, ServiceCompanySerializer
 from ..technic.models import Machine
+
 
 
 @api_view(["GET"])
@@ -20,19 +23,13 @@ def information_for_complaint(request):
     })
 
 
-
-
-
-
 # Create your views here.
 @api_view(["GET"])
-def complaint(request):
+def complaint(request, user_id):
     if request.method == "GET":
-
-        machine = ComplaintSerializer(Complaint.objects.all(), many=True)
+        complaint = ComplaintSerializer(Complaint.objects.filter(machine__client__id=user_id), many=True)
         fields = [field.verbose_name for field in Complaint._meta.fields]
-
-        return (Response({"data": machine.data,
+        return (Response({"data": complaint.data,
                           "fields": fields}
                          ))
 
