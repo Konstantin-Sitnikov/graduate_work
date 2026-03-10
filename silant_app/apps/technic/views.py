@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User, Group
 from http.client import responses
 
 from django.shortcuts import render
@@ -37,8 +38,18 @@ def information_machines(request):
 class Machines(APIView):
     permission_classes = [DjangoModelPermissions]
     queryset = Machine.objects.all()
+
     def get(self, request, user_id):
-        machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
+
+        user = User.objects.get(id=user_id)
+        if (user.groups.filter(name="Client").exists()):
+            machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
+
+        elif (user.groups.filter(name="Manager").exists()):
+            machine = MachineSerializer(Machine.objects.all(), many=True)
+
+
+        #machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
         fields = [field.verbose_name for field in Machine._meta.fields]
 
         return (Response({"data": machine.data,
