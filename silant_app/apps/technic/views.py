@@ -5,8 +5,9 @@ from django.middleware.csrf import get_token
 from django.http import JsonResponse
 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import DjangoModelPermissions
 from .serializers import *
 from ..service_company.serializers import ServiceCompanySerializer, ServiceCompany
 
@@ -33,13 +34,20 @@ def information_machines(request):
 
 
 
+class Machines(APIView):
+    permission_classes = [DjangoModelPermissions]
+    queryset = Machine.objects.all()
+    def get(self, request, user_id):
+        machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
+        fields = [field.verbose_name for field in Machine._meta.fields]
 
-
-
+        return (Response({"data": machine.data,
+                          "fields": fields}
+                         ))
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([DjangoModelPermissions])
 def machines(request, user_id):
     print(request)
     if request.method == "GET":

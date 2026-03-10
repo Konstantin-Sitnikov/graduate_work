@@ -88,6 +88,10 @@ const url = `${API_URL}/api/complaint/` + userId
 return axios.get(url).then(response => response.data)
 }
 
+export function getDataCreateComplaint(userId) {
+const url = `${API_URL}/api/machines/` + userId
+return axios.get(url).then(response => response.data)
+}
 
 
 

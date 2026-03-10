@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useRef, useEffect, useState } from "react";
-import { getData, getExtendedData } from '../PostService';
+import { getDataCreateComplaint, getExtendedData } from '../PostService';
 import  style  from "./style.module.scss"
 
 
@@ -47,7 +47,7 @@ export function CreateComplaint ({userId}) {
 
     useEffect(() => {
         if (userId) {
-            getData(userId).then(result => {
+            getDataCreateComplaint(userId).then(result => {
                 setDataTable(result.data)
 
             })

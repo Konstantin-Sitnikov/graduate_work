@@ -80,6 +80,9 @@ const Main = ({isAuthN, userId}) =>  {
                 </Routes>
 
 
+                <CreateComplaint userId={userId}/>
+
+
             </div>):null
 
 
