@@ -9,6 +9,7 @@ from rest_framework.permissions import DjangoModelPermissions
 from .models import Complaint, FailureNode, RecoveryMethod, ServiceCompany
 from .serializers import ComplaintSerializer,FailureNodeSerializer,RecoveryMethodSerializer, ServiceCompanySerializer
 from ..technic.models import Machine
+from ..technic.views import get_user_machine
 
 
 
@@ -25,11 +26,19 @@ def information_for_complaint(request):
     })
 
 
-# Create your views here.
-@api_view(["GET"])
-def complaint(request, user_id):
-    if request.method == "GET":
-        complaint = ComplaintSerializer(Complaint.objects.filter(machine__client__id=user_id), many=True)
+
+
+class ComplaintView(APIView):
+    permission_classes = [DjangoModelPermissions]
+    queryset = Complaint.objects.all()
+
+    def get(self, request, user_id):
+
+        machine = get_user_machine(user_id=user_id)
+        machine_ids = machine.values_list('number_machine', flat=True)
+
+
+        complaint = ComplaintSerializer(Complaint.objects.filter(machine__in=machine_ids), many=True)
         fields = [field.verbose_name for field in Complaint._meta.fields]
         return (Response({"data": complaint.data,
                           "fields": fields}
@@ -38,9 +47,14 @@ def complaint(request, user_id):
 
 
 
+
+
+
+
 class CreateComplaint(APIView):
     permission_classes = [DjangoModelPermissions]
     queryset = Complaint.objects.all()
+
     def post(self, request):
         data = request.data
         date_failure = datetime.strptime(data["date_failure"], "%Y-%m-%dT%H:%M")

@@ -25,13 +25,13 @@ class TechnicalMaintenance(models.Model):
 
     type_technical_maintenance = models.ForeignKey(TypeTechnicalMaintenance, on_delete=models.CASCADE, verbose_name = 'Вид ТО') # Вид ТО
 
-    date_maintenance = models.DateField(verbose_name = 'Дата проведения ТО') # Дата проведения ТО
+    date_maintenance = models.DateTimeField(verbose_name = 'Дата проведения ТО') # Дата проведения ТО
 
     operating_time = models.PositiveIntegerField(default=0, verbose_name = 'Наработка, м/час') #
 
     order_number = models.CharField(unique=True, max_length=200, verbose_name = '№ заказ-наряда') #
 
-    date_order_number = models.DateField(verbose_name = 'Дата заказ-наряда')  #
+    date_order_number = models.DateTimeField(verbose_name = 'Дата заказ-наряда')  #
 
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE, verbose_name = 'Машина')
 

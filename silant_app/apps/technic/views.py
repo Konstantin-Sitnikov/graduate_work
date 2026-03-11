@@ -1,3 +1,5 @@
+from platform import machine
+
 from django.contrib.auth.models import User, Group
 from http.client import responses
 
@@ -34,6 +36,22 @@ def information_machines(request):
                       }))
 
 
+def get_user_machine(user_id):
+    user = User.objects.get(id=user_id)
+
+    if (user.groups.filter(name="Manager").exists()):
+        return Machine.objects.all()
+
+    elif (user.groups.filter(name="Service_company").exists()):
+
+        service_company_id = user.servicecompanyprofile.service_company.id
+        return Machine.objects.filter(service_company__id=service_company_id)
+    else:
+        return Machine.objects.filter(client__id=user_id)
+
+
+
+
 
 class Machines(APIView):
     permission_classes = [DjangoModelPermissions]
@@ -41,17 +59,7 @@ class Machines(APIView):
 
     def get(self, request, user_id):
 
-        user = User.objects.get(id=user_id)
-
-        if (user.groups.filter(name="Manager").exists()):
-            machine = MachineSerializer(Machine.objects.all(), many=True)
-
-        elif (user.groups.filter(name="Service_company").exists()):
-            print(user.servicecompanyprofile.service_company.id)
-            service_company_id = user.servicecompanyprofile.service_company.id
-            machine = MachineSerializer(Machine.objects.filter(service_company__id=service_company_id), many=True)
-        else:
-            machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
+        machine = MachineSerializer(get_user_machine(user_id=user_id), many=True)
 
 
         #machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
