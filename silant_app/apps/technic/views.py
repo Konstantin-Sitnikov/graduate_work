@@ -42,11 +42,16 @@ class Machines(APIView):
     def get(self, request, user_id):
 
         user = User.objects.get(id=user_id)
-        if (user.groups.filter(name="Client").exists()):
-            machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
 
-        elif (user.groups.filter(name="Manager").exists()):
+        if (user.groups.filter(name="Manager").exists()):
             machine = MachineSerializer(Machine.objects.all(), many=True)
+
+        elif (user.groups.filter(name="Service_company").exists()):
+            print(user.servicecompanyprofile.service_company.id)
+            service_company_id = user.servicecompanyprofile.service_company.id
+            machine = MachineSerializer(Machine.objects.filter(service_company__id=service_company_id), many=True)
+        else:
+            machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
 
 
         #machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
