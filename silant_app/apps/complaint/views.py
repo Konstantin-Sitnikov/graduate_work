@@ -36,6 +36,7 @@ class ComplaintView(APIView):
 
         machine = get_user_machine(user_id=user_id)
         machine_ids = machine.values_list('number_machine', flat=True)
+        print(machine_ids)
 
 
         complaint = ComplaintSerializer(Complaint.objects.filter(machine__in=machine_ids), many=True)

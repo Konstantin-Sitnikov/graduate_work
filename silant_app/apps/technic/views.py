@@ -11,6 +11,9 @@ from ..service_company.serializers import ServiceCompanySerializer, ServiceCompa
 from ..complaint.serializers import ComplaintSerializer
 from ..complaint.models import Complaint
 
+from ..technical_maintenance.serializers import TechnicalMaintenanceSerializer
+from ..technical_maintenance.models import TechnicalMaintenance
+
 
 
 @api_view(["GET"])
@@ -55,15 +58,30 @@ class Machines(APIView):
     queryset = Machine.objects.all()
 
     def get(self, request, user_id):
+        machine = get_user_machine(user_id=user_id)
+        machine_ids = machine.values_list('number_machine', flat=True)
 
-        machine = MachineSerializer(get_user_machine(user_id=user_id), many=True)
 
 
-        #machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
-        fields = [field.verbose_name for field in Machine._meta.fields]
+        machine_data = MachineSerializer(machine, many=True)
+        machine_fields = [field.verbose_name for field in Machine._meta.fields]
 
-        return (Response({"data": machine.data,
-                          "fields": fields}
+        complaint_data = ComplaintSerializer(Complaint.objects.filter(machine__in=machine_ids), many=True)
+        complaint_fields = [field.verbose_name for field in Complaint._meta.fields]
+
+        technical_maintenance_data = TechnicalMaintenanceSerializer(TechnicalMaintenance.objects.filter(machine__in=machine_ids), many=True)
+        technical_maintenance_fields = [field.verbose_name for field in TechnicalMaintenance._meta.fields]
+
+
+        return (Response({"machine_data": machine_data.data,
+                          "machine_fields": machine_fields,
+                          "complaint_data": complaint_data.data,
+                          "complaint_fields": complaint_fields,
+                          "technical_maintenance_data": technical_maintenance_data.data,
+                          "technical_maintenance_fields": technical_maintenance_fields,
+                          }
+
+
                          ))
 
 
