@@ -4,7 +4,6 @@ import { getDataCreateComplaint, getExtendedData } from '../PostService';
 import  style  from "./style.module.scss"
 
 
-
 function create(data) {
 
     // Сначала получаем CSRF токен (он устанавливается при GET запросе)

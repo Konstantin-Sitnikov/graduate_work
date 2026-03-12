@@ -1,9 +1,4 @@
-from platform import machine
 
-from django.contrib.auth.models import User, Group
-from http.client import responses
-
-from django.shortcuts import render
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 
@@ -13,6 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import DjangoModelPermissions
 from .serializers import *
 from ..service_company.serializers import ServiceCompanySerializer, ServiceCompany
+from ..complaint.serializers import ComplaintSerializer
+from ..complaint.models import Complaint
 
 
 
@@ -70,18 +67,24 @@ class Machines(APIView):
                          ))
 
 
-@api_view(["GET"])
-@permission_classes([DjangoModelPermissions])
-def machines(request, user_id):
-    print(request)
-    if request.method == "GET":
 
-        machine = MachineSerializer(Machine.objects.filter(client__id=user_id), many=True)
-        fields = [field.verbose_name for field in Machine._meta.fields]
 
-        return (Response({"data": machine.data,
-                          "fields": fields}
-                         ))
+class MachineDetail(APIView):
+    permission_classes = [DjangoModelPermissions]
+    queryset = Machine.objects.all()
+
+    def get(self, request, number_machine):
+        print(number_machine)
+        machine = Machine.objects.get(number_machine=number_machine)
+        machine_data =  MachineSerializer(machine)
+        complaint = ComplaintSerializer(Complaint.objects.filter(machine=machine), many=True)
+
+        return (Response({"machine": machine_data.data,
+                          "complaint":complaint.data
+                                  }
+                                 ))
+
+
 
 
 @api_view(["GET"])

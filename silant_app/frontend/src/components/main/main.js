@@ -1,7 +1,8 @@
 import  style  from "./style.module.scss"
-import { useState, } from "react";
+import { useEffect, useState, } from "react";
 import { Routes, Route, Link, useLocation, } from 'react-router-dom'
 import { TableMachine,  } from "../table/table";
+import { getDataMasineDetail} from "../PostService";
 
 import {CreateComplaint} from "../../components/CreateComplaint/CreateComplaint"
 
@@ -11,11 +12,22 @@ const Detail = () => {
     let data = location.state
     let values =  data.values
 
-    console.log()
+
+    useEffect(()=>{
+        getDataMasineDetail(values).then(result => {
+            console.log(result.machine)
+            console.log(result.complaint)
+        })
+    },[])
+
+    console.log(values)
+
+
+
     return (
         <>
             <Link className={style.link} to="/">Выход</Link>
-            <span>{values.model}</span>
+            <span>{values}</span>
             <span>{values.description}</span>
 
         </>
@@ -78,9 +90,6 @@ const Main = ({isAuthN, userId}) =>  {
 
                     <Route path="/detail" element={<Detail />}></Route>
                 </Routes>
-
-
-                <CreateComplaint userId={userId}/>
 
 
             </div>):null

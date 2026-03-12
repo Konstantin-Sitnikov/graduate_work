@@ -5,6 +5,24 @@ import { Link } from 'react-router-dom'
 
 
 
+function mashineDetail () {
+
+    return (<div>
+
+        </div>)
+     
+}
+
+
+
+
+
+
+
+
+
+
+
 export const TableMachine = ({path, userId}) => {
             
     const [dataTable, setDataTable] = useState([])
