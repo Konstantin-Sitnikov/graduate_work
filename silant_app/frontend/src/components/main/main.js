@@ -8,27 +8,55 @@ import {CreateComplaint} from "../../components/CreateComplaint/CreateComplaint"
 
 
 const Detail = () => {
-    let location = useLocation()
-    let data = location.state
-    let values =  data.values
+
+    let value = getLocalStorage()
+    console.log(value)
+
+    const [complaintData, setComplaintData] = useState([])
+    const [complaintFields, setComplaintFields] = useState([])
+
+    const [machineData, setMachineData] = useState([])
+    const [machineFields, setMachineFields] = useState([])
+
+    const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
+    const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
 
 
     useEffect(()=>{
-        getDataMasineDetail(values).then(result => {
-            console.log(result.machine)
-            console.log(result.complaint)
+        getDataMasineDetail(value).then(result => {
+            setComplaintData(result.complaint_data)
+            setComplaintFields(result.complaint_fields)
+            const mashine = result.machine_data
+            setMachineData(mashine[0])
+            setMachineFields(result.machine_fields)
+            setTechnicalMaintenanceData(result.technical_maintenance_data)
+            setTechnicalMaintenanceFields(result.technical_maintenance_fields)
         })
     },[])
 
-  
+    let mashineModel = machineData.model_technic
+    console.log(complaintData)
+    console.log(technicalMaintenanceData)
 
     return (
-        <>
-            <Link className={style.link} to="/">Выход</Link>
-            <span>{values}</span>
-            <span>{values.description}</span>
 
-        </>
+            <div>
+                        <nav> 
+                            <NavLink to="/">Машины</NavLink>
+                            <NavLink to="/detail/">ТО</NavLink>
+                            <NavLink to="/detail/complaint">Рекламации</NavLink>
+                        </nav>
+
+                        <span className={style.text__result_search}>{`Машина: }`}</span>
+                        <span className={style.text__result_search}>{`Cерийный номер: `}</span>
+                        
+                        <Routes>                         
+                            <Route path="/" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
+                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
+                        </Routes>
+    
+                        
+                    </div>
 
 
     )
@@ -55,8 +83,13 @@ const Detail = () => {
 */
 
 
+function setLocalStorage(value) {
+    localStorage.setItem('number_machine_to_detail', JSON.stringify(value))
+}
 
-
+function getLocalStorage() {
+    return JSON.parse(localStorage.getItem('number_machine_to_detail'))
+}
 
 
 
@@ -89,7 +122,7 @@ const Table = ({dataTable, tableFieldsHeaders}) => {
 
                         if (key === "number_machine") {
 
-                            return <td className={style.table__column}><Link className={style.link} to="/detail" state={{keys:key, values:value}}>{value}</Link></td>
+                            return <td className={style.table__column}><Link className={style.link} to="/detail" onClick={()=>{setLocalStorage(value)}}>{value}</Link></td>
                         }
                         else {
                             return <td className={style.table__column}>{value}</td>
@@ -132,7 +165,7 @@ return (
 
 function Masine({userId}) {
 
-    const [complaintData, setComplaintData] = useState([])
+        const [complaintData, setComplaintData] = useState([])
         const [complaintFields, setComplaintFields] = useState([])
 
         const [machineData, setMachineData] = useState([])
@@ -156,6 +189,8 @@ function Masine({userId}) {
                 
             },[userId])
         
+            console.log(machineData)
+
             return  <div>
                         <nav> 
                             <NavLink to="/">Машины</NavLink>
@@ -195,13 +230,6 @@ const Main = ({isAuthN, userId}) =>  {
 
         const [path, setPath] = useState("machines")
 
-        
-    
-
-
-
-
-
     return (
         <main className={style.main}>
             <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
@@ -217,10 +245,11 @@ const Main = ({isAuthN, userId}) =>  {
             <div>
                 <Routes>
                     <Route path="/*" element={<Masine userId={userId}/>}></Route>
-                    <Route path="/detail" element={<Detail />}></Route>
+                    <Route path="/detail/*" element={<Detail/>}></Route>
                 </Routes>
-
-
+                
+                
+                    
             </div>):null
 
 
