@@ -116,3 +116,7 @@ return axios.get(url).then(response => response.data)
 }
 
 
+export function getDataCreateMashine() {
+const url = `${API_URL}/api/information_for_create_mashine/`
+return axios.get(url).then(response => response.data)
+}

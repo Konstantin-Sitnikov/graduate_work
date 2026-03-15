@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from ..service_company.models import ServiceCompany
 
 
-
-
 class Technic(models.Model):
     class Meta:
         verbose_name = 'Технику'
@@ -95,7 +93,7 @@ class Machine(models.Model):
 
     delivery_address = models.CharField(max_length=500, verbose_name = 'Адрес поставки') #
 
-    Equipment = models.CharField(max_length=500, verbose_name = 'Комплектация') #
+    Equipment = models.TextField(max_length=500, verbose_name = 'Комплектация') #
 
     client = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name = 'Клиент')
 

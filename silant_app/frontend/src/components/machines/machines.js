@@ -1,7 +1,141 @@
 import axios from 'axios';
 import { useRef, useEffect, useState } from "react";
-import { getDataCreateComplaint, getExtendedData } from '../PostService';
+import { Routes, Route, Link, NavLink } from 'react-router-dom'
+import { getDataCreateMashine, getExtendedData, getDataMasineDetail, getDataTest } from '../PostService';
+import { Table } from '../table/table';
+
 import  style  from "./style.module.scss"
+
+
+function getLocalStorage() {
+    return JSON.parse(localStorage.getItem('number_machine_to_detail'))
+}
+
+
+
+export function Masine({userId}) {
+
+        const [complaintData, setComplaintData] = useState([])
+        const [complaintFields, setComplaintFields] = useState([])
+
+        const [machineData, setMachineData] = useState([])
+        const [machineFields, setMachineFields] = useState([])
+
+        const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
+        const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
+
+        useEffect(()=>{
+        
+                if(userId) {
+                    getDataTest(userId).then(result => {
+                    setComplaintData(result.complaint_data)
+                    setComplaintFields(result.complaint_fields)
+                    setMachineData(result.machine_data)
+                    setMachineFields(result.machine_fields)
+                    setTechnicalMaintenanceData(result.technical_maintenance_data)
+                    setTechnicalMaintenanceFields(result.technical_maintenance_fields)
+                })
+                }
+                
+            },[userId])
+        
+
+
+            return  <div>
+                        <nav> 
+                            <NavLink to="/">Машины</NavLink>
+                            <NavLink to="/technical_maintenance">ТО</NavLink>
+                            <NavLink to="/complaint">Рекламации</NavLink>
+                        </nav>
+
+
+                        <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
+
+                        <Routes>
+                            <Route path="/" element={<Table dataTable={machineData} tableFieldsHeaders={machineFields}/>}></Route>
+                            <Route path="/technical_maintenance" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
+                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
+                        </Routes>
+                    </div>
+
+}
+
+
+
+
+
+export const MachineDetail = () => {
+
+    let value = getLocalStorage()
+    console.log(value)
+
+    const [complaintData, setComplaintData] = useState([])
+    const [complaintFields, setComplaintFields] = useState([])
+
+    const [machineData, setMachineData] = useState([])
+    const [machineFields, setMachineFields] = useState([])
+
+    const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
+    const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
+
+
+    useEffect(()=>{
+        getDataMasineDetail(value).then(result => {
+            setComplaintData(result.complaint_data)
+            setComplaintFields(result.complaint_fields)
+            const mashine = result.machine_data
+            setMachineData(mashine[0])
+            setMachineFields(result.machine_fields)
+            setTechnicalMaintenanceData(result.technical_maintenance_data)
+            setTechnicalMaintenanceFields(result.technical_maintenance_fields)
+        })
+    },[])
+
+    let mashineModel = machineData.model_technic
+    console.log(complaintData)
+    console.log(technicalMaintenanceData)
+
+    return (
+
+            <div>
+                        <nav> 
+                            <NavLink to="/">Машины</NavLink>
+                            <NavLink to="/detail/">ТО</NavLink>
+                            <NavLink to="/detail/complaint">Рекламации</NavLink>
+                        </nav>
+
+                        <span className={style.text__result_search}>{`Машина: }`}</span>
+                        <span className={style.text__result_search}>{`Cерийный номер: `}</span>
+                        
+                        <Routes>                         
+                            <Route path="/" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
+                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
+                        </Routes>
+    
+                        
+                    </div>
+
+
+    )
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function create(data) {
@@ -10,7 +144,7 @@ function create(data) {
     axios.get('http://localhost:8000/csrf/', { withCredentials: true })
         .then(() => {
             // Теперь отправляем логин с CSRF токеном
-            return axios.post('http://localhost:8000/api/create_complaint/', data, {
+            return axios.post('http://localhost:8000/api/create_machine/', data, {
                 headers: {
                     "accept": "application/json",
                     'Content-Type': "application/json",
@@ -35,68 +169,97 @@ function create(data) {
 }
 
 
-export function CreateComplaint ({userId}) {
+export function CreateMashine ({userId}) {
     
-    const [failureNode, setFailureNode] = useState([])
-    const [recoveryMethod, setRecoveryMethod] = useState([])
+    const [modelTechnic, setModelTechnic] = useState([])
+    const [modelEngine, setModelEngine] = useState([])
+    
+    const [modelTransmission, setModelTransmission] = useState([])
+
+    const [modelDrivingBridge, setModelDrivingBridge] = useState([])
+
+    const [modelControlledBridge, setModelControlledBridge] = useState([])
+
+    const [client, setClient] = useState([])
+
+
     const [serviceCompany, setServiceCompany] = useState([])
 
 
-    const [dataTable, setDataTable] = useState([])
-   
-
-    useEffect(() => {
-        if (userId) {
-            getDataCreateComplaint(userId).then(result => {
-                setDataTable(result.data)
-
-            })
-        }}, [userId])
-    
-
     useEffect(()=>{
-        getExtendedData().then(result => {
-            setFailureNode(result.failure_node)
-            setRecoveryMethod(result.recovery_method)
+        getDataCreateMashine().then(result => {
+
+            setModelTechnic(result.model_technic)
+
+            setModelEngine(result.model_engine)
+
+            setModelTransmission(result.model_transmission)
+            
+            setModelDrivingBridge(result.model_driving_bridge)
+
+            setModelControlledBridge(result.model_controlled_bridge)
+            setClient(result.client)
             setServiceCompany(result.service_company)
         })
         
     },[])
 
-    console.log(dataTable)
+
+
+    const refNumberMachine = useRef(null)
+    const refModelTechnic = useRef(null)
+    const refModelEngine = useRef(null)
+    const refNumberEngine = useRef(null)
+    const refModelTransmission = useRef(null)
+    const refNumberTransmission = useRef(null)
+    const refModelDrivingBridge = useRef(null)
+    const refNumberDrivingBridge = useRef(null)
+
+    const refModelControlledBridge = useRef(null)
+    const refNumberControlledBridge = useRef(null)
+
+    const refDeliveryAgreement = useRef(null)
+
+    const refDateShipment = useRef(null)
+
+    const refEndUser = useRef(null)
+
+    const refDeliveryAddress = useRef(null)
+
+    const refEquipment = useRef(null)
+
+    const refClient = useRef(null)
 
 
 
-
-
-
-    const refDateFailure = useRef(null)
-    const refOperatingTime = useRef(null)
-    const refFailureNode = useRef(null)
-    const refDescriptionFailure = useRef(null)
-    const refRecoveryMethod = useRef(null)
-    const refUsedParts = useRef(null)
-    const refDateRestoration = useRef(null)
-    const refDowntime = useRef(null)
-    const refMachine = useRef(null)
     const refServiceCompany = useRef(null)
 
 
     function send() {
-        console.log(refDateFailure.current.value)
-        const dataComplaint = {
-            "date_failure": refDateFailure.current.value,
-            "operating_time": refOperatingTime.current.value,
-            "failure_node": refFailureNode.current.value,
-            "description_failure": refDescriptionFailure.current.value,
-            "recovery_method": refRecoveryMethod.current.value,
-            "used_parts": refUsedParts.current.value,
-            "date_restoration": refDateRestoration.current.value,
-            "downtime":refDowntime.current.value,
-            "machine": refMachine.current.value,
+        const dataMachine = {
+
+            "number_machine": refNumberMachine.current.value,
+            "model_technic": refModelTechnic.current.value,
+            "model_engine": refModelEngine.current.value,
+            "number_engine": refNumberEngine.current.value,
+            "model_transmission": refModelTransmission.current.value,
+            "number_transmission": refNumberTransmission.current.value,
+            "model_driving_bridge": refModelDrivingBridge.current.value,
+            "number_driving_bridge":refNumberDrivingBridge.current.value,
+            "model_controlled_bridge": refModelControlledBridge.current.value,
+            "number_controlled_bridge": refNumberControlledBridge.current.value,
+
+            "delivery_agreement": refDeliveryAgreement.current.value,
+            "date_shipment": refDateShipment.current.value,
+            "end_user": refEndUser.current.value,
+            "delivery_address": refDeliveryAddress.current.value,
+            "Equipment": refEquipment.current.value,
+            "client": refClient.current.value,
             "service_company": refServiceCompany.current.value
         }
-            create(dataComplaint)
+
+        console.log(dataMachine.client)
+            create(dataMachine)
 
 
     }
@@ -104,57 +267,117 @@ export function CreateComplaint ({userId}) {
 
     return (
             <>  
-
                 <div> 
 
                     <div> 
-                    <span>Дата отказа</span>
-                    <input ref={refDateFailure} type='datetime-local'/>
-                    <span>Выберете дату!!!</span>
-                    </div> 
+                        <span>Введите серийный номер автомобиля</span>
+                        <input ref={refNumberMachine} type='text'/>
+                        <span>Выберете дату!!!</span>
+                    </div>
 
-                    <label htmlFor="OperatingTime">Наработка м/ч</label>
-                    <input id="OperatingTime" ref={refOperatingTime} type='text'/>
-
-
-                    <label htmlFor="FailureNode">Узел отказа</label>
-                    <select id="FailureNode" ref={refFailureNode}>
+                    <label htmlFor="modelTechnic">Выберете модель техники</label>
+                    <select id="modelTechnic" ref={refModelTechnic}>
                         {
-                           failureNode.map((item) => {
-                            return <option value={item.id}>{item.name}</option>
-                           }) 
-                        }
-                    </select>
-                    <label htmlFor="DescriptionFailure">Описание отказа</label>
-                    <textarea ref={refDescriptionFailure} id="DescriptionFailure"></textarea>
+                           modelTechnic.map((item) => {
 
 
-                    <label htmlFor="RecoveryMethod">Метод восстановления</label>
-                    <select id="RecoveryMethod" ref={refRecoveryMethod}>
-                        {
-                           recoveryMethod.map((item) => {
-                            return <option value={item.id}>{item.name}</option>
+                            return <option value={item.id}>{item.model}</option>
                            }) 
                         }
                     </select>
 
-                    <label htmlFor="UsedParts">Используемые запчасти</label>
-                    <textarea ref={refUsedParts} id="UsedParts"></textarea>
-                    
-
-                    <label htmlFor="DateRestoration">Дата восстановления</label>
-                    <input id="DateRestoration" ref={refDateRestoration} type='datetime-local'/>
-
-                    <label htmlFor="Downtime">Время простоя техники</label>
-                    <input id="Downtime" ref={refDowntime} type='text'/>
-                    
-
-                    <label htmlFor="Machine">Машина</label>
-                    <select id="Machine" ref={refMachine}>
+                    <label htmlFor="modelEngine">Выберете модель двигателя</label>
+                    <select id="modelEngine" ref={refModelEngine}>
                         {
-                           dataTable.map((item) => {
+                           modelEngine.map((item) => {
 
-                            return <option value={item.number_machine}>{item.number_machine}</option>
+                            return <option value={item.id}>{item.model}</option>
+                           }) 
+                        }
+                    </select>
+
+
+                    <label htmlFor="NumberEngine">Зав. № двигателя</label>
+                    <input id="NumberEngine" ref={refNumberEngine} type='text'/>
+
+
+                    <label htmlFor="ModelTransmission">Выберете модель трансмиссии</label>
+                    <select id="ModelTransmission" ref={refModelTransmission}>
+                        {
+                           modelTransmission.map((item) => {
+                            return <option value={item.id}>{item.model}</option>
+                           }) 
+                        }
+                    </select>
+
+
+                    <label htmlFor="NumberTransmission">Зав. № трансмиссии</label>
+                    <input id="NumberTransmission" ref={refNumberTransmission} type='text'/>
+
+                    
+
+                    
+                    <label htmlFor="ModelDrivingBridge">Выберете модель ведущего моста</label>
+                    <select id="ModelDrivingBridge" ref={refModelDrivingBridge}>
+                        {
+                           modelDrivingBridge.map((item) => {
+                            return <option value={item.id}>{item.model}</option>
+                           }) 
+                        }
+                    </select>
+
+
+                    <label htmlFor="NumberDrivingBridge">Зав. № ведущего моста</label>
+                    <input id="NumberDrivingBridge" ref={refNumberDrivingBridge} type='text'/>
+
+                    
+
+
+
+                    <label htmlFor="ModelControlledBridge">Выберете модель управляемого моста</label>
+                    <select id="ModelControlledBridge" ref={refModelControlledBridge}>
+                        {
+                           modelControlledBridge.map((item) => {
+                            return <option value={item.id}>{item.model}</option>
+                           }) 
+                        }
+                    </select>
+
+
+                    <label htmlFor="NumberControlledBridge">Зав. № управляемого моста</label>
+                    <input id="NumberControlledBridge" ref={refNumberControlledBridge} type='text'/>
+
+                    
+                    
+                    <label htmlFor="DeliveryAgreement">Договор поставки №, дата'</label>
+                    <input id="DeliveryAgreement" ref={refDeliveryAgreement} type='text'/>
+
+
+
+
+                    <label htmlFor="DateShipment">Дата отгрузки с завода</label>
+                    <input id="DateShipment" ref={refDateShipment} type='date'/>
+
+
+                    <label htmlFor="EndUser">Конечный потребитель'</label>
+                    <input id="EndUser" ref={refEndUser} type='text'/>
+
+                    
+                    <label htmlFor="DeliveryAddress">Адрес поставки'</label>
+                    <input id="DeliveryAddress" ref={refDeliveryAddress} type='text'/>
+
+                    
+                    <label htmlFor="Equipment">Комплектация</label>
+                    <textarea ref={refEquipment} id="Equipment"></textarea>
+
+
+
+                    <label htmlFor="Client">Клиент</label>
+                    <select id="Client" ref={refClient}>
+                        {
+                           client.map((item) => {
+                            console.log(item)
+                           return <option value={item.id}>{item.username}</option>
                            }) 
                         }
                     </select>
@@ -171,6 +394,7 @@ export function CreateComplaint ({userId}) {
 
                     <button onClick={send}>Создать</button>
                 </div>
+                
 
 
             </>
@@ -178,3 +402,10 @@ export function CreateComplaint ({userId}) {
     )
 
 }
+
+
+/*
+
+
+
+*/

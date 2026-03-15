@@ -1,68 +1,11 @@
 import  style  from "./style.module.scss"
-import { useEffect, useState, } from "react";
-import { Routes, Route, Link, NavLink, useLocation } from 'react-router-dom'
-import { TableMachine,  } from "../table/table";
-import { getDataMasineDetail, getDataTest } from "../PostService";
-
-import {CreateComplaint} from "../../components/CreateComplaint/CreateComplaint"
+import { useState, } from "react";
+import { Routes, Route, Link, NavLink } from 'react-router-dom'
+import { Masine, MachineDetail, CreateMashine } from "../machines/machines";
 
 
-const Detail = () => {
-
-    let value = getLocalStorage()
-    console.log(value)
-
-    const [complaintData, setComplaintData] = useState([])
-    const [complaintFields, setComplaintFields] = useState([])
-
-    const [machineData, setMachineData] = useState([])
-    const [machineFields, setMachineFields] = useState([])
-
-    const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
-    const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
 
 
-    useEffect(()=>{
-        getDataMasineDetail(value).then(result => {
-            setComplaintData(result.complaint_data)
-            setComplaintFields(result.complaint_fields)
-            const mashine = result.machine_data
-            setMachineData(mashine[0])
-            setMachineFields(result.machine_fields)
-            setTechnicalMaintenanceData(result.technical_maintenance_data)
-            setTechnicalMaintenanceFields(result.technical_maintenance_fields)
-        })
-    },[])
-
-    let mashineModel = machineData.model_technic
-    console.log(complaintData)
-    console.log(technicalMaintenanceData)
-
-    return (
-
-            <div>
-                        <nav> 
-                            <NavLink to="/">Машины</NavLink>
-                            <NavLink to="/detail/">ТО</NavLink>
-                            <NavLink to="/detail/complaint">Рекламации</NavLink>
-                        </nav>
-
-                        <span className={style.text__result_search}>{`Машина: }`}</span>
-                        <span className={style.text__result_search}>{`Cерийный номер: `}</span>
-                        
-                        <Routes>                         
-                            <Route path="/" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
-                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
-                        </Routes>
-    
-                        
-                    </div>
-
-
-    )
-    
-
-}
 /*
 { isAuthN? ( 
                 
@@ -83,136 +26,13 @@ const Detail = () => {
 */
 
 
-function setLocalStorage(value) {
-    localStorage.setItem('number_machine_to_detail', JSON.stringify(value))
-}
-
-function getLocalStorage() {
-    return JSON.parse(localStorage.getItem('number_machine_to_detail'))
-}
 
 
 
 
 
-const Table = ({dataTable, tableFieldsHeaders}) => {
-            
-
-        let columnTableHeaders = tableFieldsHeaders.map(function(column) {
-            return <td key={column} className={style.table__column}>{column}</td>
-        })
-
-        let rowTable = dataTable.map(function(row) {
-            
-            let columnTable = Object.entries(row).map(
-                
-                function([key, value]) {
-                    if (typeof(value) === "object"){
-                        let test = (Object.values(value)[1])
-
-                        if (typeof(test) === "object") {
-                             
-                            return <td className={style.table__column}><Link className={style.link} to="/detail">{Object.values(test)[1]}</Link></td>
-                        } else {
-                            return <td className={style.table__column}><Link className={style.link} to="/detail" state={{keys:key, values:value}}>{Object.values(value)[1]}</Link></td>
-                        }
-                        
-
-                    } else { 
-
-                        if (key === "number_machine") {
-
-                            return <td className={style.table__column}><Link className={style.link} to="/detail" onClick={()=>{setLocalStorage(value)}}>{value}</Link></td>
-                        }
-                        else {
-                            return <td className={style.table__column}>{value}</td>
-                        }
-
-                        }})
-                                    
-                        
-                        
-                return  <tr className={style.table__row} > {columnTable} </tr> 
-      })
-
-return (
-
-    <>
-    
-
-    <table className={style.table}>
-                <caption>Таблица с данными (выдача результата)</caption>
-                
-                
-                <thead>
-                    
-                    {columnTableHeaders}
-
-                </thead>
-
-                <tbody>
-
-                    {rowTable}
-
-                </tbody>
-
-            </table>
-    </>
-    )
-
-}
 
 
-function Masine({userId}) {
-
-        const [complaintData, setComplaintData] = useState([])
-        const [complaintFields, setComplaintFields] = useState([])
-
-        const [machineData, setMachineData] = useState([])
-        const [machineFields, setMachineFields] = useState([])
-
-        const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
-        const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
-
-        useEffect(()=>{
-        
-                if(userId) {
-                    getDataTest(userId).then(result => {
-                    setComplaintData(result.complaint_data)
-                    setComplaintFields(result.complaint_fields)
-                    setMachineData(result.machine_data)
-                    setMachineFields(result.machine_fields)
-                    setTechnicalMaintenanceData(result.technical_maintenance_data)
-                    setTechnicalMaintenanceFields(result.technical_maintenance_fields)
-                })
-                }
-                
-            },[userId])
-        
-            console.log(machineData)
-
-            return  <div>
-                        <nav> 
-                            <NavLink to="/">Машины</NavLink>
-                            <NavLink to="/technical_maintenance">ТО</NavLink>
-                            <NavLink to="/complaint">Рекламации</NavLink>
-                        </nav>
-
-
-                        <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
-
-                        <Routes>
-                            <Route path="/" element={<Table dataTable={machineData} tableFieldsHeaders={machineFields}/>}></Route>
-                            <Route path="/technical_maintenance" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
-                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
-                        </Routes>
-                    </div>
-
-
-
-
-
-}
 
 
 
@@ -238,14 +58,15 @@ const Main = ({isAuthN, userId}) =>  {
                 <button className={style.button} >Поиск машин</button>
             </div>
 
-            
+            <Link to="/create_mashine/">Добавить машину</Link>
             
             { isAuthN? ( 
                 
             <div>
                 <Routes>
                     <Route path="/*" element={<Masine userId={userId}/>}></Route>
-                    <Route path="/detail/*" element={<Detail/>}></Route>
+                    <Route path="/detail/*" element={<MachineDetail/>}></Route>
+                    <Route path="/create_mashine/*" element={<CreateMashine/>}></Route>
                 </Routes>
                 
                 

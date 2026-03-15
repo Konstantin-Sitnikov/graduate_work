@@ -1,6 +1,8 @@
+from tokenize import group
 
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
+from datetime import datetime
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -112,6 +114,101 @@ class MachineDetail(APIView):
                           }
 
                          ))
+
+
+
+
+
+@api_view(["GET"])
+def information_for_create_mashine(request):
+    model_technic = TechnicSerializer(Technic.objects.all(), many=True)
+    model_engine = EngineSerializer(Engine.objects.all(), many=True)
+
+    model_transmission = TransmissionSerializer(Transmission.objects.all(), many=True)
+
+    model_driving_bridge = DrivingBridgeSerializer(DrivingBridge.objects.all(), many=True)
+
+    model_controlled_bridge = ControlledBridgeSerializer(ControlledBridge.objects.all(), many=True)
+
+    client = UserSerializer(User.objects.filter(groups__name="Client"), many=True)
+
+    print(User.objects.filter(groups__name="Client"))
+
+
+
+    service_company = ServiceCompanySerializer(ServiceCompany.objects.all(), many=True)
+
+    return Response({
+        "model_technic": model_technic.data,
+        "model_engine": model_engine.data,
+        "model_transmission": model_transmission.data,
+        "model_driving_bridge": model_driving_bridge.data,
+        "model_controlled_bridge": model_controlled_bridge.data,
+        "client": client.data,
+        "service_company": service_company.data
+    })
+
+
+class CreateMashine(APIView):
+    permission_classes = [DjangoModelPermissions]
+    queryset = Machine.objects.all()
+
+    def post(self, request):
+        data = request.data
+
+        number_machine = str(data["number_machine"])
+
+        model_technic = Technic.objects.get(id=data["model_technic"])
+        model_engine = Engine.objects.get(id=data["model_engine"])
+        number_engine = str(data["number_engine"])
+        model_transmission = Transmission.objects.get(id=data["model_transmission"])
+        number_transmission = str(data["number_transmission"])
+
+        model_driving_bridge = DrivingBridge.objects.get(id=data["model_driving_bridge"])
+        number_driving_bridge = str(data["number_driving_bridge"])
+
+        model_driving_bridge = DrivingBridge.objects.get(id=data["model_driving_bridge"])
+        number_controlled_bridge = str(data["number_driving_bridge"])
+
+        delivery_agreement = str(data["delivery_agreement"])
+
+        date_shipment = datetime.strptime(data["date_shipment"], "%Y-%m-%d")
+
+        end_user = str(data["end_user"])
+
+        equipment = str(data["Equipment"])
+
+        client = User.objects.get(id=data["client"])
+
+        service_company = ServiceCompany.objects.get(id=data["service_company"])
+
+        print(data)
+
+
+
+
+        #new_complaint = Complaint(failure_node=failure_node, recovery_method=recovery_method,
+                                  #service_company=service_company, machine=mashine)
+        #new_complaint.date_failure = date_failure
+        #new_complaint.operating_time = operating_time
+        #new_complaint.description_failure = description_failure
+        #new_complaint.used_parts = used_parts
+        #new_complaint.date_restoration = date_restoration
+        #new_complaint.downtime = downtime
+        #new_complaint.save()
+
+        return (Response({"data": "data"}
+                         ))
+
+
+
+
+
+
+
+
+
+
 
 
 
