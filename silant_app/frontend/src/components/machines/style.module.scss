@@ -1,0 +1,23 @@
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.container__row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container__column {
+    display: flex;
+    width: 30%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.row__header {
+    width: 40%;
+}

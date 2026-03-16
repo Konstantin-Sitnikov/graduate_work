@@ -139,8 +139,6 @@ export const MachineDetail = () => {
 
 
 function create(data) {
-
-    // Сначала получаем CSRF токен (он устанавливается при GET запросе)
     axios.get('http://localhost:8000/csrf/', { withCredentials: true })
         .then(() => {
             // Теперь отправляем логин с CSRF токеном
@@ -182,9 +180,7 @@ export function CreateMashine ({userId}) {
 
     const [client, setClient] = useState([])
 
-
     const [serviceCompany, setServiceCompany] = useState([])
-
 
     useEffect(()=>{
         getDataCreateMashine().then(result => {
@@ -236,8 +232,9 @@ export function CreateMashine ({userId}) {
 
 
     function send() {
-        const dataMachine = {
+        let dataValid = false
 
+        const dataMachine = {
             "number_machine": refNumberMachine.current.value,
             "model_technic": refModelTechnic.current.value,
             "model_engine": refModelEngine.current.value,
@@ -258,142 +255,222 @@ export function CreateMashine ({userId}) {
             "service_company": refServiceCompany.current.value
         }
 
-        console.log(dataMachine.client)
+        for (const  value of Object.values(dataMachine)) {
+            if(value){
+                console.log(value)
+                dataValid = true
+            
+            } else{
+                dataValid = false
+                break
+            }}
+
+
+        if (dataValid) {
             create(dataMachine)
+        }}
 
-
-    }
+        const handleSubmit = (event) => {
+            event.preventDefault();
+        };
 
 
     return (
             <>  
-                <div> 
+                <form className={style.form} onSubmit={handleSubmit}> 
+                    <div className={style.container__row}> 
+                        <span className={style.row__header}>Введите данные машины:</span>
+                        <div className={style.container__column}>
+                            <span>Введите серийный номер автомобиля</span>
+                            <input ref={refNumberMachine} type='text' required/>
+                        </div>
+                    
+                        <div className={style.container__column}>
+                            <label htmlFor="modelTechnic">Выберете модель техники</label>
+                            <select id="modelTechnic" ref={refModelTechnic}>
+                                {
+                                modelTechnic.map((item) => {
 
-                    <div> 
-                        <span>Введите серийный номер автомобиля</span>
-                        <input ref={refNumberMachine} type='text'/>
-                        <span>Выберете дату!!!</span>
+
+                                    return <option value={item.id}>{item.model}</option>
+                                }) 
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    
+                    
+                    
+                    <div className={style.container__row}>
+                        <span className={style.row__header}>Введите данные двигателя:</span>
+                        <div className={style.container__column}>
+                            <label htmlFor="modelEngine">Выберете модель двигателя</label>
+                            <select id="modelEngine" ref={refModelEngine}>
+                                {
+                                modelEngine.map((item) => {
+
+                                    return <option value={item.id}>{item.model}</option>
+                                }) 
+                                }
+                            </select>
+                        </div>
+                        
+
+                        <div className={style.container__column}>
+                            <label htmlFor="NumberEngine">Зав. № двигателя</label>
+                            <input id="NumberEngine" ref={refNumberEngine} type='text' required/>
+                        </div>  
+                     </div>
+                    
+                    
+
+
+
+                    <div className={style.container__row}>
+                        <span className={style.row__header}>Введите данные трансмиссии:</span>
+                        <div className={style.container__column}> 
+                            <label htmlFor="ModelTransmission">Выберете модель трансмиссии</label>
+                            <select id="ModelTransmission" ref={refModelTransmission}>
+                                {
+                                modelTransmission.map((item) => {
+                                    return <option value={item.id}>{item.model}</option>
+                                }) 
+                                }
+                            </select>
+                        </div>
+                    
+
+                        <div className={style.container__column}>
+                            <label htmlFor="NumberTransmission">Зав. № трансмиссии</label>
+                            <input id="NumberTransmission" ref={refNumberTransmission} type='text' required/>
+                        </div>
+                        
+                    </div>
+                    
+                    
+
+                    
+                    <div className={style.container__row}>
+                        <span className={style.row__header}>Введите данные ведущего моста:</span>
+                        <div className={style.container__column}>
+                            <label htmlFor="ModelDrivingBridge">Выберете модель ведущего моста</label>
+                            <select id="ModelDrivingBridge" ref={refModelDrivingBridge}>
+                                {
+                                modelDrivingBridge.map((item) => {
+                                    return <option value={item.id}>{item.model}</option>
+                                }) 
+                                }
+                            </select>
+                        </div>
+                        
+
+                        <div className={style.container__column}>
+                            <label htmlFor="NumberDrivingBridge">Зав. № ведущего моста</label>
+                            <input id="NumberDrivingBridge" ref={refNumberDrivingBridge} type='text' required/>
+                        </div>                        
+                    </div>
+                    
+                    
+
+                    
+
+                    <div className={style.container__row}>
+                        <span className={style.row__header}>Введите данные управляемого моста:</span>
+                        <div className={style.container__column}>
+                            <label htmlFor="ModelControlledBridge">Выберете модель управляемого моста</label>
+                            <select id="ModelControlledBridge" ref={refModelControlledBridge}>
+                                {
+                                modelControlledBridge.map((item) => {
+                                    return <option value={item.id}>{item.model}</option>
+                                }) 
+                                }
+                            </select>
+                        </div>
+                        
+
+                        <div className={style.container__column}>
+                            <label htmlFor="NumberControlledBridge">Зав. № управляемого моста</label>
+                            <input id="NumberControlledBridge" ref={refNumberControlledBridge} type='text' required/>
+                        </div>
+                            
+                    </div>
+                        
+                    
+                    
+
+
+                    <div className={style.container__row}>
+                        <span className={style.row__header}>Введите данные договора:</span>
+                        <div className={style.container__column}>
+                            <label htmlFor="DeliveryAgreement">Договор поставки №, дата'</label>
+                            <input id="DeliveryAgreement" ref={refDeliveryAgreement} type='text'required/>  
+                        </div>
+                        
+                        <div className={style.container__column}>
+                            <label htmlFor="DateShipment">Дата отгрузки с завода</label>
+                            <input id="DateShipment" ref={refDateShipment} type='date' required/>
+                        </div>
                     </div>
 
-                    <label htmlFor="modelTechnic">Выберете модель техники</label>
-                    <select id="modelTechnic" ref={refModelTechnic}>
-                        {
-                           modelTechnic.map((item) => {
+                    
+                    
 
+                    <div className={style.container__row}>
+                        <span className={style.row__header}>Введите данные пользователя:</span>
+                        <div className={style.container__column}>
+                            <label htmlFor="EndUser">Конечный потребитель'</label>
+                            <input id="EndUser" ref={refEndUser} type='text' required/>
+                        </div>
+                        
 
-                            return <option value={item.id}>{item.model}</option>
-                           }) 
-                        }
-                    </select>
+                        <div className={style.container__column}>
+                            <label htmlFor="DeliveryAddress">Адрес поставки'</label>
+                            <input id="DeliveryAddress" ref={refDeliveryAddress} type='text' required/>
+                        </div>
+                    </div>
+                    
+                    
 
-                    <label htmlFor="modelEngine">Выберете модель двигателя</label>
-                    <select id="modelEngine" ref={refModelEngine}>
-                        {
-                           modelEngine.map((item) => {
-
-                            return <option value={item.id}>{item.model}</option>
-                           }) 
-                        }
-                    </select>
-
-
-                    <label htmlFor="NumberEngine">Зав. № двигателя</label>
-                    <input id="NumberEngine" ref={refNumberEngine} type='text'/>
-
-
-                    <label htmlFor="ModelTransmission">Выберете модель трансмиссии</label>
-                    <select id="ModelTransmission" ref={refModelTransmission}>
-                        {
-                           modelTransmission.map((item) => {
-                            return <option value={item.id}>{item.model}</option>
-                           }) 
-                        }
-                    </select>
-
-
-                    <label htmlFor="NumberTransmission">Зав. № трансмиссии</label>
-                    <input id="NumberTransmission" ref={refNumberTransmission} type='text'/>
-
+                    <div className={style.container__row}>
+                        <label htmlFor="Equipment">Дополнительная комплектация</label>
+                        <textarea ref={refEquipment} id="Equipment"></textarea>
+                    </div>
                     
 
                     
-                    <label htmlFor="ModelDrivingBridge">Выберете модель ведущего моста</label>
-                    <select id="ModelDrivingBridge" ref={refModelDrivingBridge}>
-                        {
-                           modelDrivingBridge.map((item) => {
-                            return <option value={item.id}>{item.model}</option>
-                           }) 
-                        }
-                    </select>
+                    <div className={style.container__row}>
 
+                        <div className={style.container__column}>
+                            <label htmlFor="Client">Клиент</label>
+                            <select id="Client" ref={refClient}>
+                                {
+                                client.map((item) => {
+                                    console.log(item)
+                                return <option value={item.id}>{item.username}</option>
+                                }) 
+                                }
+                            </select>
+                        </div> 
+                        
+                        <div className={style.container__column}>
+                            <label htmlFor="ServiceCompany">Сервисная компания</label>
+                            <select id="ServiceCompany" ref={refServiceCompany}>
+                                {
+                                serviceCompany.map((item) => {
 
-                    <label htmlFor="NumberDrivingBridge">Зав. № ведущего моста</label>
-                    <input id="NumberDrivingBridge" ref={refNumberDrivingBridge} type='text'/>
+                                    return <option value={item.id}>{item.name}</option>
+                                }) 
+                                }
+                            </select>
+                        </div>
 
-                    
-
-
-
-                    <label htmlFor="ModelControlledBridge">Выберете модель управляемого моста</label>
-                    <select id="ModelControlledBridge" ref={refModelControlledBridge}>
-                        {
-                           modelControlledBridge.map((item) => {
-                            return <option value={item.id}>{item.model}</option>
-                           }) 
-                        }
-                    </select>
-
-
-                    <label htmlFor="NumberControlledBridge">Зав. № управляемого моста</label>
-                    <input id="NumberControlledBridge" ref={refNumberControlledBridge} type='text'/>
-
+                    </div>
                     
                     
-                    <label htmlFor="DeliveryAgreement">Договор поставки №, дата'</label>
-                    <input id="DeliveryAgreement" ref={refDeliveryAgreement} type='text'/>
-
-
-
-
-                    <label htmlFor="DateShipment">Дата отгрузки с завода</label>
-                    <input id="DateShipment" ref={refDateShipment} type='date'/>
-
-
-                    <label htmlFor="EndUser">Конечный потребитель'</label>
-                    <input id="EndUser" ref={refEndUser} type='text'/>
-
-                    
-                    <label htmlFor="DeliveryAddress">Адрес поставки'</label>
-                    <input id="DeliveryAddress" ref={refDeliveryAddress} type='text'/>
-
-                    
-                    <label htmlFor="Equipment">Комплектация</label>
-                    <textarea ref={refEquipment} id="Equipment"></textarea>
-
-
-
-                    <label htmlFor="Client">Клиент</label>
-                    <select id="Client" ref={refClient}>
-                        {
-                           client.map((item) => {
-                            console.log(item)
-                           return <option value={item.id}>{item.username}</option>
-                           }) 
-                        }
-                    </select>
-
-                    <label htmlFor="ServiceCompany">Сервисная компания</label>
-                    <select id="ServiceCompany" ref={refServiceCompany}>
-                        {
-                           serviceCompany.map((item) => {
-
-                            return <option value={item.id}>{item.name}</option>
-                           }) 
-                        }
-                    </select>
 
                     <button onClick={send}>Создать</button>
-                </div>
+                </form>
                 
 
 

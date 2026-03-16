@@ -154,6 +154,7 @@ class CreateMashine(APIView):
     queryset = Machine.objects.all()
 
     def post(self, request):
+
         data = request.data
 
         number_machine = str(data["number_machine"])
@@ -167,7 +168,7 @@ class CreateMashine(APIView):
         model_driving_bridge = DrivingBridge.objects.get(id=data["model_driving_bridge"])
         number_driving_bridge = str(data["number_driving_bridge"])
 
-        model_driving_bridge = DrivingBridge.objects.get(id=data["model_driving_bridge"])
+        model_controlled_bridge = ControlledBridge.objects.get(id=data["model_controlled_bridge"])
         number_controlled_bridge = str(data["number_driving_bridge"])
 
         delivery_agreement = str(data["delivery_agreement"])
@@ -175,6 +176,7 @@ class CreateMashine(APIView):
         date_shipment = datetime.strptime(data["date_shipment"], "%Y-%m-%d")
 
         end_user = str(data["end_user"])
+        delivery_address = str(data["delivery_address"])
 
         equipment = str(data["Equipment"])
 
@@ -182,20 +184,22 @@ class CreateMashine(APIView):
 
         service_company = ServiceCompany.objects.get(id=data["service_company"])
 
-        print(data)
 
-
-
-
-        #new_complaint = Complaint(failure_node=failure_node, recovery_method=recovery_method,
-                                  #service_company=service_company, machine=mashine)
+        new_machine = Machine ( number_machine=number_machine, model_technic=model_technic,
+                                model_engine=model_engine, number_engine=number_engine,
+                                model_transmission=model_transmission, number_transmission=number_transmission,
+                                model_driving_bridge=model_driving_bridge, number_driving_bridge=number_driving_bridge,
+                                model_controlled_bridge=model_controlled_bridge, number_controlled_bridge=number_controlled_bridge,
+                                delivery_agreement=delivery_agreement, date_shipment=date_shipment, end_user=end_user,
+                                delivery_address=delivery_address, Equipment=equipment,
+                                client=client, service_company=service_company,)
         #new_complaint.date_failure = date_failure
         #new_complaint.operating_time = operating_time
         #new_complaint.description_failure = description_failure
         #new_complaint.used_parts = used_parts
         #new_complaint.date_restoration = date_restoration
         #new_complaint.downtime = downtime
-        #new_complaint.save()
+        new_machine.save()
 
         return (Response({"data": "data"}
                          ))
