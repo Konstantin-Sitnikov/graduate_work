@@ -151,18 +151,15 @@ function create(data) {
             });
         })
         .then(data => { 
-
+            console.log(data.status)
+            alert("Машина создана")
         })
         .catch(error => {
 
             if (error.response.status === 400) {
-                console.log("Неправильный логин или пароль");
+                console.log("Машина с таким номером уже есть");
+                alert("Машина с таким номером уже есть")
             }
-            if (error.response.status === 409) {
-                console.log("Вы уже авторизованы");
-            }
-
-
         });
 }
 
@@ -255,10 +252,11 @@ export function CreateMashine ({userId}) {
             "service_company": refServiceCompany.current.value
         }
 
+        console.log(dataMachine.number_controlled_bridge)
+
         for (const  value of Object.values(dataMachine)) {
             if(value){
-                console.log(value)
-                dataValid = true
+               dataValid = true
             
             } else{
                 dataValid = false

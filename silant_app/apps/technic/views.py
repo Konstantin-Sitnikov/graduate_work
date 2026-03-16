@@ -1,13 +1,16 @@
+from calendar import error
 from tokenize import group
 
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from datetime import datetime
+from django.db import IntegrityError
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import DjangoModelPermissions
+from rest_framework import status
 from .serializers import *
 from ..service_company.serializers import ServiceCompanySerializer, ServiceCompany
 from ..complaint.serializers import ComplaintSerializer
@@ -169,7 +172,7 @@ class CreateMashine(APIView):
         number_driving_bridge = str(data["number_driving_bridge"])
 
         model_controlled_bridge = ControlledBridge.objects.get(id=data["model_controlled_bridge"])
-        number_controlled_bridge = str(data["number_driving_bridge"])
+        number_controlled_bridge = str(data["number_controlled_bridge"])
 
         delivery_agreement = str(data["delivery_agreement"])
 
@@ -183,27 +186,34 @@ class CreateMashine(APIView):
         client = User.objects.get(id=data["client"])
 
         service_company = ServiceCompany.objects.get(id=data["service_company"])
+        print(number_controlled_bridge)
+        if (not Machine.objects.filter(number_machine=number_machine).exists()):
 
 
-        new_machine = Machine ( number_machine=number_machine, model_technic=model_technic,
-                                model_engine=model_engine, number_engine=number_engine,
-                                model_transmission=model_transmission, number_transmission=number_transmission,
-                                model_driving_bridge=model_driving_bridge, number_driving_bridge=number_driving_bridge,
-                                model_controlled_bridge=model_controlled_bridge, number_controlled_bridge=number_controlled_bridge,
-                                delivery_agreement=delivery_agreement, date_shipment=date_shipment, end_user=end_user,
-                                delivery_address=delivery_address, Equipment=equipment,
-                                client=client, service_company=service_company,)
-        #new_complaint.date_failure = date_failure
-        #new_complaint.operating_time = operating_time
-        #new_complaint.description_failure = description_failure
-        #new_complaint.used_parts = used_parts
-        #new_complaint.date_restoration = date_restoration
-        #new_complaint.downtime = downtime
-        new_machine.save()
+            try:
+                new_machine = Machine ( number_machine=number_machine, model_technic=model_technic,
+                                        model_engine=model_engine, number_engine=number_engine,
+                                        model_transmission=model_transmission, number_transmission=number_transmission,
+                                        model_driving_bridge=model_driving_bridge, number_driving_bridge=number_driving_bridge,
+                                        model_controlled_bridge=model_controlled_bridge, number_controlled_bridge=number_controlled_bridge,
+                                        delivery_agreement=delivery_agreement, date_shipment=date_shipment, end_user=end_user,
+                                        delivery_address=delivery_address, Equipment=equipment,
+                                        client=client, service_company=service_company,)
 
-        return (Response({"data": "data"}
+                new_machine.save()
+
+                return (Response(status=status.HTTP_201_CREATED
+                             ))
+            except IntegrityError as error:
+                print(error)
+                if "number_driving_bridge" in str(error):
+                    print("Yes")
+                return (Response(status=status.HTTP_201_CREATED
+                             ))
+
+        else:
+            return (Response(status=status.HTTP_400_BAD_REQUEST
                          ))
-
 
 
 
