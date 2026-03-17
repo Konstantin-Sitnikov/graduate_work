@@ -85,7 +85,7 @@ class Machine(models.Model):
     model_controlled_bridge = models.ForeignKey(ControlledBridge, on_delete=models.CASCADE, verbose_name = 'Модель управляемого моста') #
     number_controlled_bridge = models.CharField(unique=True, max_length=200, verbose_name = 'Зав. № управляемого моста') #
 
-    delivery_agreement = models.CharField(max_length=300, unique=True, verbose_name = 'Договор поставки №, дата') #
+    delivery_agreement = models.CharField(max_length=300, verbose_name = 'Договор поставки №, дата') #
 
     date_shipment = models.DateField(verbose_name = 'Дата отгрузки с завода') #
 

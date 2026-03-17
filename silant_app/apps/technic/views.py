@@ -202,17 +202,26 @@ class CreateMashine(APIView):
 
                 new_machine.save()
 
-                return (Response(status=status.HTTP_201_CREATED
+                return (Response(data={"message": f"Машина номером {number_machine} сохранена в базу данных"},status=status.HTTP_201_CREATED
                              ))
             except IntegrityError as error:
+                error_message = ""
+
                 print(error)
-                if "number_driving_bridge" in str(error):
-                    print("Yes")
-                return (Response(status=status.HTTP_201_CREATED
+                if "number_engine" in str(error):
+                    error_message = "Двигатель с таким номером уже существует"
+                elif "number_transmission" in str(error):
+                    error_message = "Трансмиссия с таким номером уже существует"
+                elif "number_driving_bridge" in str(error):
+                    error_message = "Ведущий мост с таким номером уже существует"
+                elif "number_controlled_bridge" in str(error):
+                    error_message = "Управляемый мост с таким номером уже существует"
+
+                return (Response(data={"message":error_message}, status=status.HTTP_501_NOT_IMPLEMENTED
                              ))
 
         else:
-            return (Response(status=status.HTTP_400_BAD_REQUEST
+            return (Response(data={"message": "Машина с таким номером уже есть в базе данных"},status=status.HTTP_400_BAD_REQUEST
                          ))
 
 

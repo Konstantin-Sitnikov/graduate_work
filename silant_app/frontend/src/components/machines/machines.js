@@ -138,6 +138,10 @@ export const MachineDetail = () => {
 
 
 
+
+
+export function CreateMashine ({userId}) {
+
 function create(data) {
     axios.get('http://localhost:8000/csrf/', { withCredentials: true })
         .then(() => {
@@ -150,21 +154,25 @@ function create(data) {
                 withCredentials: true
             });
         })
-        .then(data => { 
-            console.log(data.status)
-            alert("Машина создана")
+        .then(data => {
+            setServiceMessage(data.data.message) 
+
         })
         .catch(error => {
 
             if (error.response.status === 400) {
-                console.log("Машина с таким номером уже есть");
-                alert("Машина с таким номером уже есть")
+                setServiceMessage(error.response.data.message)
             }
+
+            if (error.response.status === 501) {
+                setServiceMessage(error.response.data.message)              
+            }
+
         });
 }
 
 
-export function CreateMashine ({userId}) {
+    
     
     const [modelTechnic, setModelTechnic] = useState([])
     const [modelEngine, setModelEngine] = useState([])
@@ -178,6 +186,8 @@ export function CreateMashine ({userId}) {
     const [client, setClient] = useState([])
 
     const [serviceCompany, setServiceCompany] = useState([])
+
+    const [serviceMessage, setServiceMessage] = useState("")
 
     useEffect(()=>{
         getDataCreateMashine().then(result => {
@@ -223,10 +233,11 @@ export function CreateMashine ({userId}) {
 
     const refClient = useRef(null)
 
-
-
     const refServiceCompany = useRef(null)
 
+    
+
+    
 
     function send() {
         let dataValid = false
@@ -252,8 +263,6 @@ export function CreateMashine ({userId}) {
             "service_company": refServiceCompany.current.value
         }
 
-        console.log(dataMachine.number_controlled_bridge)
-
         for (const  value of Object.values(dataMachine)) {
             if(value){
                dataValid = true
@@ -272,9 +281,11 @@ export function CreateMashine ({userId}) {
             event.preventDefault();
         };
 
+        console.log(serviceMessage, "re")
 
     return (
             <>  
+                <span>{serviceMessage}</span>
                 <form className={style.form} onSubmit={handleSubmit}> 
                     <div className={style.container__row}> 
                         <span className={style.row__header}>Введите данные машины:</span>
