@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
 
@@ -76,7 +76,16 @@ return (
 }
 
 
-export const TableMachine = ({dataTable, referenceBooks}) => {
+export const TableMachine = ({dataMachine, referenceBooks}) => {
+
+        const [filterList, setFilterlist] = useState([])
+        const [dataTable, setDataTable] = useState([])
+        
+        useEffect(()=>{
+            setFilterlist(dataMachine)
+            setDataTable(dataMachine)
+        },[dataMachine])
+
 
         function getDataReferenceBooks(id, array) {
             
@@ -95,7 +104,7 @@ export const TableMachine = ({dataTable, referenceBooks}) => {
             
         }}
                 
-        let rowTable = dataTable.map(function(row) {
+        let rowTable = filterList.map(function(row) {
 
                         
                 return  referenceBooks ? 
@@ -129,7 +138,33 @@ export const TableMachine = ({dataTable, referenceBooks}) => {
                         </tr> 
       :null })
 
-return (
+    function test(e, key) {
+        console.log (e.target.value)
+        if (e.target.value === "123") {
+            setFilterlist(dataTable)
+        }   else {const filter = dataTable.filter(item=>
+            item[key] == e.target.value
+        )
+            setFilterlist(filter)}
+
+
+    }
+
+    function filter(list, key) {
+
+        return  list?   <select onChange={(event)=> {test(event, key)}} defaultValue={123}>
+                            <option value={123}>Вся</option>
+                            {
+                            list.map((item) => {
+                                return <option key={item.id} value={item.id}>{item.model}</option>
+                            }) 
+                            }
+                        </select>:null
+    }
+
+
+
+return ( 
 
 
     
@@ -140,7 +175,13 @@ return (
                 
                 <thead>
                     <tr className={style.table__row}> 
-                        <td className={style.table__column} colSpan={2}>Техника</td>
+                        <td className={style.table__column} colSpan={2}>  
+                            Техника
+                            {  
+                                filter(referenceBooks.model_technic, "model_technic") 
+                            }
+                            
+                        </td>
                         
                         <td className={style.table__column} colSpan={2}>Двигатель</td>
                         

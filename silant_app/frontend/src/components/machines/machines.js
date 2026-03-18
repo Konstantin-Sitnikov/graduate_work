@@ -61,7 +61,7 @@ export function Masine({userId}) {
                         <Routes>
                                  
                                  
-                            <Route path="/" element={<TableMachine dataTable={machineData} referenceBooks={referenceBooks}/>}></Route>
+                            <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooks}/>}></Route>
                             <Route path="/technical_maintenance" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
                             <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
                         </Routes>
