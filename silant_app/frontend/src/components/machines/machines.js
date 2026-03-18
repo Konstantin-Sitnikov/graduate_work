@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useRef, useEffect, useState } from "react";
 import { Routes, Route, Link, NavLink } from 'react-router-dom'
-import { getDataCreateMashine, getExtendedData, getDataMasineDetail, getDataTest } from '../PostService';
-import { Table } from '../table/table';
+import { getDataCreateMashine, getDataMasineDetail, getDataTest, getReferenceBooks } from '../PostService';
+import { Table, TableMachine } from '../table/table';
 
 import  style  from "./style.module.scss"
 
@@ -23,6 +23,13 @@ export function Masine({userId}) {
 
         const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
         const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
+        const [referenceBooks, setReferenceBooks] = useState({})
+
+        useEffect(()=>{
+            getReferenceBooks().then(result => {
+                    setReferenceBooks(result)
+                })
+        },[])
 
         useEffect(()=>{
         
@@ -41,7 +48,7 @@ export function Masine({userId}) {
         
 
 
-            return  <div>
+            return referenceBooks ? <div>
                         <nav> 
                             <NavLink to="/">Машины</NavLink>
                             <NavLink to="/technical_maintenance">ТО</NavLink>
@@ -52,11 +59,13 @@ export function Masine({userId}) {
                         <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
 
                         <Routes>
-                            <Route path="/" element={<Table dataTable={machineData} tableFieldsHeaders={machineFields}/>}></Route>
+                                 
+                                 
+                            <Route path="/" element={<TableMachine dataTable={machineData} referenceBooks={referenceBooks}/>}></Route>
                             <Route path="/technical_maintenance" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
                             <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
                         </Routes>
-                    </div>
+                    </div> : null
 
 }
 
@@ -122,24 +131,6 @@ export const MachineDetail = () => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export function CreateMashine ({userId}) {
 
 function create(data) {
@@ -155,8 +146,9 @@ function create(data) {
             });
         })
         .then(data => {
-            setServiceMessage(data.data.message) 
-
+            alert(data.data.message)
+            clearForm()
+            setServiceMessage("")
         })
         .catch(error => {
 
@@ -171,22 +163,13 @@ function create(data) {
         });
 }
 
-
-    
-    
     const [modelTechnic, setModelTechnic] = useState([])
     const [modelEngine, setModelEngine] = useState([])
-    
     const [modelTransmission, setModelTransmission] = useState([])
-
     const [modelDrivingBridge, setModelDrivingBridge] = useState([])
-
     const [modelControlledBridge, setModelControlledBridge] = useState([])
-
     const [client, setClient] = useState([])
-
     const [serviceCompany, setServiceCompany] = useState([])
-
     const [serviceMessage, setServiceMessage] = useState("")
 
     useEffect(()=>{
@@ -235,6 +218,29 @@ function create(data) {
 
     const refServiceCompany = useRef(null)
 
+
+    function clearForm(){
+
+        refNumberMachine.current.value = ""
+        refNumberEngine.current.value = ""
+
+        refNumberTransmission.current.value = "" 
+
+        refNumberDrivingBridge.current.value = ""
+
+        refNumberControlledBridge.current.value = ""
+
+        refDeliveryAgreement.current.value = ""
+
+        refDateShipment.current.value = ""
+
+        refEndUser.current.value = ""
+        
+        refDeliveryAddress.current.value = ""
+
+        refEquipment.current.value = ""
+
+    }
     
 
     
@@ -285,6 +291,7 @@ function create(data) {
 
     return (
             <>  
+                <Link to="/">Выйти</Link>
                 <span>{serviceMessage}</span>
                 <form className={style.form} onSubmit={handleSubmit}> 
                     <div className={style.container__row}> 

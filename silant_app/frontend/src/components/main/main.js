@@ -6,48 +6,10 @@ import { Masine, MachineDetail, CreateMashine } from "../machines/machines";
 
 
 
-/*
-{ isAuthN? ( 
-                
-            <div>
-                <Routes>
-                    <Route path="/" element={<TableMachine path={path} userId={userId}/>}></Route>
-
-                    <Route path="/detail" element={<Detail />}></Route>
-                </Routes>
-
-
-            </div>):null
-
-
-
-            }
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 const Main = ({isAuthN, userId}) =>  {
-
         const [path, setPath] = useState("machines")
 
     return (

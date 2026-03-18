@@ -42,13 +42,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MachineSerializer(serializers.ModelSerializer):
-    model_technic = TechnicSerializer()
-    model_engine = EngineSerializer()
-    model_transmission = TransmissionSerializer()
-    model_driving_bridge = DrivingBridgeSerializer()
-    model_controlled_bridge = ControlledBridgeSerializer()
-    client = UserSerializer()
-    service_company = ServiceCompanySerializer()
+
+    #model_engine = EngineSerializer()
+    #model_transmission = TransmissionSerializer()
+    #model_driving_bridge = DrivingBridgeSerializer()
+    #model_controlled_bridge = ControlledBridgeSerializer()
+    #client = UserSerializer()
+    #service_company = ServiceCompanySerializer()
 
 
     class Meta:

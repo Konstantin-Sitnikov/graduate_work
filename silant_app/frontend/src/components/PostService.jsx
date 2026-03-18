@@ -88,6 +88,10 @@ const url = `${API_URL}/api/machines/` + userId
 return axios.get(url).then(response => response.data)
 }
 
+export function getReferenceBooks() {
+const url = `${API_URL}/api/information_machines/`
+return axios.get(url).then(response => response.data)
+}
 
 
 

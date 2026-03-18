@@ -3,17 +3,28 @@
 }
 
 
+
+.container__table {
+    max-width: 90vw;
+    max-height: 40vw;
+    overflow-x: scroll; 
+    overflow-y: scroll;
+}
+
 .table {
-    width: 100%;
+   table-layout: fixed;
 
 }
 
 
 .table__row {
-    width: 100%;
     border: 1px solid black;
 }
 
 .table__column {
+    min-width: 200px;
     border: 1px solid black;
+    text-align: center;
+    vertical-align: middle
+
 }
