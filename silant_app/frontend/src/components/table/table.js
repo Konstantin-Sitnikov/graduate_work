@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
 
@@ -76,16 +76,75 @@ return (
 }
 
 
+
+export const Filter = ({listSelect, keyFilter, refSelect, refList, dataTable, setFilterlist}) => {
+     console.log(listSelect)    
+             console.log(keyFilter)
+
+    return  listSelect?   <select ref={refSelect} 
+                                onChange={(event)=> {
+
+                                    if (event.target.value === "default") {
+                                        setFilterlist(dataTable)
+                                    }   else {for (const ref of refList){if (event.target !== ref.current) {ref.current.value = "default"}}
+                                        
+                                        const filter = dataTable.filter(item=> String(item[keyFilter]) === String(event.target.value))
+                                        setFilterlist(filter)}}
+                                } 
+                            
+                            
+                                defaultValue={"default"}>
+                        <option value={"default"}>Выберете...</option>
+                        {
+                        listSelect.map((item) => {
+                            return <option key={item.id} value={item.id}>{item.model}</option>
+                        }) 
+                        }
+                    </select>:null
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const TableMachine = ({dataMachine, referenceBooks}) => {
 
         const [filterList, setFilterlist] = useState([])
         const [dataTable, setDataTable] = useState([])
+
+        console.log(filterList)
+
+        const refFilterTechnic = useRef()
+        const refFilterEngine = useRef()
+        const refFilterTransmission = useRef()
+        const refFilterDrivingBridge = useRef()
+        const refFilterControlledBridge = useRef()
+
+        const refFilterList = [refFilterTechnic, refFilterEngine, refFilterTransmission, refFilterDrivingBridge, refFilterControlledBridge]
+
+        function sorted(list) {list.sort((a, b) => new Date(a.date_shipment) - new Date (b.date_shipment))}
         
         useEffect(()=>{
+            sorted(dataMachine)
             setFilterlist(dataMachine)
             setDataTable(dataMachine)
-        },[dataMachine])
-
+            },[dataMachine])
 
         function getDataReferenceBooks(id, array) {
             
@@ -138,31 +197,9 @@ export const TableMachine = ({dataMachine, referenceBooks}) => {
                         </tr> 
       :null })
 
-    function test(e, key) {
-        console.log (e.target.value)
-        if (e.target.value === "123") {
-            setFilterlist(dataTable)
-        }   else {const filter = dataTable.filter(item=>
-            item[key] == e.target.value
-        )
-            setFilterlist(filter)}
+   
 
-
-    }
-
-    function filter(list, key) {
-
-        return  list?   <select onChange={(event)=> {test(event, key)}} defaultValue={123}>
-                            <option value={123}>Вся</option>
-                            {
-                            list.map((item) => {
-                                return <option key={item.id} value={item.id}>{item.model}</option>
-                            }) 
-                            }
-                        </select>:null
-    }
-
-
+    
 
 return ( 
 
@@ -177,21 +214,35 @@ return (
                     <tr className={style.table__row}> 
                         <td className={style.table__column} colSpan={2}>  
                             Техника
-                            {  
-                                filter(referenceBooks.model_technic, "model_technic") 
-                            }
+                            <Filter listSelect={referenceBooks.model_technic} keyFilter={"model_technic"} refSelect={refFilterTechnic} refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>
                             
                         </td>
                         
-                        <td className={style.table__column} colSpan={2}>Двигатель</td>
+                        <td className={style.table__column} colSpan={2}>
+                            Двигатель
+                           <Filter listSelect={referenceBooks.model_engine} keyFilter={"model_engine"} refSelect={refFilterEngine} refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>
+                 
+                        </td>
                         
 
-                        <td className={style.table__column} colSpan={2}>Трансмиссия</td>
+                        <td className={style.table__column} colSpan={2}>
+                            Трансмиссия
+                            <Filter listSelect={referenceBooks.model_transmission} keyFilter={"model_transmission"} refSelect={refFilterTransmission} refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>
+                           
+                        </td>
 
 
-                        <td className={style.table__column} colSpan={2}>Ведущий мост</td>
+                        <td className={style.table__column} colSpan={2}>
+                            Ведущий мост
+                            <Filter listSelect={referenceBooks.model_driving_bridge} keyFilter={"model_driving_bridge"} refSelect={refFilterDrivingBridge} refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>
+                                 
+                        </td>
 
-                        <td className={style.table__column} colSpan={2}>Управляемый мост</td>
+                        <td className={style.table__column} colSpan={2}>
+                            Управляемый мост
+                            <Filter listSelect={referenceBooks.model_controlled_bridge} keyFilter={"model_controlled_bridge"} refSelect={refFilterControlledBridge} refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>
+                      
+                            </td>
 
                         <td className={style.table__column} colSpan={2}>Договор</td>
 
