@@ -4,7 +4,12 @@
 
 
 
-
+.container__table {
+    max-width: 90vw;
+    max-height: 40vw;
+    overflow-x: scroll; 
+    overflow-y: scroll;
+}
 
 .table {
    table-layout: fixed;

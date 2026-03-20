@@ -18,10 +18,6 @@ class RecoveryMethodSerializer(serializers.ModelSerializer):
 
 
 class ComplaintSerializer(serializers.ModelSerializer):
-    failure_node = FailureNodeSerializer()
-    recovery_method = RecoveryMethodSerializer()
-    machine =MachineSerializer()
-    service_company = ServiceCompanySerializer()
 
     class Meta:
         model = Complaint

@@ -20,10 +20,10 @@ const Main = ({isAuthN, userId}) =>  {
                 <button className={style.button} >Поиск машин</button>
             </div>
 
-            <Link to="/create_mashine/">Добавить машину</Link>
+            
             
             { isAuthN? ( 
-                
+            
             <div>
                 <Routes>
                     <Route path="/*" element={<Masine userId={userId}/>}></Route>

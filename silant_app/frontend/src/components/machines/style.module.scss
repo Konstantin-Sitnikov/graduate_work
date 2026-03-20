@@ -3,6 +3,18 @@
     flex-direction: column;
 }
 
+
+
+.container__table {
+    max-width: 90vw;
+    max-height: 40vw;
+    overflow-x: scroll; 
+    overflow-y: scroll;
+}
+
+
+
+
 .container__row {
     width: 100%;
     display: flex;

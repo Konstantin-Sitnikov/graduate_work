@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/complaint/<int:user_id>/', ComplaintView.as_view()),
     path('api/create_machine/', CreateMashine.as_view()),
     path('api/create_complaint/', CreateComplaint.as_view()),
+
     path('api/information_for_complaint/', complaint.information_for_complaint),
 
     path('api/information_technical_maintenance/', technical_maintenance.information_technical_maintenance),

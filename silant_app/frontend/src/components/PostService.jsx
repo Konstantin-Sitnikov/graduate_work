@@ -44,39 +44,6 @@ export function getCSRF(foo) {
 
 
 
-/*
-export function logIn () {
-    (()=>{ return axios.post('http://localhost:8000/_allauth/browser/v1/auth/login', {
-                username: refName.current.value,
-                password: refPassword.current.value,
-            }, {
-                headers: {
-                    "accept": "application/json",
-                    'Content-Type': "application/json",
-                },
-                withCredentials: true
-            });
-        })
-        .then(data => { 
-
-            updateSession()
-        })
-        .catch(error => {
-
-            if (error.response.status === 400) {
-                console.log("Неправильный логин или пароль");
-            }
-            if (error.response.status === 409) {
-                console.log("Вы уже авторизованы");
-            }
-
-
-        });
-}            
-
-*/
-
-
 
 export function getData(path, userId) {
 const url = `${API_URL}/api/${path}/` + userId
@@ -88,10 +55,17 @@ const url = `${API_URL}/api/machines/` + userId
 return axios.get(url).then(response => response.data)
 }
 
-export function getReferenceBooks() {
+export function getReferenceBooksMasine() {
 const url = `${API_URL}/api/information_machines/`
 return axios.get(url).then(response => response.data)
 }
+
+export function getReferenceBooksComplaint() {
+const url = `${API_URL}/api/information_for_complaint/`
+return axios.get(url).then(response => response.data)
+}
+
+
 
 
 

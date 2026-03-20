@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useRef, useEffect, useState } from "react";
 import { Routes, Route, Link, NavLink } from 'react-router-dom'
-import { getDataCreateMashine, getDataMasineDetail, getDataTest, getReferenceBooks } from '../PostService';
-import { Table, TableMachine } from '../table/table';
-
+import { getDataCreateMashine, getDataMasineDetail, getDataTest, getReferenceBooksMasine, getReferenceBooksComplaint } from '../PostService';
+import { Table } from '../Table/Table';
+import { TableMachine } from '../Table/TableMachine/TableMachine';
+import { TableComplaint } from '../Table/TableComplaint/TableComplaint';
 import  style  from "./style.module.scss"
 
 
@@ -16,29 +17,19 @@ function getLocalStorage() {
 export function Masine({userId}) {
 
         const [complaintData, setComplaintData] = useState([])
-        const [complaintFields, setComplaintFields] = useState([])
-
+       
         const [machineData, setMachineData] = useState([])
-        const [machineFields, setMachineFields] = useState([])
-
+       
         const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
         const [technicalMaintenanceFields, setTechnicalMaintenanceFields] = useState([])
-        const [referenceBooks, setReferenceBooks] = useState({})
-
-        useEffect(()=>{
-            getReferenceBooks().then(result => {
-                    setReferenceBooks(result)
-                })
-        },[])
+        
 
         useEffect(()=>{
         
                 if(userId) {
                     getDataTest(userId).then(result => {
                     setComplaintData(result.complaint_data)
-                    setComplaintFields(result.complaint_fields)
                     setMachineData(result.machine_data)
-                    setMachineFields(result.machine_fields)
                     setTechnicalMaintenanceData(result.technical_maintenance_data)
                     setTechnicalMaintenanceFields(result.technical_maintenance_fields)
                 })
@@ -47,8 +38,18 @@ export function Masine({userId}) {
             },[userId])
         
 
+            const [referenceBooksMasine, setReferenceBooksMasine] = useState({})
+            const [referenceBooksComplaint, setReferenceBooksComplaint] = useState({})
+        
+                useEffect(()=>{
+                    getReferenceBooksMasine().then(result => {setReferenceBooksMasine(result)})
+                    getReferenceBooksComplaint().then(result => {setReferenceBooksComplaint(result)})
+                },[])
 
-            return referenceBooks ? <div>
+           
+
+
+            return <div>
                         <nav> 
                             <NavLink to="/">Машины</NavLink>
                             <NavLink to="/technical_maintenance">ТО</NavLink>
@@ -57,15 +58,16 @@ export function Masine({userId}) {
 
 
                         <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
+                        <div className={style.container__table}>
+                            <Routes>
+                                <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooksMasine}/>}></Route>
+                                <Route path="/technical_maintenance" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
+                                <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
+                            </Routes>
+                        </div>
+                        
 
-                        <Routes>
-                                 
-                                 
-                            <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooks}/>}></Route>
-                            <Route path="/technical_maintenance" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
-                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
-                        </Routes>
-                    </div> : null
+                    </div>
 
 }
 
@@ -116,10 +118,13 @@ export const MachineDetail = () => {
                         <span className={style.text__result_search}>{`Машина: }`}</span>
                         <span className={style.text__result_search}>{`Cерийный номер: `}</span>
                         
-                        <Routes>                         
-                            <Route path="/" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
-                            <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
-                        </Routes>
+                        <div className={style.container__table}>
+                            <Routes>                         
+                                <Route path="/" element={<Table dataTable={technicalMaintenanceData} tableFieldsHeaders={technicalMaintenanceFields}/>}></Route>
+                                <Route path="/complaint" element={<Table dataTable={complaintData} tableFieldsHeaders={complaintFields}/>}></Route>
+                            </Routes>
+                        </div>
+                        
     
                         
                     </div>
