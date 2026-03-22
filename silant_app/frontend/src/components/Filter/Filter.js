@@ -1,3 +1,4 @@
+import { useRef } from "react"
 import  style  from "./style.module.scss"
 
 
@@ -27,3 +28,34 @@ export const Filter = ({listSelect, keyFilter, refSelect, refList, dataTable, se
                         }
                     </select>:null
     }
+
+
+
+export const FilterMachine = ({setFilterlist, refList, dataTable}) => {
+    const refInput = useRef()
+    
+
+
+
+    return <div>
+        <input ref={refInput} onChange={()=>{
+            if (refInput.current.value) {
+                console.log(refInput.current.value)
+                for (const ref of refList){ref.current.value = "default"}
+                                        console.log(dataTable)
+                                        const filter = dataTable.filter(item=> String(item.machine).includes(String(refInput.current.value)))
+                                        setFilterlist(filter)
+                                        console.log(refInput.current.value)
+            } else {setFilterlist(dataTable)}
+
+
+        }} type="text"/>
+        
+        
+        </div>
+
+
+
+    
+    }
+

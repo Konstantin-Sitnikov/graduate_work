@@ -7,13 +7,11 @@ class TypeTechnicalMaintenanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TypeTechnicalMaintenance
-        fields = ('name', 'description')
+        fields = ('id','name', 'description')
 
 
 class TechnicalMaintenanceSerializer(serializers.ModelSerializer):
-    type_technical_maintenance = TypeTechnicalMaintenanceSerializer()
-    machine = MachineSerializer()
-
+    date_maintenance=serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     class Meta:
         model = TechnicalMaintenance
         fields = ('id','type_technical_maintenance', 'date_maintenance', 'operating_time', 'order_number',

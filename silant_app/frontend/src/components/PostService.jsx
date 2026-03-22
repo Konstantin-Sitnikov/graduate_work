@@ -65,6 +65,10 @@ const url = `${API_URL}/api/information_for_complaint/`
 return axios.get(url).then(response => response.data)
 }
 
+export function getReferenceBooksTechnicalMaintenance() {
+const url = `${API_URL}/api/information_technical_maintenance/`
+return axios.get(url).then(response => response.data)
+}
 
 
 

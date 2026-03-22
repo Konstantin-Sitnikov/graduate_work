@@ -18,7 +18,8 @@ class RecoveryMethodSerializer(serializers.ModelSerializer):
 
 
 class ComplaintSerializer(serializers.ModelSerializer):
-
+    date_failure=serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    date_restoration = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     class Meta:
         model = Complaint
         fields = ('id', 'date_failure', 'operating_time', 'failure_node',

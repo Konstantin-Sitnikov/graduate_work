@@ -91,7 +91,7 @@ return (
 
                     {
                         filterList.map(function(row) {  
-                            console.log(row)                                                      
+                                                                               
                             return  referenceBooks ? 
                             
                                     <tr className={style.table__row} >

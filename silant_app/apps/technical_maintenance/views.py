@@ -14,11 +14,11 @@ from ..technic.serializers import MachineSerializer, Machine
 @api_view(["GET"])
 def information_technical_maintenance(request):
     type_technical_maintenance = TypeTechnicalMaintenanceSerializer(TypeTechnicalMaintenance.objects.all(), many=True)
-    machine = MachineSerializer(Machine.objects.all(), many=True)
+
     service_company = ServiceCompanySerializer(ServiceCompany.objects.all(), many=True)
 
     return (Response({"type_technical_maintenance": type_technical_maintenance.data,
-                      "machine": machine.data,
+
                       "service_company": service_company.data
                       }))
 
