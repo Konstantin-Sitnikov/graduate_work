@@ -50,7 +50,7 @@ const url = `${API_URL}/api/${path}/` + userId
 return axios.get(url).then(response => response.data)
 }
 
-export function getDataTest(userId) {
+export function getDataMasine(userId) {
 const url = `${API_URL}/api/machines/` + userId
 return axios.get(url).then(response => response.data)
 }

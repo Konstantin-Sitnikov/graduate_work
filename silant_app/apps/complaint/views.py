@@ -9,7 +9,7 @@ from rest_framework.permissions import DjangoModelPermissions
 from .models import Complaint, FailureNode, RecoveryMethod, ServiceCompany
 from .serializers import ComplaintSerializer,FailureNodeSerializer,RecoveryMethodSerializer, ServiceCompanySerializer
 from ..technic.models import Machine
-from ..technic.views import get_user_machine
+
 
 
 
@@ -27,7 +27,7 @@ def information_for_complaint(request):
 
 
 
-
+"""
 class ComplaintView(APIView):
     permission_classes = [DjangoModelPermissions]
     queryset = Complaint.objects.all()
@@ -44,6 +44,9 @@ class ComplaintView(APIView):
         return (Response({"data": complaint.data,
                           "fields": fields}
                          ))
+
+"""
+
 
 
 

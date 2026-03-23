@@ -41,21 +41,6 @@ def information_machines(request):
                       }))
 
 
-def get_user_machine(user_id):
-    user = User.objects.get(id=user_id)
-
-    if (user.groups.filter(name="Manager").exists()):
-        return Machine.objects.all()
-
-    elif (user.groups.filter(name="Service_company").exists()):
-
-        service_company_id = user.servicecompanyprofile.service_company.id
-        return Machine.objects.filter(service_company__id=service_company_id)
-    else:
-        return Machine.objects.filter(client__id=user_id)
-
-
-
 
 
 class Machines(APIView):
@@ -63,7 +48,22 @@ class Machines(APIView):
     queryset = Machine.objects.all()
 
     def get(self, request, user_id):
-        machine = get_user_machine(user_id=user_id)
+
+        user = User.objects.get(id=user_id)
+
+        if (user.groups.filter(name="Manager").exists()):
+            machine = Machine.objects.all()
+            user_group = "Manager"
+
+        elif (user.groups.filter(name="Service_company").exists()):
+
+            service_company_id = user.servicecompanyprofile.service_company.id
+            machine = Machine.objects.filter(service_company__id=service_company_id)
+
+        else:
+            machine = Machine.objects.filter(client__id=user_id)
+
+
         machine_ids = machine.values_list('number_machine', flat=True)
 
         machine_data = MachineSerializer(machine, many=True)
@@ -152,13 +152,14 @@ def information_for_create_mashine(request):
     })
 
 
-class CreateMashine(APIView):
+class CreateMachine(APIView):
     permission_classes = [DjangoModelPermissions]
     queryset = Machine.objects.all()
 
     def post(self, request):
 
         data = request.data
+        print(data)
 
         number_machine = str(data["number_machine"])
 
@@ -186,10 +187,9 @@ class CreateMashine(APIView):
         client = User.objects.get(id=data["client"])
 
         service_company = ServiceCompany.objects.get(id=data["service_company"])
-        print(number_controlled_bridge)
-        if (not Machine.objects.filter(number_machine=number_machine).exists()):
 
 
+        if ((not Machine.objects.filter(number_machine=number_machine).exists()) and data['type_post'] == 'create'):
             try:
                 new_machine = Machine ( number_machine=number_machine, model_technic=model_technic,
                                         model_engine=model_engine, number_engine=number_engine,
@@ -219,7 +219,29 @@ class CreateMashine(APIView):
 
                 return (Response(data={"message":error_message}, status=status.HTTP_501_NOT_IMPLEMENTED
                              ))
+        elif ((Machine.objects.filter(number_machine=number_machine).exists()) and data['type_post'] == 'update'):
+            update_machine = Machine.objects.get(number_machine=number_machine)
+            update_machine.model_technic = model_technic
+            update_machine.model_engine = model_engine
+            update_machine.number_engine = number_engine
+            update_machine.model_transmission = model_transmission
+            update_machine.number_transmission = number_transmission
+            update_machine.model_driving_bridge = model_driving_bridge
+            update_machine.number_driving_bridge = number_driving_bridge
+            update_machine.model_controlled_bridge = model_controlled_bridge
+            update_machine.number_controlled_bridge = number_controlled_bridge
+            update_machine.delivery_agreement = delivery_agreement
+            update_machine.date_shipment = date_shipment
+            update_machine.end_user = end_user
+            update_machine.delivery_address = delivery_address
+            update_machine.Equipment=equipment
+            update_machine.client = client
+            update_machine.service_company = service_company
 
+            update_machine.save()
+            return (Response(data={"message": f"Данные о машине номером {number_machine} обновлены"},
+                             status=status.HTTP_201_CREATED
+                         ))
         else:
             return (Response(data={"message": "Машина с таким номером уже есть в базе данных"},status=status.HTTP_400_BAD_REQUEST
                          ))

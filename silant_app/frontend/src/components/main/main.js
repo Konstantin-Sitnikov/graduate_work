@@ -1,17 +1,9 @@
 import  style  from "./style.module.scss"
-import { useState, } from "react";
-import { Routes, Route, Link, NavLink } from 'react-router-dom'
-import { Masine, MachineDetail, CreateMashine } from "../machines/machines";
-
-
-
-
-
+import { Routes, Route} from 'react-router-dom'
+import { Masine, MachineDetail, CreateUpdateMaсhine } from "../machines/machines";
 
 
 const Main = ({isAuthN, userId}) =>  {
-        const [path, setPath] = useState("machines")
-
     return (
         <main className={style.main}>
             <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
@@ -28,7 +20,8 @@ const Main = ({isAuthN, userId}) =>  {
                 <Routes>
                     <Route path="/*" element={<Masine userId={userId}/>}></Route>
                     <Route path="/detail/*" element={<MachineDetail/>}></Route>
-                    <Route path="/create_mashine/*" element={<CreateMashine/>}></Route>
+                    <Route path="/create_mashine/*" element={<CreateUpdateMaсhine type={"create"}/>}></Route>
+                    <Route path="/update_mashine/*" element={<CreateUpdateMaсhine type={"update"}/>}></Route>
                 </Routes>
                 
                 

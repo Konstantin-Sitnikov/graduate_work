@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
 import { Filter } from "../../Filter/Filter"
+import { getDataReferenceBooks } from "../../AuxiliaryFunctions/AuxiliaryFunctions"
+import { setLocalStorage } from "../../AuxiliaryFunctions/LocalStorage"
 
-
-function setLocalStorage(value) {
-    localStorage.setItem('number_machine_to_detail', JSON.stringify(value))
-}
 
 
 export const TableMachine = ({dataMachine, referenceBooks}) => {
-        
-        
+                
         const [filterList, setFilterlist] = useState([])
         const [dataTable, setDataTable] = useState([])
 
@@ -31,14 +28,6 @@ export const TableMachine = ({dataMachine, referenceBooks}) => {
             setDataTable(dataMachine)
             },[dataMachine])
 
-        function getDataReferenceBooks(id, array) {
-            for (let item of array) {
-                if (item.id === id) {
-                    if ("model" in item) {return item.model} 
-                    if ("username" in item) {return item.username}
-                    if ("name" in item) {return item.name }
-            }}}
-    
 return ( referenceBooks?
         <>
             <Link to="/create_mashine/">Добавить машину</Link>
@@ -124,10 +113,10 @@ return ( referenceBooks?
                 <tbody>
 
                     {
-                        filterList.map(function(row) {                                                        
+                        filterList.map(function(row, index) {                                                        
                                         return  referenceBooks ? 
-                                                <tr className={style.table__row} >
-                                                    <td className={style.table__column}><Link className={style.link} to="/detail" onClick={()=>{setLocalStorage(row.number_machine)}}>{row.number_machine}</Link></td>
+                                                <tr className={style.table__row} key={index}>
+                                                    <td className={style.table__column}><Link className={style.link} to="/detail" onClick={()=>{setLocalStorage('number_machine_to_detail', row.number_machine)}}>{row.number_machine}</Link></td>
                                                     <td className={style.table__column}>{getDataReferenceBooks(row.model_technic, referenceBooks.model_technic)}</td>
 
                                                     <td className={style.table__column}>{getDataReferenceBooks(row.model_engine, referenceBooks.model_engine)}</td>

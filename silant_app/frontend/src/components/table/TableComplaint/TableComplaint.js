@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
 import { Filter } from "../../Filter/Filter"
-import { getReferenceBooksComplaint } from "../../PostService"
+import { getDataReferenceBooks } from "../../AuxiliaryFunctions/AuxiliaryFunctions"
+
+
 
 function setLocalStorage(value) {
     localStorage.setItem('number_machine_to_detail', JSON.stringify(value))
@@ -27,13 +29,6 @@ export const TableComplaint = ({complaintData, referenceBooks}) => {
             setDataTable(complaintData)
             },[complaintData])
 
-        function getDataReferenceBooks(id, array) {
-            for (let item of array) {
-                if (item.id === id) {
-                    if ("model" in item) {return item.model} 
-                    if ("username" in item) {return item.username}
-                    if ("name" in item) {return item.name }
-            }}}
     
 return ( 
         <>
@@ -90,11 +85,11 @@ return (
                 <tbody>
 
                     {
-                        filterList.map(function(row) {  
+                        filterList.map(function(row, index) {  
                                                                                
                             return  referenceBooks ? 
                             
-                                    <tr className={style.table__row} >
+                                    <tr className={style.table__row} key={index}>
                                         <td className={style.table__column}><Link className={style.link} to="/detail">{row.id}</Link></td>
                                         
                                         <td className={style.table__column}>{row.machine}</td>

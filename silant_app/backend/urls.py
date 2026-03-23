@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from apps.technic import views as machines
-from apps.technic.views import Machines, MachineDetail, CreateMashine
+from apps.technic.views import Machines, MachineDetail, CreateMachine
 from apps.technical_maintenance import views as technical_maintenance
 from apps.complaint import views as complaint
-from apps.complaint.views import CreateComplaint, ComplaintView
+from apps.complaint.views import CreateComplaint
 
 
 urlpatterns = [
@@ -31,8 +31,8 @@ urlpatterns = [
 
     path('api/information_machines/', machines.information_machines),
     path('api/technical_maintenance/<int:user_id>/', technical_maintenance.technical_maintenance),
-    path('api/complaint/<int:user_id>/', ComplaintView.as_view()),
-    path('api/create_machine/', CreateMashine.as_view()),
+    #path('api/complaint/<int:user_id>/', ComplaintView.as_view()),
+    path('api/create_machine/', CreateMachine.as_view()),
     path('api/create_complaint/', CreateComplaint.as_view()),
 
     path('api/information_for_complaint/', complaint.information_for_complaint),
