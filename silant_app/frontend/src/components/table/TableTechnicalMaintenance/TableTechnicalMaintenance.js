@@ -9,7 +9,7 @@ function setLocalStorage(value) {
 }
 
 
-export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBooks}) => {
+export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBooks, children}) => {
         const [filterList, setFilterlist] = useState([])
         const [dataTable, setDataTable] = useState([])
 
@@ -30,8 +30,8 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
     
 return ( 
         <>
-            <Link to="/create_mashine/">Добавить машину</Link>
-            <table className={style.table}>                                    
+            {children}
+           <table className={style.table}>                                    
                         
                 <thead>
                     <tr className={style.table__row}> 

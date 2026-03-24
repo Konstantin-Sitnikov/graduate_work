@@ -44,9 +44,9 @@ class Complaint(models.Model):
 
     recovery_method = models.ForeignKey(RecoveryMethod, on_delete=models.CASCADE, verbose_name = 'Способ восстановления')
 
-    used_parts = models.TextField(verbose_name = 'Используемые запчасти')
+    used_parts = models.TextField(null=True, verbose_name = 'Используемые запчасти')
 
-    date_restoration = models.DateTimeField(verbose_name = 'Дата восстановления')
+    date_restoration = models.DateTimeField(null=True, blank=True, verbose_name = 'Дата восстановления')
 
     downtime = models.PositiveIntegerField(default=0, verbose_name = 'Время простоя техники')
 

@@ -43,62 +43,65 @@ export function getCSRF(foo) {
 
 
 
-
-
-export function getData(path, userId) {
-const url = `${API_URL}/api/${path}/` + userId
-return axios.get(url).then(response => response.data)
-}
-
+//Yes
 export function getDataMasine(userId) {
 const url = `${API_URL}/api/machines/` + userId
 return axios.get(url).then(response => response.data)
 }
 
+//Yes
 export function getReferenceBooksMasine() {
-const url = `${API_URL}/api/information_machines/`
+const url = `${API_URL}/api/reference_books_machines/`
 return axios.get(url).then(response => response.data)
 }
 
+//Yes
 export function getReferenceBooksComplaint() {
-const url = `${API_URL}/api/information_for_complaint/`
+const url = `${API_URL}/api/reference_books_complaint/`
 return axios.get(url).then(response => response.data)
 }
 
+//Yes
 export function getReferenceBooksTechnicalMaintenance() {
 const url = `${API_URL}/api/information_technical_maintenance/`
 return axios.get(url).then(response => response.data)
 }
 
-
-
-
+//Yes
 export function getDataMasineDetail(number_machine) {
 const url = `${API_URL}/api/machine_detail/` + `${number_machine}`
 return axios.get(url).then(response => response.data)}
 
 
+export function getDataComplaintDetail(number_complaint) {
+const url = `${API_URL}/api/complaint_detail/` + `${number_complaint}`
+return axios.get(url).then(response => response.data)}
 
-export function getDataComplaint(userId) {
-const url = `${API_URL}/api/complaint/` + userId
-return axios.get(url).then(response => response.data)
-}
 
 export function getDataCreateComplaint(userId) {
-const url = `${API_URL}/api/machines/` + userId
-return axios.get(url).then(response => response.data)
-}
+    const url = `${API_URL}/api/machines/` + userId
+    return axios.get(url).then(response => response.data)
+    }
 
 
 
 
-export function getExtendedData() {
-const url = `${API_URL}/api/information_for_complaint/`
-return axios.get(url).then(response => response.data)
-}
 
 
-export function getDataCreateMashine() {
-const url = `${API_URL}/api/information_for_create_mashine/`
-return axios.get(url).then(response => response.data)
-}
+
+
+export function createUpdate(path, data) {
+    return axios.get('http://localhost:8000/csrf/', { withCredentials: true })
+        .then(() => {
+            // Теперь отправляем логин с CSRF токеном
+            return axios.post(`http://localhost:8000/api/${path}/`, data, {
+                headers: {
+                    "accept": "application/json",
+                    'Content-Type': "application/json",
+                },
+                withCredentials: true
+            });
+        })}
+
+
+

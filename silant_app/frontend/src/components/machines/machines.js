@@ -1,13 +1,17 @@
 import axios from 'axios';
 import { useRef, useEffect, useState } from "react";
 import { Routes, Route, Link, } from 'react-router-dom'
-import { getDataCreateMashine, getDataMasineDetail, getDataMasine, getReferenceBooksMasine, getReferenceBooksComplaint, getReferenceBooksTechnicalMaintenance } from '../PostService';
+import { getDataMasineDetail, getDataMasine, 
+    getReferenceBooksMasine, getReferenceBooksComplaint, 
+    getReferenceBooksTechnicalMaintenance,
+    createUpdate } from '../PostService';
 import { TableMachine } from '../Table/TableMachine/TableMachine';
 import { TableComplaint } from '../Table/TableComplaint/TableComplaint';
 import { TableTechnicalMaintenance } from '../Table/TableTechnicalMaintenance/TableTechnicalMaintenance';
 import { getLocalStorage } from '../AuxiliaryFunctions/LocalStorage';
 import { getDataReferenceBooks } from '../AuxiliaryFunctions/AuxiliaryFunctions';
 import { NavigationMachine, NavigationMachineDetail } from '../Navigation/Navigation';
+import { GoBackButton } from '../Button/Button';
 import  style  from "./style.module.scss"
 
 
@@ -107,9 +111,11 @@ export const MachineDetail = () => {
                 <Link to="/update_mashine/">Редактировать</Link>
                 <div className={style.container__table}>
                     <Routes>                         
-                        <Route path="/" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}/>}></Route>
-                        <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
-                        
+                        <Route path="/" element={
+                            <TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}>
+                            <Link to="/update_mashine/">Добавить ТО</Link></TableTechnicalMaintenance>}>
+                        </Route>
+                        <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}><Link to="/create_complaint/">Добавить Поломку</Link></TableComplaint>}></Route>
                     </Routes>
                 </div>
             </div>
@@ -134,7 +140,7 @@ export function CreateUpdateMaсhine ({type}) {
     const [machineData, setMachineData] = useState({})
 
     useEffect(()=>{
-            getDataCreateMashine().then(result => {
+            getReferenceBooksMasine().then(result => {
                 setModelTechnic(result.model_technic)
                 setModelEngine(result.model_engine)
                 setModelTransmission(result.model_transmission)
@@ -169,40 +175,12 @@ export function CreateUpdateMaсhine ({type}) {
         getDataMasineDetail(getLocalStorage('number_machine_to_detail')).then(result => {
             const mashine = result.machine_data
             setMachineData(mashine[0])
-            console.log(mashine[0])
             updateForm(mashine[0])
         })}
 
     },[type])
 
 
-
-
-function create(data) {
-    axios.get('http://localhost:8000/csrf/', { withCredentials: true })
-        .then(() => {
-            // Теперь отправляем логин с CSRF токеном
-            return axios.post('http://localhost:8000/api/create_machine/', data, {
-                headers: {
-                    "accept": "application/json",
-                    'Content-Type': "application/json",
-                },
-                withCredentials: true
-            });
-        })
-        .then(data => {
-            alert(data.data.message)
-            if(type === "create") {
-                clearForm()
-            }
-            
-            setServiceMessage("")
-        })
-        .catch(error => {
-            if (error.response.status === 400) {setServiceMessage(error.response.data.message)}
-            if (error.response.status === 501) {setServiceMessage(error.response.data.message)}
-        });
-}
 
     function updateForm(machine){
 
@@ -280,7 +258,15 @@ function create(data) {
 
         if (dataValid) {
             console.log(dataValid)
-            create(dataMachine)
+            createUpdate("create_machine", dataMachine).then(data => {
+                alert(data.data.message)
+                if(type === "create") {clearForm()}
+                setServiceMessage("")
+            })
+        .catch(error => {
+            if (error.response.status === 400) {setServiceMessage(error.response.data.message)}
+            if (error.response.status === 501) {setServiceMessage(error.response.data.message)}
+        });
         }
     }
 
@@ -290,7 +276,7 @@ function create(data) {
 
     return (
             <>  
-                <Link to="/">Выйти</Link>
+                <GoBackButton />
                 <span>{serviceMessage}</span>
                 <form className={style.form} onSubmit={handleSubmit}> 
                     <div className={style.container__row}> 

@@ -3,15 +3,12 @@ import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
 import { Filter } from "../../Filter/Filter"
 import { getDataReferenceBooks } from "../../AuxiliaryFunctions/AuxiliaryFunctions"
+import { setLocalStorage } from "../../AuxiliaryFunctions/LocalStorage"
 
 
 
-function setLocalStorage(value) {
-    localStorage.setItem('number_machine_to_detail', JSON.stringify(value))
-}
 
-
-export const TableComplaint = ({complaintData, referenceBooks}) => {
+export const TableComplaint = ({complaintData, referenceBooks, children}) => {
             
         const [filterList, setFilterlist] = useState([])
         const [dataTable, setDataTable] = useState([])
@@ -32,7 +29,7 @@ export const TableComplaint = ({complaintData, referenceBooks}) => {
     
 return ( 
         <>
-            <Link to="/create_mashine/">Добавить машину</Link>
+            {children}
             <table className={style.table}>                                    
                         
                 <thead>
@@ -90,7 +87,7 @@ return (
                             return  referenceBooks ? 
                             
                                     <tr className={style.table__row} key={index}>
-                                        <td className={style.table__column}><Link className={style.link} to="/detail">{row.id}</Link></td>
+                                        <td className={style.table__column}><Link className={style.link} onClick={()=>{setLocalStorage('number_complaint_detail', row.id)}} to="/detail_complaint">{row.id}</Link></td>
                                         
                                         <td className={style.table__column}>{row.machine}</td>
 

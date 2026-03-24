@@ -1,6 +1,7 @@
 import  style  from "./style.module.scss"
 import { Routes, Route} from 'react-router-dom'
 import { Masine, MachineDetail, CreateUpdateMaсhine } from "../machines/machines";
+import { ComplaintDetail, CreateUpdateComplaint } from "../Complaint/Complaint";
 
 
 const Main = ({isAuthN, userId}) =>  {
@@ -22,6 +23,9 @@ const Main = ({isAuthN, userId}) =>  {
                     <Route path="/detail/*" element={<MachineDetail/>}></Route>
                     <Route path="/create_mashine/*" element={<CreateUpdateMaсhine type={"create"}/>}></Route>
                     <Route path="/update_mashine/*" element={<CreateUpdateMaсhine type={"update"}/>}></Route>
+                    <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
+                    <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>
+                    <Route path="/update_complaint/*" element={<CreateUpdateComplaint type={"update"}/>}></Route>
                 </Routes>
                 
                 

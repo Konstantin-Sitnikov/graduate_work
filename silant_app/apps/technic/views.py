@@ -1,5 +1,3 @@
-from calendar import error
-from tokenize import group
 
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
@@ -22,7 +20,7 @@ from ..technical_maintenance.models import TechnicalMaintenance
 
 
 @api_view(["GET"])
-def information_machines(request):
+def reference_books_machines(request):
     technic = TechnicSerializer(Technic.objects.all(), many=True)
     engine = EngineSerializer(Engine.objects.all(), many=True)
     transmission = TransmissionSerializer(Transmission.objects.all(), many=True)
@@ -41,8 +39,6 @@ def information_machines(request):
                       }))
 
 
-
-
 class Machines(APIView):
     permission_classes = [DjangoModelPermissions]
     queryset = Machine.objects.all()
@@ -59,10 +55,11 @@ class Machines(APIView):
 
             service_company_id = user.servicecompanyprofile.service_company.id
             machine = Machine.objects.filter(service_company__id=service_company_id)
+            user_group = "Service_company"
 
         else:
             machine = Machine.objects.filter(client__id=user_id)
-
+            user_group = "Client"
 
         machine_ids = machine.values_list('number_machine', flat=True)
 
@@ -82,6 +79,7 @@ class Machines(APIView):
                           "complaint_fields": complaint_fields,
                           "technical_maintenance_data": technical_maintenance_data.data,
                           "technical_maintenance_fields": technical_maintenance_fields,
+                          "user_group":user_group,
                           }
 
 
@@ -121,35 +119,6 @@ class MachineDetail(APIView):
 
 
 
-
-@api_view(["GET"])
-def information_for_create_mashine(request):
-    model_technic = TechnicSerializer(Technic.objects.all(), many=True)
-    model_engine = EngineSerializer(Engine.objects.all(), many=True)
-
-    model_transmission = TransmissionSerializer(Transmission.objects.all(), many=True)
-
-    model_driving_bridge = DrivingBridgeSerializer(DrivingBridge.objects.all(), many=True)
-
-    model_controlled_bridge = ControlledBridgeSerializer(ControlledBridge.objects.all(), many=True)
-
-    client = UserSerializer(User.objects.filter(groups__name="Client"), many=True)
-
-    print(User.objects.filter(groups__name="Client"))
-
-
-
-    service_company = ServiceCompanySerializer(ServiceCompany.objects.all(), many=True)
-
-    return Response({
-        "model_technic": model_technic.data,
-        "model_engine": model_engine.data,
-        "model_transmission": model_transmission.data,
-        "model_driving_bridge": model_driving_bridge.data,
-        "model_controlled_bridge": model_controlled_bridge.data,
-        "client": client.data,
-        "service_company": service_company.data
-    })
 
 
 class CreateMachine(APIView):

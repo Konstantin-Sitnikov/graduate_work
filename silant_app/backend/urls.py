@@ -16,30 +16,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
-from apps.technic import views as machines
-from apps.technic.views import Machines, MachineDetail, CreateMachine
+from apps.technic.views import Machines, MachineDetail, CreateMachine, reference_books_machines,get_csrf
 from apps.technical_maintenance import views as technical_maintenance
-from apps.complaint import views as complaint
-from apps.complaint.views import CreateComplaint
+from apps.complaint.views import CreateComplaint, ComplaintDetail,  reference_books_complaint
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('api/machines/<int:user_id>/', Machines.as_view()),
     path('api/machine_detail/<str:number_machine>/', MachineDetail.as_view()),
-    path('api/information_for_create_mashine/', machines.information_for_create_mashine),
-
-    path('api/information_machines/', machines.information_machines),
-    path('api/technical_maintenance/<int:user_id>/', technical_maintenance.technical_maintenance),
-    #path('api/complaint/<int:user_id>/', ComplaintView.as_view()),
+    path('api/reference_books_machines/', reference_books_machines),
     path('api/create_machine/', CreateMachine.as_view()),
+
+
+    path('api/complaint_detail/<str:number_complaint>/', ComplaintDetail.as_view()),
     path('api/create_complaint/', CreateComplaint.as_view()),
 
-    path('api/information_for_complaint/', complaint.information_for_complaint),
-
+    path('api/reference_books_complaint/', reference_books_complaint),
+    path('api/technical_maintenance/<int:user_id>/', technical_maintenance.technical_maintenance),
     path('api/information_technical_maintenance/', technical_maintenance.information_technical_maintenance),
 
-    path('csrf/', machines.get_csrf),
+    path('csrf/', get_csrf),
 
     path('accounts/', include('allauth.urls')),
 
