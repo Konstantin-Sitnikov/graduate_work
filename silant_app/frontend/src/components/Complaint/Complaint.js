@@ -112,13 +112,28 @@ export function CreateUpdateComplaint ({type}) {
         
     const handleSubmit = (event) => {
             event.preventDefault();
+
+
         };
+
+        function Header(type) {
+            if (type === "create") {return "Создать"}
+            if (type === "update") {return "Редактировать"}
+        }
+
+        function Button(type) {
+            if (type === "create") {return "Создать"}
+            if (type === "update") {return "Редактировать"}
+        }
+
 
     return (
             <>  
 
                 <form onSubmit={handleSubmit}> 
                     <GoBackButton />
+                    <span>{Header(type)}</span>                   
+
                     <span>{serviceMessage}</span>
 
                     <div> 
@@ -160,7 +175,7 @@ export function CreateUpdateComplaint ({type}) {
                         {serviceCompany.map((item) => {return <option value={item.id} key={item.id}>{item.name}</option>})}
                     </select>
 
-                    <button onClick={send}>Создать</button>
+                    <button onClick={send}>{Button(type)}</button>
                 </form>
 
 
