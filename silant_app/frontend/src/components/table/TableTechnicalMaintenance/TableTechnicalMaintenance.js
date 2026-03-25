@@ -3,15 +3,12 @@ import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
 import { Filter, FilterMachine } from "../../Filter/Filter"
 import { getDataReferenceBooks } from "../../AuxiliaryFunctions/AuxiliaryFunctions"
-
-function setLocalStorage(value) {
-    localStorage.setItem('number_machine_to_detail', JSON.stringify(value))
-}
-
+import { setLocalStorage } from "../../AuxiliaryFunctions/LocalStorage"
 
 export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBooks, children}) => {
         const [filterList, setFilterlist] = useState([])
         const [dataTable, setDataTable] = useState([])
+
 
         const refFilterTypeTechnicalMaintenance = useRef()
         const refFilterMachine = useRef()
@@ -34,27 +31,24 @@ return (
            <table className={style.table}>                                    
                         
                 <thead>
-                    <tr className={style.table__row}> 
-                        
-                    <td className={style.table__column}>
-                        
-                        Вит ТО
-                        <Filter listSelect={referenceBooks.type_technical_maintenance} 
-                            keyFilter={"type_technical_maintenance"} refSelect={refFilterTypeTechnicalMaintenance} 
-                            refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>    
+                    <tr className={style.table__row}>
 
-                    </td>
+                        <td className={style.table__column}>№ заказ-наряда</td> 
+                            
+                        <td className={style.table__column}>
+                            
+                            Вит ТО
+                            <Filter listSelect={referenceBooks.type_technical_maintenance} 
+                                keyFilter={"type_technical_maintenance"} refSelect={refFilterTypeTechnicalMaintenance} 
+                                refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>    
 
-                        
-                        
+                        </td>
+
                         <td className={style.table__column}>Дата проведения ТО</td>
-                        
+                            
 
                         <td className={style.table__column}>Наработка, м/час</td>
-
-
-                        <td className={style.table__column}>№ заказ-наряда</td>
-
+                        
                         <td className={style.table__column}>Дата заказ-наряда</td>
 
                         <td className={style.table__column}>
@@ -75,19 +69,20 @@ return (
 
                     {
                         filterList.map(function(row, index) {  
+                            
                                                    
                             return  referenceBooks ? 
                             
                                     <tr className={style.table__row} key={index}>
+
+                                        <td className={style.table__column}><Link className={style.link} onClick={()=>{setLocalStorage('number_technical_maintenance_detail', row.id)}} to="/detail_technical_maintenance">{row.order_number}</Link></td>
                                         
                                         <td className={style.table__column}>{getDataReferenceBooks(row.type_technical_maintenance, referenceBooks.type_technical_maintenance)}</td>
 
                                         <td className={style.table__column}>{row.date_maintenance}</td>
 
                                         <td className={style.table__column}>{row.operating_time}</td>
-
-                                        <td className={style.table__column}>{row.order_number}</td>
-
+                                      
                                         <td className={style.table__column}>{row.date_order_number}</td>
 
                                         <td className={style.table__column}>{row.machine}</td>

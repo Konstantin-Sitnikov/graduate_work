@@ -63,7 +63,7 @@ return axios.get(url).then(response => response.data)
 
 //Yes
 export function getReferenceBooksTechnicalMaintenance() {
-const url = `${API_URL}/api/information_technical_maintenance/`
+const url = `${API_URL}/api/reference_books_technical_maintenance/`
 return axios.get(url).then(response => response.data)
 }
 
@@ -83,7 +83,9 @@ export function getDataCreateComplaint(userId) {
     return axios.get(url).then(response => response.data)
     }
 
-
+export function getDataTechnicalMaintenanceDetail(number_technical_maintenance) {
+const url = `${API_URL}/api/technical_maintenance_detail/` + `${number_technical_maintenance}`
+return axios.get(url).then(response => response.data)}
 
 
 

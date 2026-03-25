@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from apps.technic.views import Machines, MachineDetail, CreateMachine, reference_books_machines,get_csrf
 from apps.technical_maintenance import views as technical_maintenance
+from apps.technical_maintenance.views import reference_books_technical_maintenance, CreateTechnicalMaintenance,TechnicalMaintenancetDetail
 from apps.complaint.views import CreateComplaint, ComplaintDetail,  reference_books_complaint
 
 
@@ -32,10 +33,11 @@ urlpatterns = [
 
     path('api/complaint_detail/<str:number_complaint>/', ComplaintDetail.as_view()),
     path('api/create_complaint/', CreateComplaint.as_view()),
-
     path('api/reference_books_complaint/', reference_books_complaint),
-    path('api/technical_maintenance/<int:user_id>/', technical_maintenance.technical_maintenance),
-    path('api/information_technical_maintenance/', technical_maintenance.information_technical_maintenance),
+
+    path('api/technical_maintenance_detail/<str:number_technical_maintenance>/', TechnicalMaintenancetDetail.as_view()),
+    path('api/create_technical_maintenance/', CreateTechnicalMaintenance.as_view()),
+    path('api/reference_books_technical_maintenance/', reference_books_technical_maintenance),
 
     path('csrf/', get_csrf),
 
