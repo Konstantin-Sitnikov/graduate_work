@@ -31,9 +31,9 @@ class TechnicalMaintenance(models.Model):
 
     operating_time = models.PositiveIntegerField(default=0, verbose_name = 'Наработка, м/час') #
 
-    order_number = models.CharField(max_length=200, verbose_name = '№ заказ-наряда') #
+    order_number = models.CharField(unique=True, max_length=200, verbose_name = '№ заказ-наряда') #
 
-    date_order_number = models.DateTimeField(unique=True, verbose_name = 'Дата заказ-наряда')  #
+    date_order_number = models.DateTimeField(verbose_name = 'Дата заказ-наряда')  #
 
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE, verbose_name = 'Машина')
 

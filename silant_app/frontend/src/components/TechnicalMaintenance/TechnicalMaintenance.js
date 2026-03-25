@@ -53,6 +53,16 @@ export function CreateUpdateTechnicalMaintenance ({type}) {
         refOrderNumber.current.value = technical_maintenance.order_number
         refDateOrderNumber.current.value = technical_maintenance.date_order_number
         refServiceCompany.current.value = technical_maintenance.service_company
+    }
+    
+    function clearForm(){
+
+        refTypeTechnicalMaintenance.current.value = ""
+        refDateMaintenance.current.value = ""
+        refOperatingTime.current.value = "" 
+        refOrderNumber.current.value = ""
+        refDateOrderNumber.current.value = ""
+        refServiceCompany.current.value = ""
 
     }
 
@@ -93,10 +103,9 @@ export function CreateUpdateTechnicalMaintenance ({type}) {
                         break
                     }}
         if (dataValid) {
-                    console.log(dataValid)
                     createUpdate("create_technical_maintenance", dataTechnicalMaintenance).then(data => {
                         alert(data.data.message)
-                        if(type === "create") {/*clearForm()*/}
+                        if(type === "create") {clearForm()}
                         setServiceMessage("")
                     })
                 .catch(error => {
@@ -131,11 +140,11 @@ export function CreateUpdateTechnicalMaintenance ({type}) {
                     <input id="OperatingTime" ref={refOperatingTime} type='number' required/>
 
 
-                    <label htmlFor="OrderNumber">Наработка м/ч</label>
+                    <label htmlFor="OrderNumber">№ Наряд-заказа</label>
                     <input id="OrderNumber" ref={refOrderNumber} type='text' required/>
                     
 
-                    <label htmlFor="DateOrderNumber">Дата проведения ТО</label>
+                    <label htmlFor="DateOrderNumber">Дата заказ-наряда</label>
                     <input id="DateOrderNumber" ref={refDateOrderNumber} type='datetime-local' required/>
                    
                                        

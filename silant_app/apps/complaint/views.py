@@ -45,38 +45,42 @@ class CreateComplaint(APIView):
 
         service_company = ServiceCompany.objects.get(id=data["service_company"])
         mashine = Machine.objects.get(number_machine=data["machine"])
-        if ( not ("id" in data) and data["type_post"] == "create"):
+        try:
+            if ( not ("id" in data) and data["type_post"] == "create"):
 
-            new_complaint = Complaint(failure_node=failure_node, recovery_method=recovery_method,
-                                      service_company=service_company, machine=mashine)
-            new_complaint.date_failure = date_failure
-            new_complaint.operating_time = operating_time
-            new_complaint.description_failure = description_failure
-            new_complaint.used_parts = used_parts
-            if (data["date_restoration"]):
-                new_complaint.date_restoration = date_restoration
-                new_complaint.downtime = downtime
-            new_complaint.save()
+                new_complaint = Complaint(failure_node=failure_node, recovery_method=recovery_method,
+                                          service_company=service_company, machine=mashine)
+                new_complaint.date_failure = date_failure
+                new_complaint.operating_time = operating_time
+                new_complaint.description_failure = description_failure
+                new_complaint.used_parts = used_parts
+                if (data["date_restoration"]):
+                    new_complaint.date_restoration = date_restoration
+                    new_complaint.downtime = downtime
+                new_complaint.save()
 
-            return Response(data={"message": f"Рекламация сохранена в базу данных"},status=status.HTTP_201_CREATED)
-
-
-        if (("id" in data) and data["type_post"] == "update"):
-            update_complaint = Complaint.objects.get(id=data["id"])
-            update_complaint.failure_node=failure_node
-            update_complaint.recovery_method=recovery_method
-            update_complaint.operating_time = operating_time
-            update_complaint.description_failure = description_failure
-            update_complaint.used_parts = used_parts
-            if (data["date_restoration"]):
-                update_complaint.date_restoration = date_restoration
-                update_complaint.downtime = downtime
-
-            update_complaint.service_company=service_company
-            update_complaint.save()
-            return Response(data={"message": f"Рекламация изменена"},status=status.HTTP_201_CREATED)
+                return Response(data={"message": f"Рекламация сохранена в базу данных"},status=status.HTTP_201_CREATED)
 
 
+            if (("id" in data) and data["type_post"] == "update"):
+                update_complaint = Complaint.objects.get(id=data["id"])
+                update_complaint.failure_node=failure_node
+                update_complaint.recovery_method=recovery_method
+                update_complaint.operating_time = operating_time
+                update_complaint.description_failure = description_failure
+                update_complaint.used_parts = used_parts
+                if (data["date_restoration"]):
+                    update_complaint.date_restoration = date_restoration
+                    update_complaint.downtime = downtime
+
+                update_complaint.service_company=service_company
+                update_complaint.save()
+                return Response(data={"message": f"Рекламация изменена"},status=status.HTTP_201_CREATED)
+        except IntegrityError as error:
+            error_message = ""
+            if "downtime" in str(error):
+                error_message = "Дата восстановления не может быть меньше даты поломки"
+            return Response(data={"message": error_message}, status=status.HTTP_501_NOT_IMPLEMENTED)
 
 class ComplaintDetail(APIView):
     permission_classes = [DjangoModelPermissions]

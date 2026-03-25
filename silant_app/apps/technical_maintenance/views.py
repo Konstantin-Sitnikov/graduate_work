@@ -28,6 +28,7 @@ class CreateTechnicalMaintenance(APIView):
 
     def post(self, request):
         data = request.data
+        print(data)
         type_technical_maintenance = TypeTechnicalMaintenance.objects.get(id=data["type_technical_maintenance"])
         date_maintenance = datetime.strptime(data["date_maintenance"], "%Y-%m-%dT%H:%M")
         operating_time = int(data["operating_time"])
@@ -35,10 +36,9 @@ class CreateTechnicalMaintenance(APIView):
         date_order_number = datetime.strptime(data["date_order_number"], "%Y-%m-%dT%H:%M")
         mashine = Machine.objects.get(number_machine=data["machine"])
         service_company = ServiceCompany.objects.get(id=data["service_company"])
+        try:
+            if ( not ("id" in data) and data["type_post"] == "create"):
 
-        if ( not ("id" in data) and data["type_post"] == "create"):
-
-            try:
                 new_technical_maintenance = TechnicalMaintenance(type_technical_maintenance=type_technical_maintenance,
                                           service_company=service_company, machine=mashine)
                 new_technical_maintenance.date_maintenance = date_maintenance
@@ -47,24 +47,29 @@ class CreateTechnicalMaintenance(APIView):
                 new_technical_maintenance.date_order_number = date_order_number
                 new_technical_maintenance.save()
 
-                return (Response({"data": "data"}
-                                 ))
-            except IntegrityError as error:
-                return (Response(data={"message": error}, status=status.HTTP_501_NOT_IMPLEMENTED
-                                 ))
-        if (("id" in data) and data["type_post"] == "update"):
-            update_technical_maintenance = TechnicalMaintenance.objects.get(id=data["id"])
-            update_technical_maintenance.type_technical_maintenance = type_technical_maintenance
-            update_technical_maintenance.date_maintenance = date_maintenance
-            update_technical_maintenance.operating_time = operating_time
-            update_technical_maintenance.order_number = order_number
-            update_technical_maintenance.date_order_number = date_order_number
-            update_technical_maintenance.machine = mashine
-            update_technical_maintenance.service_company = service_company
-            update_technical_maintenance.save()
-            return Response({"data": "data"})
+                return Response(data={"message": f"Сведения о ТО внесены в базу данных"},status=status.HTTP_201_CREATED)
 
+            if (("id" in data) and data["type_post"] == "update"):
+                update_technical_maintenance = TechnicalMaintenance.objects.get(id=data["id"])
+                update_technical_maintenance.type_technical_maintenance = type_technical_maintenance
+                update_technical_maintenance.date_maintenance = date_maintenance
+                update_technical_maintenance.operating_time = operating_time
+                update_technical_maintenance.order_number = order_number
+                update_technical_maintenance.date_order_number = date_order_number
+                update_technical_maintenance.machine = mashine
+                update_technical_maintenance.service_company = service_company
+                update_technical_maintenance.save()
+                return Response(data={"message": f"Сведения о проведенном ТО Изменены"},status=status.HTTP_201_CREATED)
 
+        except IntegrityError as error:
+            print(error)
+            error_message = ""
+
+            if " technical_maintenance" in str(error):
+                error_message = "Наряд заказ с таким номером существует"
+
+            return (Response(data={"message": error_message}, status=status.HTTP_501_NOT_IMPLEMENTED
+                             ))
 
 class TechnicalMaintenancetDetail(APIView):
     permission_classes = [DjangoModelPermissions]
