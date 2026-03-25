@@ -171,8 +171,8 @@ class CreateMachine(APIView):
 
                 new_machine.save()
 
-                return (Response(data={"message": f"Машина номером {number_machine} сохранена в базу данных"},status=status.HTTP_201_CREATED
-                             ))
+                return Response(data={"message": f"Машина номером {number_machine} сохранена в базу данных"},status=status.HTTP_201_CREATED)
+
             except IntegrityError as error:
                 error_message = ""
 

@@ -47,23 +47,20 @@ class CreateComplaint(APIView):
         mashine = Machine.objects.get(number_machine=data["machine"])
         if ( not ("id" in data) and data["type_post"] == "create"):
 
-            try:
-                new_complaint = Complaint(failure_node=failure_node, recovery_method=recovery_method,
-                                          service_company=service_company, machine=mashine)
-                new_complaint.date_failure = date_failure
-                new_complaint.operating_time = operating_time
-                new_complaint.description_failure = description_failure
-                new_complaint.used_parts = used_parts
-                if (data["date_restoration"]):
-                    new_complaint.date_restoration = date_restoration
-                    new_complaint.downtime = downtime
-                new_complaint.save()
+            new_complaint = Complaint(failure_node=failure_node, recovery_method=recovery_method,
+                                      service_company=service_company, machine=mashine)
+            new_complaint.date_failure = date_failure
+            new_complaint.operating_time = operating_time
+            new_complaint.description_failure = description_failure
+            new_complaint.used_parts = used_parts
+            if (data["date_restoration"]):
+                new_complaint.date_restoration = date_restoration
+                new_complaint.downtime = downtime
+            new_complaint.save()
 
-                return (Response({"data": "data"}
-                                 ))
-            except IntegrityError as error:
-                return (Response(data={"message": error}, status=status.HTTP_501_NOT_IMPLEMENTED
-                                 ))
+            return Response(data={"message": f"Рекламация сохранена в базу данных"},status=status.HTTP_201_CREATED)
+
+
         if (("id" in data) and data["type_post"] == "update"):
             update_complaint = Complaint.objects.get(id=data["id"])
             update_complaint.failure_node=failure_node
@@ -77,8 +74,7 @@ class CreateComplaint(APIView):
 
             update_complaint.service_company=service_company
             update_complaint.save()
-            return (Response({"data": "data"}
-                             ))
+            return Response(data={"message": f"Рекламация изменена"},status=status.HTTP_201_CREATED)
 
 
 
