@@ -51,7 +51,7 @@ export function Masine({userId}) {
            
 
 
-            return <div>
+            return <>
 
                         <NavigationMachine />
 
@@ -63,9 +63,10 @@ export function Masine({userId}) {
                                 <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
                             </Routes>
                         </div>
+                    </>
                         
 
-                    </div>
+
 
 }
 

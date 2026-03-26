@@ -4,15 +4,23 @@
 
 .header {
     width: 100%;
-    height: 75px;
+    height: 100px;
     background-color: layout.$header-background-color;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    grid-area: header;
 }
 
 .header__container {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.header__container_logoNumberButton {
     width: 100%;
     display: flex;
     flex-direction: row;

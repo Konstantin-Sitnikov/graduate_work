@@ -1,7 +1,17 @@
-body {
-  margin: auto;
-  width: 1920px;
-  height: 1080px;
+*{box-sizing: border-box;}
+
+#root {
+    margin: auto;
+    width: 1920px;
+    height: 1080px;
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 75px auto 75px;
+    grid-template-areas: 
+        "header header header"
+            ". content ."
+        "footer footer footer"
+    ;
 
 }
 

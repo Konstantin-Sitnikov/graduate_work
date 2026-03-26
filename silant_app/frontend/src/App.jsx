@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Header from "./components/header/header";
 import Main from "./components/main/main";
+import Footer from "./components/footer/footer";
 import { Modal, AuthN } from "./components/authn/authn";
 import axios from 'axios';
 
@@ -44,16 +45,19 @@ function App() {
 
   return (
     <>
-  
-    < Header setShowModal={setShowModal} />
-    < Main isAuthN={isAuthN} userId={userId}/>
-    {
-      showModal? (<Modal>
-                    <AuthN setShowModal={setShowModal} updateSession={updateSession}/>
-                  </Modal>): null
-    }
 
-    
+          
+          < Header setShowModal={setShowModal} />
+          < Main isAuthN={isAuthN} userId={userId}/>
+          < Footer />
+          {
+            showModal? (<Modal>
+                          <AuthN setShowModal={setShowModal} updateSession={updateSession}/>
+                        </Modal>): null
+          }
+          
+
+          
     </>
   );
 }
