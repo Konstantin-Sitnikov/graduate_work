@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRef, useEffect, useState } from "react";
 import { Routes, Route, Link, } from 'react-router-dom'
 import { getDataMasineDetail, getDataMasine, 
@@ -26,7 +25,8 @@ export function Masine({userId}) {
         const [referenceBooksMasine, setReferenceBooksMasine] = useState({})
         const [referenceBooksComplaint, setReferenceBooksComplaint] = useState({})
         const [referenceBooksTechnicalMaintenance, setReferenceBooksTechnicalMaintenance] = useState({})
-        
+        const [currentUser, setCurrentUser] = useState({})
+        const [userGroup, setUserGroup] = useState("")
 
         useEffect(()=>{
         
@@ -35,11 +35,14 @@ export function Masine({userId}) {
                     setComplaintData(result.complaint_data)
                     setMachineData(result.machine_data)
                     setTechnicalMaintenanceData(result.technical_maintenance_data)
+                    setCurrentUser(result.current_user)
+                    setUserGroup(result.user_group)
                 })
                 }
                 
             },[userId])
-        
+        console.log(currentUser)
+        console.log(userGroup)
 
             useEffect(()=>{
                 getReferenceBooksMasine().then(result => {setReferenceBooksMasine(result)})
@@ -47,15 +50,20 @@ export function Masine({userId}) {
                 getReferenceBooksTechnicalMaintenance().then(result => {setReferenceBooksTechnicalMaintenance(result)
                 })
             },[])
-
+            
+            function getNameUser(user){
+                if(user){return user.username}
+            }
            
 
 
-            return <>
+            return (
+                    <div className={style.machine__container}> 
 
-                        <NavigationMachine />
-
+                        
+                        <span className={style.text__result_search}>Добро пожаловать: {getNameUser(currentUser)}</span>
                         <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
+                        <NavigationMachine />
                         <div className={style.container__table}>
                             <Routes>
                                 <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooksMasine}/>}></Route>
@@ -63,7 +71,8 @@ export function Masine({userId}) {
                                 <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
                             </Routes>
                         </div>
-                    </>
+                    </div>)
+
                         
 
 

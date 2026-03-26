@@ -39,6 +39,7 @@ def reference_books_machines(request):
                       }))
 
 
+
 class Machines(APIView):
     permission_classes = [DjangoModelPermissions]
     queryset = Machine.objects.all()
@@ -46,6 +47,7 @@ class Machines(APIView):
     def get(self, request, user_id):
 
         user = User.objects.get(id=user_id)
+        current_user = UserSerializer(user)
 
         if (user.groups.filter(name="Manager").exists()):
             machine = Machine.objects.all()
@@ -62,28 +64,17 @@ class Machines(APIView):
             user_group = "Client"
 
         machine_ids = machine.values_list('number_machine', flat=True)
-
         machine_data = MachineSerializer(machine, many=True)
-        machine_fields = [field.verbose_name for field in Machine._meta.fields]
-
         complaint_data = ComplaintSerializer(Complaint.objects.filter(machine__in=machine_ids), many=True)
-        complaint_fields = [field.verbose_name for field in Complaint._meta.fields]
-
         technical_maintenance_data = TechnicalMaintenanceSerializer(TechnicalMaintenance.objects.filter(machine__in=machine_ids), many=True)
-        technical_maintenance_fields = [field.verbose_name for field in TechnicalMaintenance._meta.fields]
 
 
-        return (Response({"machine_data": machine_data.data,
-                          "machine_fields": machine_fields,
-                          "complaint_data": complaint_data.data,
-                          "complaint_fields": complaint_fields,
-                          "technical_maintenance_data": technical_maintenance_data.data,
-                          "technical_maintenance_fields": technical_maintenance_fields,
-                          "user_group":user_group,
-                          }
-
-
-                         ))
+        return Response({"machine_data": machine_data.data,
+                         "complaint_data": complaint_data.data,
+                         "technical_maintenance_data": technical_maintenance_data.data,
+                         "current_user":current_user.data,
+                         "user_group":user_group,}
+                         )
 
 
 

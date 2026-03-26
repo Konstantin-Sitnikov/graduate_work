@@ -1,8 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, } from "react";
 import Header from "./components/header/header";
 import Main from "./components/main/main";
 import Footer from "./components/footer/footer";
 import { Modal, AuthN } from "./components/authn/authn";
+import { getUser } from "./components/PostService";
+
 import axios from 'axios';
 
 

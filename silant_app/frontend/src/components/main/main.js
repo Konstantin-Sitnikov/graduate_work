@@ -9,17 +9,8 @@ const Main = ({isAuthN, userId}) =>  {
     return (
         <main className={style.main}>
             
-            { isAuthN? ( 
-<<<<<<< HEAD
-                <div className={style.main__container_authn}>
-                    <Routes>
-                        <Route path="/*" element={<Masine userId={userId}/>}></Route>
-                        <Route path="/detail/*" element={<MachineDetail/>}></Route>
-                        <Route path="/create_mashine/*" element={<CreateUpdateMaсhine type={"create"}/>}></Route>
-                        <Route path="/update_mashine/*" element={<CreateUpdateMaсhine type={"update"}/>}></Route>
-=======
+            { isAuthN? (            
             
-            <div>
                 <Routes>
                     <Route path="/*" element={<Masine userId={userId}/>}></Route>
                     <Route path="/detail/*" element={<MachineDetail/>}></Route>
@@ -29,7 +20,7 @@ const Main = ({isAuthN, userId}) =>  {
                     <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
                     <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>
                     <Route path="/update_complaint/*" element={<CreateUpdateComplaint type={"update"}/>}></Route>
->>>>>>> d36bdd8e1b782b09963e419c0774c5c5e5b447e1
+
 
                         <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
                         <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>
@@ -40,7 +31,7 @@ const Main = ({isAuthN, userId}) =>  {
                         <Route path="/update_technical_maintenance/*" element={<CreateUpdateTechnicalMaintenance type={"update"}/>}></Route>
                     </Routes>
                 
-            </div>):(
+            ):(
                 <div className="main__container_notAuthn"> 
                     <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
                     <div className={style.container__input_button}>
