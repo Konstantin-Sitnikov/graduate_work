@@ -60,6 +60,19 @@ export function CreateUpdateComplaint ({type}) {
         refServiceCompany.current.value = complaint.service_company
 
     }
+    function clearForm(){
+
+            refDateFailure.current.value = ""
+            refOperatingTime.current.value = ""
+            refFailureNode.current.value = "" 
+            refDescriptionFailure.current.value = ""
+            refRecoveryMethod.current.value = ""
+            refUsedParts.current.value = ""
+            refDateRestoration.current.value = ""
+            refServiceCompany.current.value = ""
+           
+        }
+
 
     function send() {
         let dataValid = false
@@ -77,7 +90,7 @@ export function CreateUpdateComplaint ({type}) {
             "service_company": refServiceCompany.current.value,
             "type_post": type
         }
-        console.log(dataComplaint)
+
     const requiredData = {
             "date_failure": refDateFailure.current.value,
             "operating_time": refOperatingTime.current.value,
@@ -100,7 +113,7 @@ export function CreateUpdateComplaint ({type}) {
                     console.log(dataValid)
                     createUpdate("create_complaint", dataComplaint).then(data => {
                         alert(data.data.message)
-                        if(type === "create") {/*clearForm()*/}
+                        if(type === "create") {clearForm()}
                         setServiceMessage("")
                     })
                 .catch(error => {
@@ -142,7 +155,7 @@ export function CreateUpdateComplaint ({type}) {
                     </div> 
 
                     <label htmlFor="OperatingTime">Наработка м/ч</label>
-                    <input id="OperatingTime" ref={refOperatingTime} type='text' required/>
+                    <input id="OperatingTime" ref={refOperatingTime} type='number' required/>
 
 
                     <label htmlFor="FailureNode">Узел отказа</label>

@@ -114,7 +114,7 @@ export const MachineDetail = () => {
                     <Routes>                         
                         <Route path="/" element={
                             <TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}>
-                            <Link to="/update_mashine/">Добавить ТО</Link></TableTechnicalMaintenance>}>
+                            <Link to="/create_technical_maintenance/">Добавить ТО</Link></TableTechnicalMaintenance>}>
                         </Route>
                         <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}><Link to="/create_complaint/">Добавить Поломку</Link></TableComplaint>}></Route>
                     </Routes>

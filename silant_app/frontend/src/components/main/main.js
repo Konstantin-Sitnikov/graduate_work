@@ -10,12 +10,26 @@ const Main = ({isAuthN, userId}) =>  {
         <main className={style.main}>
             
             { isAuthN? ( 
+<<<<<<< HEAD
                 <div className={style.main__container_authn}>
                     <Routes>
                         <Route path="/*" element={<Masine userId={userId}/>}></Route>
                         <Route path="/detail/*" element={<MachineDetail/>}></Route>
                         <Route path="/create_mashine/*" element={<CreateUpdateMaсhine type={"create"}/>}></Route>
                         <Route path="/update_mashine/*" element={<CreateUpdateMaсhine type={"update"}/>}></Route>
+=======
+            
+            <div>
+                <Routes>
+                    <Route path="/*" element={<Masine userId={userId}/>}></Route>
+                    <Route path="/detail/*" element={<MachineDetail/>}></Route>
+                    <Route path="/create_mashine/*" element={<CreateUpdateMaсhine type={"create"}/>}></Route>
+                    <Route path="/update_mashine/*" element={<CreateUpdateMaсhine type={"update"}/>}></Route>
+                    
+                    <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
+                    <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>
+                    <Route path="/update_complaint/*" element={<CreateUpdateComplaint type={"update"}/>}></Route>
+>>>>>>> d36bdd8e1b782b09963e419c0774c5c5e5b447e1
 
                         <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
                         <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>

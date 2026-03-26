@@ -157,64 +157,63 @@ class CreateMachine(APIView):
 
         service_company = ServiceCompany.objects.get(id=data["service_company"])
 
+        try:
+            if ((not Machine.objects.filter(number_machine=number_machine).exists()) and data['type_post'] == 'create'):
 
-        if ((not Machine.objects.filter(number_machine=number_machine).exists()) and data['type_post'] == 'create'):
-            try:
-                new_machine = Machine ( number_machine=number_machine, model_technic=model_technic,
-                                        model_engine=model_engine, number_engine=number_engine,
-                                        model_transmission=model_transmission, number_transmission=number_transmission,
-                                        model_driving_bridge=model_driving_bridge, number_driving_bridge=number_driving_bridge,
-                                        model_controlled_bridge=model_controlled_bridge, number_controlled_bridge=number_controlled_bridge,
-                                        delivery_agreement=delivery_agreement, date_shipment=date_shipment, end_user=end_user,
-                                        delivery_address=delivery_address, Equipment=equipment,
-                                        client=client, service_company=service_company,)
+                    new_machine = Machine ( number_machine=number_machine, model_technic=model_technic,
+                                            model_engine=model_engine, number_engine=number_engine,
+                                            model_transmission=model_transmission, number_transmission=number_transmission,
+                                            model_driving_bridge=model_driving_bridge, number_driving_bridge=number_driving_bridge,
+                                            model_controlled_bridge=model_controlled_bridge, number_controlled_bridge=number_controlled_bridge,
+                                            delivery_agreement=delivery_agreement, date_shipment=date_shipment, end_user=end_user,
+                                            delivery_address=delivery_address, Equipment=equipment,
+                                            client=client, service_company=service_company,)
 
-                new_machine.save()
+                    new_machine.save()
 
-                return Response(data={"message": f"Машина номером {number_machine} сохранена в базу данных"},status=status.HTTP_201_CREATED)
+                    return Response(data={"message": f"Машина номером {number_machine} сохранена в базу данных"},status=status.HTTP_201_CREATED)
 
-            except IntegrityError as error:
-                error_message = ""
 
-                print(error)
-                if "number_engine" in str(error):
-                    error_message = "Двигатель с таким номером уже существует"
-                elif "number_transmission" in str(error):
-                    error_message = "Трансмиссия с таким номером уже существует"
-                elif "number_driving_bridge" in str(error):
-                    error_message = "Ведущий мост с таким номером уже существует"
-                elif "number_controlled_bridge" in str(error):
-                    error_message = "Управляемый мост с таким номером уже существует"
+            elif ((Machine.objects.filter(number_machine=number_machine).exists()) and data['type_post'] == 'update'):
+                update_machine = Machine.objects.get(number_machine=number_machine)
+                update_machine.model_technic = model_technic
+                update_machine.model_engine = model_engine
+                update_machine.number_engine = number_engine
+                update_machine.model_transmission = model_transmission
+                update_machine.number_transmission = number_transmission
+                update_machine.model_driving_bridge = model_driving_bridge
+                update_machine.number_driving_bridge = number_driving_bridge
+                update_machine.model_controlled_bridge = model_controlled_bridge
+                update_machine.number_controlled_bridge = number_controlled_bridge
+                update_machine.delivery_agreement = delivery_agreement
+                update_machine.date_shipment = date_shipment
+                update_machine.end_user = end_user
+                update_machine.delivery_address = delivery_address
+                update_machine.Equipment=equipment
+                update_machine.client = client
+                update_machine.service_company = service_company
 
-                return (Response(data={"message":error_message}, status=status.HTTP_501_NOT_IMPLEMENTED
+                update_machine.save()
+                return (Response(data={"message": f"Данные о машине номером {number_machine} обновлены"},
+                                 status=status.HTTP_201_CREATED
                              ))
-        elif ((Machine.objects.filter(number_machine=number_machine).exists()) and data['type_post'] == 'update'):
-            update_machine = Machine.objects.get(number_machine=number_machine)
-            update_machine.model_technic = model_technic
-            update_machine.model_engine = model_engine
-            update_machine.number_engine = number_engine
-            update_machine.model_transmission = model_transmission
-            update_machine.number_transmission = number_transmission
-            update_machine.model_driving_bridge = model_driving_bridge
-            update_machine.number_driving_bridge = number_driving_bridge
-            update_machine.model_controlled_bridge = model_controlled_bridge
-            update_machine.number_controlled_bridge = number_controlled_bridge
-            update_machine.delivery_agreement = delivery_agreement
-            update_machine.date_shipment = date_shipment
-            update_machine.end_user = end_user
-            update_machine.delivery_address = delivery_address
-            update_machine.Equipment=equipment
-            update_machine.client = client
-            update_machine.service_company = service_company
+            else:
+                return (Response(data={"message": "Машина с таким номером уже есть в базе данных"},status=status.HTTP_400_BAD_REQUEST
+                             ))
+        except IntegrityError as error:
+            error_message = ""
 
-            update_machine.save()
-            return (Response(data={"message": f"Данные о машине номером {number_machine} обновлены"},
-                             status=status.HTTP_201_CREATED
-                         ))
-        else:
-            return (Response(data={"message": "Машина с таким номером уже есть в базе данных"},status=status.HTTP_400_BAD_REQUEST
-                         ))
+            if "number_engine" in str(error):
+                error_message = "Двигатель с таким номером уже существует"
+            elif "number_transmission" in str(error):
+                error_message = "Трансмиссия с таким номером уже существует"
+            elif "number_driving_bridge" in str(error):
+                error_message = "Ведущий мост с таким номером уже существует"
+            elif "number_controlled_bridge" in str(error):
+                error_message = "Управляемый мост с таким номером уже существует"
 
+
+            return Response(data={"message": error_message}, status=status.HTTP_501_NOT_IMPLEMENTED)
 
 
 
