@@ -1,23 +1,14 @@
-.main {
-    width: 100%;
-}
-
-
-
-
 
 .table {
    table-layout: fixed;
-
 }
-
 
 .table__row {
     border: 1px solid black;
 }
 
 .table__column {
-    min-width: 200px;
+    min-width: 150px;
     border: 1px solid black;
     text-align: center;
     vertical-align: middle

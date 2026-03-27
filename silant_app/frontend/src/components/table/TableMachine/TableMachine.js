@@ -116,7 +116,7 @@ return ( referenceBooks?
                         filterList.map(function(row, index) {                                                        
                                         return  referenceBooks ? 
                                                 <tr className={style.table__row} key={index}>
-                                                    <td className={style.table__column}><Link className={style.link} to="/detail" onClick={()=>{setLocalStorage('number_machine_to_detail', row.number_machine)}}>{row.number_machine}</Link></td>
+                                                    <td className={style.table__column}><Link className={style.link} to="/detail/technical_maintenance" onClick={()=>{setLocalStorage('number_machine_to_detail', row.number_machine)}}>{row.number_machine}</Link></td>
                                                     <td className={style.table__column}>{getDataReferenceBooks(row.model_technic, referenceBooks.model_technic)}</td>
 
                                                     <td className={style.table__column}>{getDataReferenceBooks(row.model_engine, referenceBooks.model_engine)}</td>

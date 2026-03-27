@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { Routes, Route, Link, } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { getDataMasineDetail, getDataMasine, 
     getReferenceBooksMasine, getReferenceBooksComplaint, 
     getReferenceBooksTechnicalMaintenance,
@@ -8,13 +8,9 @@ import { TableMachine } from '../Table/TableMachine/TableMachine';
 import { TableComplaint } from '../Table/TableComplaint/TableComplaint';
 import { TableTechnicalMaintenance } from '../Table/TableTechnicalMaintenance/TableTechnicalMaintenance';
 import { getLocalStorage } from '../AuxiliaryFunctions/LocalStorage';
-import { getDataReferenceBooks } from '../AuxiliaryFunctions/AuxiliaryFunctions';
-import { NavigationMachine, NavigationMachineDetail } from '../Navigation/Navigation';
+import { NavigationMachine } from '../Navigation/Navigation';
 import { GoBackButton } from '../Button/Button';
 import  style  from "./style.module.scss"
-
-
-
 
 
 export function Masine({userId}) {
@@ -28,8 +24,7 @@ export function Masine({userId}) {
         const [currentUser, setCurrentUser] = useState({})
         const [userGroup, setUserGroup] = useState("")
 
-        useEffect(()=>{
-        
+        useEffect(()=>{        
                 if(userId) {
                     getDataMasine(userId).then(result => {
                     setComplaintData(result.complaint_data)
@@ -37,10 +32,10 @@ export function Masine({userId}) {
                     setTechnicalMaintenanceData(result.technical_maintenance_data)
                     setCurrentUser(result.current_user)
                     setUserGroup(result.user_group)
-                })
-                }
+                })}
                 
             },[userId])
+
         console.log(currentUser)
         console.log(userGroup)
 
@@ -58,9 +53,7 @@ export function Masine({userId}) {
 
 
             return (
-                    <div className={style.machine__container}> 
-
-                        
+                    <div className={style.machine__container}>                       
                         <span className={style.text__result_search}>Добро пожаловать: {getNameUser(currentUser)}</span>
                         <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
                         <NavigationMachine />
@@ -76,63 +69,6 @@ export function Masine({userId}) {
                         
 
 
-
-}
-
-
-
-
-
-export const MachineDetail = () => {
-
-    let value = getLocalStorage('number_machine_to_detail')
-
-    const [complaintData, setComplaintData] = useState([])
-    const [machineData, setMachineData] = useState({})
-    const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
-    const [referenceBooksMasine, setReferenceBooksMasine] = useState({})
-    const [referenceBooksComplaint, setReferenceBooksComplaint] = useState({})
-    const [referenceBooksTechnicalMaintenance, setReferenceBooksTechnicalMaintenance] = useState({})
-
-    useEffect(()=>{
-        getDataMasineDetail(value).then(result => {
-            setComplaintData(result.complaint_data)
-            const mashine = result.machine_data
-            setMachineData(mashine[0])
-            setTechnicalMaintenanceData(result.technical_maintenance_data)
-
-        })
-    },[])
-
-    useEffect(()=>{
-        getReferenceBooksMasine().then(result => {setReferenceBooksMasine(result)})
-        getReferenceBooksComplaint().then(result => {setReferenceBooksComplaint(result)})
-        getReferenceBooksTechnicalMaintenance().then(result => {setReferenceBooksTechnicalMaintenance(result)
-        })
-    },[])
-
-    return (
-
-            <div>
-                <NavigationMachineDetail/>
-
-                <span className={style.text__result_search}>{`Машина: ${getDataReferenceBooks(machineData.model_technic, referenceBooksMasine.model_technic) }`}</span>
-                <span className={style.text__result_search}>{`Cерийный номер: ${machineData.number_machine}`}</span>
-                <Link to="/update_mashine/">Редактировать</Link>
-                <div className={style.container__table}>
-                    <Routes>                         
-                        <Route path="/" element={
-                            <TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}>
-                            <Link to="/create_technical_maintenance/">Добавить ТО</Link></TableTechnicalMaintenance>}>
-                        </Route>
-                        <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}><Link to="/create_complaint/">Добавить Поломку</Link></TableComplaint>}></Route>
-                    </Routes>
-                </div>
-            </div>
-
-
-    )
-    
 
 }
 

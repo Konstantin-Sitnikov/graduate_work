@@ -1,6 +1,7 @@
 import  style  from "./style.module.scss"
 import { Routes, Route} from 'react-router-dom'
-import { Masine, MachineDetail, CreateUpdateMaсhine } from "../machines/machines";
+import { Masine, CreateUpdateMaсhine } from "../machines/machines";
+import { MachineDetail } from "../machines/MachineDetail/MachineDetail";
 import { ComplaintDetail, CreateUpdateComplaint } from "../Complaint/Complaint";
 import { TechnicalMaintenanceDetail, CreateUpdateTechnicalMaintenance } from "../TechnicalMaintenance/TechnicalMaintenance";
 

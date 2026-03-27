@@ -8,9 +8,9 @@
     grid-template-columns: 10% 80% 10%;
     grid-template-rows: 75px 1fr 75px;
     grid-template-areas: 
-        "header header header"
-            ". content ."
-        "footer footer footer"
+        ". header ."
+        ". content ."
+        ". footer ."
     ;
     row-gap: 20px;
 

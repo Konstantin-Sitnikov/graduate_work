@@ -5,7 +5,7 @@ import { Filter, FilterMachine } from "../../Filter/Filter"
 import { getDataReferenceBooks } from "../../AuxiliaryFunctions/AuxiliaryFunctions"
 import { setLocalStorage } from "../../AuxiliaryFunctions/LocalStorage"
 
-export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBooks, children}) => {
+export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBooks}) => {
         const [filterList, setFilterlist] = useState([])
         const [dataTable, setDataTable] = useState([])
 
@@ -27,8 +27,7 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
     
 return ( 
         <>
-            {children}
-           <table className={style.table}>                                    
+            <table className={style.table}>                                    
                         
                 <thead>
                     <tr className={style.table__row}>
