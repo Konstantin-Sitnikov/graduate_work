@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from .models import *
-from django.contrib.auth.models import User
-from ..service_company.serializers import ServiceCompanySerializer
 
 class TechnicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,11 +32,6 @@ class ControlledBridgeSerializer(serializers.ModelSerializer):
         model = ControlledBridge
         fields = ('id', 'model', 'description')
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username']
 
 
 class MachineSerializer(serializers.ModelSerializer):

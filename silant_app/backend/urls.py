@@ -16,19 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
-from apps.technic.views import Machines, MachineDetail, CreateMachine, reference_books_machines,get_csrf
-from apps.technical_maintenance import views as technical_maintenance
+from apps.technic.views import Machines, MachineDetail, CreateMachine, reference_books_machines,get_csrf, SearchMachine
 from apps.technical_maintenance.views import reference_books_technical_maintenance, CreateTechnicalMaintenance,TechnicalMaintenancetDetail
 from apps.complaint.views import CreateComplaint, ComplaintDetail,  reference_books_complaint
+from apps.users.views import Users
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/machines/<int:user_id>/', Machines.as_view()),
+    path('api/machines/<int:user_id>/<str:user_group>/', Machines.as_view()),
     path('api/machine_detail/<str:number_machine>/', MachineDetail.as_view()),
     path('api/reference_books_machines/', reference_books_machines),
     path('api/create_machine/', CreateMachine.as_view()),
+    path('api/machine_search/<str:number_machine>/', SearchMachine.as_view()),
+
 
 
     path('api/complaint_detail/<str:number_complaint>/', ComplaintDetail.as_view()),
@@ -40,8 +42,8 @@ urlpatterns = [
     path('api/reference_books_technical_maintenance/', reference_books_technical_maintenance),
 
     path('csrf/', get_csrf),
+    path('api/get_user/<int:user_id>', Users.as_view()),
 
     path('accounts/', include('allauth.urls')),
-
     path("_allauth/", include("allauth.headless.urls")),
 ]

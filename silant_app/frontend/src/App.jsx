@@ -11,7 +11,8 @@ import axios from 'axios';
 
 function App() {
     const [showModal, setShowModal] = useState(false)
-    const [userId, setUserID] = useState('')
+    const [user, setUser] = useState({})
+    const [userGroup, setUserGroup] = useState("")
     const [isAuthN, setIsAuthN] = useState(false)
 
   const updateSession = () => {
@@ -26,12 +27,19 @@ function App() {
           if (res.data.status === 200) {
               const user =  res.data.data.user
               const userId = user.id
-              setUserID(userId)
-              setIsAuthN(true)
+
+
+              getUser(userId).then((result) => {
+                setUser(result.current_user)
+                setUserGroup(result.user_group)
+                setIsAuthN(true)
+              }
+            )
+
 
           } 
         }).catch(() => {
-            setUserID("")
+            setUser("")
             setIsAuthN(false)
         }
 
@@ -50,7 +58,7 @@ function App() {
 
           
           < Header setShowModal={setShowModal} />
-          < Main isAuthN={isAuthN} userId={userId}/>
+          < Main isAuthN={isAuthN} user={user} userGroup={userGroup}/>
           < Footer />
           {
             showModal? (<Modal>

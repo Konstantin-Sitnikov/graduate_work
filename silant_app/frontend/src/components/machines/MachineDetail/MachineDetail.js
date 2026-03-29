@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, useLocation} from 'react-router-dom'
 import { getDataMasineDetail,  getReferenceBooksMasine, getReferenceBooksComplaint, getReferenceBooksTechnicalMaintenance } from '../../PostService';
-import { TableComplaint } from '../../Table/TableComplaint/TableComplaint';
-import { TableTechnicalMaintenance } from '../../Table/TableTechnicalMaintenance/TableTechnicalMaintenance';
+import { TableComplaint } from '../../Table/TableComplaint';
+import { TableTechnicalMaintenance } from '../../Table/TableTechnicalMaintenance';
 import { getLocalStorage } from '../../AuxiliaryFunctions/LocalStorage';
 import { getDataReferenceBooks } from '../../AuxiliaryFunctions/AuxiliaryFunctions';
 import { NavigationMachineDetail } from '../../Navigation/Navigation';
@@ -10,7 +10,7 @@ import  style  from "./style.module.scss"
 
 
 
-export const MachineDetail = () => {
+export const MachineDetail = ({userGroup}) => {
 
     let value = getLocalStorage('number_machine_to_detail')
 
@@ -51,7 +51,7 @@ export const MachineDetail = () => {
                     }
     
     const Create = () => {
-                        if(pathName ==="/detail/technical_maintenance") {return <Link to="/create_technical_maintenance/">Добавить ТО</Link> }
+                        if((pathName ==="/detail/technical_maintenance") & ((userGroup === "Manager") || (userGroup === "Service_company"))) {return <Link to="/create_technical_maintenance/">Добавить ТО</Link> }
                         if(pathName ==="/detail/complaint") {return <Link to="/create_complaint/">Добавить Поломку</Link> }
                     }
 
@@ -68,12 +68,15 @@ export const MachineDetail = () => {
                     <span>Информация о комплектации:</span>
                     <Link to="/update_mashine/">Редактировать</Link>
                     <table className={style.machineDetail__tableEquipment}>
-                        <tr><td>Узел</td><td>Модель</td><td>Номер</td></tr>
-                        <tr><td>Двигатель</td><td>{getDataReferenceBooks(machineData.model_engine, referenceBooksMasine.model_engine)}</td><td>{machineData.number_engine}</td></tr>
-                        <tr><td>Трансмиссия</td><td>{getDataReferenceBooks(machineData.model_transmission, referenceBooksMasine.model_transmission)}</td><td>{machineData.number_transmission}</td></tr>
-                        <tr><td>Ведущий мост</td><td>{getDataReferenceBooks(machineData.model_driving_bridge, referenceBooksMasine.model_driving_bridge)}</td><td>{machineData.number_driving_bridge}</td></tr>
-                        <tr><td>Управляемый мост</td><td>{getDataReferenceBooks(machineData.model_controlled_bridge, referenceBooksMasine.model_controlled_bridge)}</td><td>{machineData.number_controlled_bridge}</td></tr>
-                        <tr><td>Дополнительная комплектация</td><td></td><td colSpan={2}>{machineData.Equipment}</td></tr>
+                        <thead><td>Узел</td><td>Модель</td><td>Номер</td></thead>
+                        <tbody>
+                            <tr><td>Двигатель</td><td>{getDataReferenceBooks(machineData.model_engine, referenceBooksMasine.model_engine)}</td><td>{machineData.number_engine}</td></tr>
+                            <tr><td>Трансмиссия</td><td>{getDataReferenceBooks(machineData.model_transmission, referenceBooksMasine.model_transmission)}</td><td>{machineData.number_transmission}</td></tr>
+                            <tr><td>Ведущий мост</td><td>{getDataReferenceBooks(machineData.model_driving_bridge, referenceBooksMasine.model_driving_bridge)}</td><td>{machineData.number_driving_bridge}</td></tr>
+                            <tr><td>Управляемый мост</td><td>{getDataReferenceBooks(machineData.model_controlled_bridge, referenceBooksMasine.model_controlled_bridge)}</td><td>{machineData.number_controlled_bridge}</td></tr>
+                            <tr><td>Дополнительная комплектация</td><td></td><td colSpan={2}>{machineData.Equipment}</td></tr>
+                        </tbody>
+                        
                     </table>
                 </div>
                 
@@ -83,14 +86,11 @@ export const MachineDetail = () => {
                     
                     <NavigationMachineDetail/>
 
-                    <div className={style.container__table}>
-                        <Routes>                         
-                            <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}>
-                                </TableTechnicalMaintenance>}>
-                            </Route>
-                            <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}></TableComplaint>}></Route>
-                        </Routes>
-                    </div>
+                    <Routes>                         
+                        <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance} />}> </Route>
+                        <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint} />}></Route>
+                    </Routes>
+
                 </div>
             </div>
 

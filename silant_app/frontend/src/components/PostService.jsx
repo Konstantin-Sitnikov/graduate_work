@@ -43,9 +43,15 @@ export function getCSRF(foo) {
 
 
 
+
+export function getUser(userId){
+    const url = `${API_URL}/api/get_user/` + userId
+return axios.get(url).then(response => response.data)
+}
+
 //Yes
-export function getDataMasine(userId) {
-const url = `${API_URL}/api/machines/` + userId
+export function getDataMasine(userId, userGroup) {
+const url = `${API_URL}/api/machines/` + userId + `/${userGroup}/`
 return axios.get(url).then(response => response.data)
 }
 
@@ -71,6 +77,13 @@ return axios.get(url).then(response => response.data)
 export function getDataMasineDetail(number_machine) {
 const url = `${API_URL}/api/machine_detail/` + `${number_machine}`
 return axios.get(url).then(response => response.data)}
+
+export function searchMasine(number_machine) {
+const url = `${API_URL}/api/machine_search/` + `${number_machine}`
+return axios.get(url).then(response => response.data)}
+
+
+
 
 
 export function getDataComplaintDetail(number_complaint) {

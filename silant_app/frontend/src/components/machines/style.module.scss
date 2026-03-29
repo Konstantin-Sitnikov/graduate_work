@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
 }
 
 .machineDetail__container_body {
@@ -23,6 +24,7 @@
 }
 
 
+
 .machineDetail__container_info {
     width: 50%;
     display: flex;
@@ -30,31 +32,4 @@
     gap: 20px;
 }
 
-.container__table {
-    width: 100%;
-    height: 100%;
-    overflow-x: auto; 
-    overflow-y: auto;
-}
 
-
-
-
-.container__row {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.container__column {
-    display: flex;
-    width: 30%;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-
-.row__header {
-    width: 40%;
-}

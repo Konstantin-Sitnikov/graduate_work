@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
-import { Filter, FilterMachine } from "../../Filter/Filter"
-import { getDataReferenceBooks } from "../../AuxiliaryFunctions/AuxiliaryFunctions"
-import { setLocalStorage } from "../../AuxiliaryFunctions/LocalStorage"
+import { Filter, FilterMachine } from "../Filter/Filter"
+import { getDataReferenceBooks } from "../AuxiliaryFunctions/AuxiliaryFunctions"
+import { setLocalStorage } from "../AuxiliaryFunctions/LocalStorage"
 
 export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBooks}) => {
         const [filterList, setFilterlist] = useState([])
@@ -11,7 +11,6 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
 
 
         const refFilterTypeTechnicalMaintenance = useRef()
-        const refFilterMachine = useRef()
         const refFilterServiceCompany = useRef()
 
         const refFilterList = [refFilterTypeTechnicalMaintenance, refFilterServiceCompany]
@@ -26,7 +25,7 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
 
     
 return ( 
-        <>
+            <div className={style.container__table}>
             <table className={style.table}>                                    
                         
                 <thead>
@@ -95,7 +94,7 @@ return (
                 </tbody>
 
             </table>
-        </>
+        </div>
 
     )
 

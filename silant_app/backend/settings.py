@@ -49,8 +49,7 @@ INSTALLED_APPS = [
     'apps.service_company',
     'apps.technic',
     'apps.technical_maintenance',
-
-
+    'apps.users'
 ]
 
 SITE_ID = 1
