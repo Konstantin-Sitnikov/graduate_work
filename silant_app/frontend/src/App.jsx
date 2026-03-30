@@ -58,7 +58,7 @@ function App() {
 
           
           < Header setShowModal={setShowModal} />
-          < Main isAuthN={isAuthN} user={user} userGroup={userGroup}/>
+          < Main user={user} userGroup={userGroup}/>
           < Footer />
           {
             showModal? (<Modal>

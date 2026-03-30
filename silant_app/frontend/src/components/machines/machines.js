@@ -11,54 +11,20 @@ import { NavigationMachine } from '../Navigation/Navigation';
 import  style  from "./style.module.scss"
 
 
-export function Masine({user, userGroup}) {
-        console.log(user)
-        const [complaintData, setComplaintData] = useState([])       
-        const [machineData, setMachineData] = useState([])       
-        const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
-        const [referenceBooksMasine, setReferenceBooksMasine] = useState({})
-        const [referenceBooksComplaint, setReferenceBooksComplaint] = useState({})
-        const [referenceBooksTechnicalMaintenance, setReferenceBooksTechnicalMaintenance] = useState({})
+export function Masine({machineData, complaintData, technicalMaintenanceData, referenceBooksMasine,referenceBooksComplaint, referenceBooksTechnicalMaintenance, setMachineData, user, userGroup}) {
 
-        const refInput = useRef(null)
+            const refInput = useRef(null) 
 
-
-        useEffect(()=>{        
-                if(user.id) {
-                    getDataMasine(user.id, userGroup).then(result => {
-                    setComplaintData(result.complaint_data)
-                    setMachineData(result.machine_data)
-                    setTechnicalMaintenanceData(result.technical_maintenance_data)
-                })} else { setMachineData([])}
-                
-            },[user])
-
-            useEffect(()=>{
-                getReferenceBooksMasine().then(result => {setReferenceBooksMasine(result)})
-                getReferenceBooksComplaint().then(result => {setReferenceBooksComplaint(result)})
-                getReferenceBooksTechnicalMaintenance().then(result => {setReferenceBooksTechnicalMaintenance(result)
-                })
-            },[])
-
-
-            
             function addCrateMachineToHTML() {
                 if (userGroup === "Manager") {return <Link to="/create_mashine/">Добавить машину</Link>}
             }
 
             function Search() {
-                console.log(refInput.current.value)
                 if (refInput.current.value) {
                     searchMasine(refInput.current.value).then(result => {
-                        setMachineData(result.machine_data)
-                
-                })
-                }
-                
-                
-
-
-  
+                        setMachineData(result.machine_data)              
+                    })
+                } 
             }
 
             const handleSubmit = (event) => {
