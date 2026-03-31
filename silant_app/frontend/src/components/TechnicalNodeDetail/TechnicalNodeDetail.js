@@ -10,10 +10,10 @@ export function TechnicalNodeDetail () {
    
     return (
             <> 
-            <div>
+            <div className={style.technicalNode__container}>
                 <GoBackButton />
-                <span className={style.text__result_search}>{`Назваине: ${value.model}`}</span>
-                <span className={style.text__result_search}>{`Описание: ${value.description}`}</span>
+                <span className={style.technicalNode__text_name}>{`${value.model}`}</span>
+                <span className={style.technicalNode__text_description}>{`${value.description}`}</span>
             </div>
 
             </>

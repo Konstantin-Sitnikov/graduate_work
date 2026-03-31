@@ -10,16 +10,14 @@ import  style  from "./style.module.scss"
 
 
 
-export const MachineDetail = ({userGroup}) => {
+export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, referenceBooksTechnicalMaintenance,  userGroup}) => {
 
     let value = getLocalStorage('number_machine_to_detail')
 
     const [complaintData, setComplaintData] = useState([])
     const [machineData, setMachineData] = useState({})
     const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
-    const [referenceBooksMasine, setReferenceBooksMasine] = useState({})
-    const [referenceBooksComplaint, setReferenceBooksComplaint] = useState({})
-    const [referenceBooksTechnicalMaintenance, setReferenceBooksTechnicalMaintenance] = useState({})
+    
     const [pathName, setPathName] = useState("")
 
     const location = useLocation()
@@ -38,13 +36,7 @@ export const MachineDetail = ({userGroup}) => {
         })
     },[])
 
-    useEffect(()=>{
-        getReferenceBooksMasine().then(result => {setReferenceBooksMasine(result)})
-        getReferenceBooksComplaint().then(result => {setReferenceBooksComplaint(result)})
-        getReferenceBooksTechnicalMaintenance().then(result => {setReferenceBooksTechnicalMaintenance(result)
-        })
-    },[])
-
+    
     const test = () => {
                         if(pathName ==="/detail/technical_maintenance") {return <span>Информация о проведенных ТО Вышей техники</span> }
                         if(pathName ==="/detail/complaint") {return <span>Информация о возникших поломках Вышей техники</span> }

@@ -60,29 +60,26 @@ const Main = ({user, userGroup}) =>  {
                                                       referenceBooksTechnicalMaintenance={referenceBooksTechnicalMaintenance}
                                                       setMachineData={setMachineData}
                                                       user={user} userGroup={userGroup}/>}></Route>
-                    <Route path="/detail/*" element={<MachineDetail userGroup={userGroup}/>}></Route>
+
+                    <Route path="/detail/*" element={<MachineDetail referenceBooksMasine={referenceBooksMasine}
+                                                                    referenceBooksComplaint={referenceBooksComplaint}
+                                                                    referenceBooksTechnicalMaintenance={referenceBooksTechnicalMaintenance}  
+                                                                    userGroup={userGroup}/>}></Route>
+
                     <Route path="/detail_node/" element={<TechnicalNodeDetail/>}></Route>
+
                     <Route path="/create_mashine/*" element={<CreateUpdateMachine type={"create"}/>}></Route>
                     <Route path="/update_mashine/*" element={<CreateUpdateMachine type={"update"}/>}></Route>
                     
-                    <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
+                    <Route path="/detail_complaint/*" element={<ComplaintDetail referenceBooksComplaint={referenceBooksComplaint}/>}></Route>
                     <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>
                     <Route path="/update_complaint/*" element={<CreateUpdateComplaint type={"update"}/>}></Route>
 
-
-                    <Route path="/detail_complaint/*" element={<ComplaintDetail/>}></Route>
-                    <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"}/>}></Route>
-                    <Route path="/update_complaint/*" element={<CreateUpdateComplaint type={"update"}/>}></Route>
-
-                    <Route path="/detail_technical_maintenance/*" element={<TechnicalMaintenanceDetail/>}></Route>
+                    <Route path="/detail_technical_maintenance/*" element={<TechnicalMaintenanceDetail referenceBooksTechnicalMaintenance={referenceBooksTechnicalMaintenance}/>}></Route>
                     <Route path="/create_technical_maintenance/*" element={<CreateUpdateTechnicalMaintenance type={"create"}/>}></Route>
                     <Route path="/update_technical_maintenance/*" element={<CreateUpdateTechnicalMaintenance type={"update"}/>}></Route>
                 </Routes>
-                
-       
-
-                    
-
+         
         </main>
     );
     }

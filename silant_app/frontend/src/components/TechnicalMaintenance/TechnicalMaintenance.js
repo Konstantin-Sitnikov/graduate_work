@@ -168,12 +168,12 @@ export function CreateUpdateTechnicalMaintenance ({type}) {
 }
 
 
-export const TechnicalMaintenanceDetail = () => {
+export const TechnicalMaintenanceDetail = ({referenceBooksTechnicalMaintenance}) => {
 
     let value = getLocalStorage('number_technical_maintenance_detail')    
 
     const [technicalMaintenanceData, setTechnicalMaintenanceData] = useState([])
-    const [referenceBooksTechnicalMaintenance, setReferenceBooksTechnicalMaintenance] = useState({})  
+   
 
     useEffect(()=>{
         getDataTechnicalMaintenanceDetail(value).then(result => {
@@ -181,9 +181,7 @@ export const TechnicalMaintenanceDetail = () => {
         })
     },[])
 
-    useEffect(()=>{
-        getReferenceBooksTechnicalMaintenance().then(result => {setReferenceBooksTechnicalMaintenance(result)})
-    },[])
+   
     return (
 
             <div>

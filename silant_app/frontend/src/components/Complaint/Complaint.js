@@ -199,14 +199,12 @@ export function CreateUpdateComplaint ({type}) {
 }
 
 
-export const ComplaintDetail = () => {
+export const ComplaintDetail = ({referenceBooksComplaint}) => {
 
     let value = getLocalStorage('number_complaint_detail')
 
     const [complaintData, setComplaintData] = useState([])
 
-    const [referenceBooksComplaint, setReferenceBooksComplaint] = useState({})
-  
 
     useEffect(()=>{
         getDataComplaintDetail(value).then(result => {
@@ -214,9 +212,6 @@ export const ComplaintDetail = () => {
         })
     },[])
 
-    useEffect(()=>{
-        getReferenceBooksComplaint().then(result => {setReferenceBooksComplaint(result)})
-    },[])
     return (
 
             <div>
