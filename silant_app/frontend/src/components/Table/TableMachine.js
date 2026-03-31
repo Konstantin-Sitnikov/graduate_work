@@ -38,7 +38,10 @@ export const TableMachine = ({dataMachine, referenceBooks, user}) => {
 
 
 return ( referenceBooks? 
-<div className={style.container__table}>                            
+
+
+<div className={style.container__body}>    
+    <div className={style.container__table}>                        
                                
     <table className={style.table}>
         <thead>
@@ -197,8 +200,11 @@ return ( referenceBooks?
         </tbody>
 
 
-    </table>                        
-</div> :null
+    </table>
+    </div>                         
+</div>
+
+ :null
 
     )
 

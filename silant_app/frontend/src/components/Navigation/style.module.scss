@@ -1,9 +1,14 @@
 .navigation__mnachine {
+    grid-area: nav;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    background-color: white;
+    align-items: center;
     padding-left: 15%;
     padding-right: 15%;
+    border: none;
+    border-radius: 10px 10px 0 0;
 }
 
 .navigation__link {

@@ -1,35 +1,88 @@
-.form {
-    display: flex;
-    flex-direction: column;
-}
-
 
 .machine__container {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 20px 20px 0.75fr 20px 0.25fr 20px 20px;
+    grid-template-rows: 10% 20px 10% 20px 10% 1fr ;
+    grid-template-areas: 
+        ". info info . create . ."
+        ". . . . . . . "
+        ". text text text text text ."
+        ". . . . . . . "
+        ". nav nav nav nav nav."
+        ". left_block content content content right_block .  "
+    ;
+    overflow: hidden;
+
 }
 
-.machineDetail__container_body {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
+.machine__container_info {
+    grid-area: info;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: start;
-    row-gap: 20px
+    margin-bottom: 30px;
+    row-gap: 10px;
 }
 
+.left_block {
+    grid-area: left_block;
+    background-color: white;
+    border: none;
+    border-radius: 0 0 0 10px;
+}
+.right_block {
+    grid-area: right_block;
+    background-color: white;
+    border: none;
+    border-radius: 0 0 10px 0 ;
+}
 
-
-.machineDetail__container_info {
-    width: 50%;
+.text__info {    
+    grid-area: text;
     display: flex;
-    justify-content: start;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.text__user  {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+.main__text {
+    width: 100%;
 }
 
 
+.machine__container_create {
+    grid-area: create;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form__input_button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.input  {
+    width: 75%;
+    padding: 5px;
+}
+
+
+.test {
+    grid-area: content;
+    overflow: hidden;
+}

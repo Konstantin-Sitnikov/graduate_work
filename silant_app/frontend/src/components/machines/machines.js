@@ -33,8 +33,59 @@ export function Masine({machineData, complaintData, technicalMaintenanceData, re
 
             return (
                     <div className={style.machine__container}>
-                        {   user? ( <>  
-                                        <span className={style.text__result_search}>Добро пожаловать: {user.username}</span>
+                        <div className={style.machine__container_create}>{ addCrateMachineToHTML() }</div>
+                        <div className={style.machine__container_info}>
+                            {   user? ( <>
+                                            <span className={style.text__user}>Добро пожаловать: {user.username}</span>
+                                        </>                               
+                                
+                        ):( <>
+                                <span className={style.main__text}>Проверьте комплектацию и технические характеристики техники Силант</span>
+                                <form onSubmit={handleSubmit} className={style.form__input_button}>
+                                    <input className={style.input} ref={refInput} type="text" required/>
+                                    <button className={style.button}  onClick={Search}>Поиск машин</button>
+                                </form>
+
+                            </>
+                        )
+                        }       
+                        </div>
+                        <span className={style.text__info}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
+
+                        
+                        { user ? (<NavigationMachine />): null}
+                        
+
+
+
+                        <div className={style.left_block}>
+                            
+                        </div>
+                        <div className={style.right_block}>
+                            
+                        </div>
+
+                        <div className={style.test}>
+                            <Routes>
+                                <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooksMasine} user={user}/>}></Route>
+                                <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}/>}></Route>
+                                <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
+                            </Routes>
+                        </div>
+
+
+                         
+                          
+
+                </div>)
+                   
+
+
+
+}
+
+/**
+ {   user? ( <>                         <span className={style.text__result_search}>Добро пожаловать: {user.username}</span>
                                         <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
                                         <NavigationMachine />
                                         { addCrateMachineToHTML() }
@@ -58,14 +109,5 @@ export function Masine({machineData, complaintData, technicalMaintenanceData, re
                             <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooksMasine} user={user}/>}></Route>
                             <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}/>}></Route>
                             <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
-                        </Routes>
-                            
-
-                    </div>)
-
-                        
-
-
-
-}
-
+                        </Routes> 
+ **/
