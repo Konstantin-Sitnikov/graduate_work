@@ -38,8 +38,8 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
 
     
     const test = () => {
-                        if(pathName ==="/detail/technical_maintenance") {return <span>Информация о проведенных ТО Вышей техники</span> }
-                        if(pathName ==="/detail/complaint") {return <span>Информация о возникших поломках Вышей техники</span> }
+                        if(pathName ==="/detail/technical_maintenance") {return <span className={style.machineDetail__text}>Информация о проведенных ТО Вашей техники</span> }
+                        if(pathName ==="/detail/complaint") {return <span className={style.machineDetail__text}>"Информация о возникших поломках Вашей техники"</span> }
                     }
     
     const Create = () => {
@@ -50,7 +50,12 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
 
     return (
 
-            <div className={style.machineDetail__container_body}>                
+            <div className={style.machineDetail__container_body}>
+
+                <div className={style.machineDetail__container_update}>
+                    { <Link to="/update_mashine/">Редактировать</Link> }
+                </div>
+
                 <div className={style.machineDetail__container_info}>
                     <span className={style.text__result_search}>{`Машина: ${getDataReferenceBooks(machineData.model_technic, referenceBooksMasine.model_technic) }`}</span>
                     <span className={style.text__result_search}>{`Cерийный номер: ${machineData.number_machine}`}</span> 
@@ -58,7 +63,7 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
 
                 <div className={style.machineDetail__container_equipment}>
                     <span>Информация о комплектации:</span>
-                    <Link to="/update_mashine/">Редактировать</Link>
+                    
                     <table className={style.machineDetail__tableEquipment}>
                         <thead><td>Узел</td><td>Модель</td><td>Номер</td></thead>
                         <tbody>
@@ -67,22 +72,26 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
                             <tr><td>Ведущий мост</td><td>{getDataReferenceBooks(machineData.model_driving_bridge, referenceBooksMasine.model_driving_bridge)}</td><td>{machineData.number_driving_bridge}</td></tr>
                             <tr><td>Управляемый мост</td><td>{getDataReferenceBooks(machineData.model_controlled_bridge, referenceBooksMasine.model_controlled_bridge)}</td><td>{machineData.number_controlled_bridge}</td></tr>
                             <tr><td>Дополнительная комплектация</td><td></td><td colSpan={2}>{machineData.Equipment}</td></tr>
-                        </tbody>
+                        </tbody>                         {Create()}
                         
                     </table>
                 </div>
-                
-                
-                <div className={style.machineDetail__container_searchResults}>
-                    {test()} {Create()}
+
+                <div className={style.machineDetail__container_text}>{test()}</div>
+                                
+                <div className={style.machine__container_navTable}>
+                            
+                    <div className={style.machine__container_nav}>
+                        <NavigationMachineDetail/>
+                    </div>                       
+
+                    <div className={style.machine__container_table}>
+                        <Routes>                         
+                            <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance} />}> </Route>
+                            <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint} />}></Route>
+                        </Routes>
+                    </div>
                     
-                    <NavigationMachineDetail/>
-
-                    <Routes>                         
-                        <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance} />}> </Route>
-                        <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint} />}></Route>
-                    </Routes>
-
                 </div>
             </div>
 
@@ -91,3 +100,24 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
     
 
 }
+
+
+/** 
+ * <div className={style.machine__container_navTable}>
+                            
+    <div className={style.machine__container_nav}>
+        <NavigationMachineDetail/>
+    </div>                       
+
+    <div className={style.machine__container_table}>
+        <Routes>                         
+            <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance} />}> </Route>
+            <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint} />}></Route>
+        </Routes>
+    </div>
+    
+</div>
+ * 
+ * 
+ * 
+ * **/

@@ -3,49 +3,64 @@
 
 
 .header {
-    width: 100%;
-    height: 100%;
-    background-color: var.$color-pearl-white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
     grid-area: header;
+    padding: 10px;
+    background-color: var.$color-pearl-white;
+    display: grid;
+    grid-template-columns: 5% 150px 1fr 150px 5%;
+    grid-template-rows: 1fr ;
+    grid-template-areas: 
+
+        ". logo text button ."
+       
+    ;
+    column-gap: 20px;
+
     border-radius: var.$border-radius;
 }
 
-.header__container {
-    width: 80%;
-    height: 100%;
+
+.header__container_text {
+    grid-area: text;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: start;
+    row-gap: 10px;
 }
-.header__container_logoNumberButton {
-    width: 100%;
+
+.header__container_logo {
+    grid-area: logo;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 }
 
 
-.header__logo {
+.header__container_button {
+    grid-area: button;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.header__logo {    
     width: 100px;
     height: 50px;
+  
 }
 
 .header__number {
-    height: 25px;
+    
 }
 
 .header__text {
-    width: 100%;
-    height: 25px;
-    align-self: flex-end;
+
 }
 
 .header__button {
-    width: 150px;
+      width: 150px;
     height: 40px;
     background-color: var.$color-red;
     color: white;

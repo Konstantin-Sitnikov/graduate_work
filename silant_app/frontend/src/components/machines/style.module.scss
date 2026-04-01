@@ -75,11 +75,16 @@
     grid-template-rows: 10% 1fr ;
     grid-template-areas: 
         ". nav ."
-        ". table ."
+        ". table .";
+        row-gap: 15px;
+        
 
 }
 .machine__container_nav {
     grid-area: nav;
+    display: flex;
+    justify-content: start;
+    align-items: center;
 
 }
 
