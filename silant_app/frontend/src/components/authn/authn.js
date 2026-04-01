@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRef, useEffect, } from "react";
+import { useRef, useEffect, useState} from "react";
 import { createPortal } from 'react-dom';
 import  style  from "./style.module.scss"
 
@@ -29,7 +29,8 @@ export function Modal({children}) {
 export function AuthN({setShowModal, updateSession}) {
     const refName = useRef(null)
     const refPassword = useRef(null)
-    const refText = useRef(null)
+      const [serviceMessage, setServiceMessage] = useState("")
+
 
 
  function onLogin() {
@@ -50,19 +51,15 @@ export function AuthN({setShowModal, updateSession}) {
             });
         })
         .then(data => { 
-
             updateSession()
+            setServiceMessage("")
+            setShowModal(false)
         })
         .catch(error => {
 
             if (error.response.status === 400) {
-                console.log("Неправильный логин или пароль");
-            }
-            if (error.response.status === 409) {
-                console.log("Вы уже авторизованы");
-            }
-
-
+                setServiceMessage("Неправильный логин или пароль")
+               }
         });
 }
 
@@ -85,69 +82,20 @@ function logOut() {
         });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 return (
     <div className={style.authn_container}>
-        <button onClick={()=>{setShowModal(false)}}>Закрыть</button>
+        <button className={style.authn_button_close} onClick={()=>{setShowModal(false)}}> <div className={style.auth__container_line}><div className={style.button_close__line_1}></div><div className={style.button_close__line_2}></div></div> </button>
         <input ref={refName} type='text' placeholder='Введите имя'></input>
-        <input ref={refPassword} type='text' placeholder='Введите пароль'></input>
-        <button onClick={onLogin}>Отправить</button>
-        <button onClick={logOut}>Выйти</button>
-        <span ref={refText}> </span>
+        <input ref={refPassword} type='password' placeholder='Введите пароль'></input>
+        <div className={style.authn_container__button_login_logout}>
+            <button onClick={onLogin}>Авторизоватся</button>
+            <button onClick={logOut}>Выйти</button>
+        </div>        
+        <span className={style.authn_serviceMessage}>{`${serviceMessage}`}</span>
+        <span>Для регистрации свяжитесь с нами: +7-8352-20-12-09. Telegram</span>
     </div>
 )
-
 }
-
-
-
-
-
-
-
-/*
-export const updateSession = async (setUser, setAuthenticated) => {
-    try {
-        const response = await axios.get('http://localhost:8000/_allauth/browser/v1/auth/session', {
-            headers: {
-                "accept": "application/json",
-                'Content-Type': "application/json",
-            },
-            withCredentials: true
-        });
-        
-        
-        if (response.data.data && response.data.data.user) {
-
-            setUser(response.data.data.user.username)
-            setAuthenticated(true)
-
-        }
-    } catch (error) {
-        console.error("Не авторизован:", error.response || error);
-
-    }
-};
-
-*/
-
-
 
 
 

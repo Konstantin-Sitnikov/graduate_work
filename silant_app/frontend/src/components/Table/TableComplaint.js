@@ -28,7 +28,6 @@ export const TableComplaint = ({complaintData, referenceBooks}) => {
 
     
 return ( 
-<div className={style.container__table}>
             <table className={style.table}> 
                 <thead>
                     <tr className={style.table__row}> 
@@ -96,7 +95,7 @@ return (
                 </tbody>
 
             </table>
-</div>
+
 
     )
 

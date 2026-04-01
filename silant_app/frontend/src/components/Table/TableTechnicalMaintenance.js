@@ -25,7 +25,7 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
 
     
 return ( 
-            <div className={style.container__table}>
+
             <table className={style.table}>                                    
                         
                 <thead>
@@ -94,7 +94,6 @@ return (
                 </tbody>
 
             </table>
-        </div>
 
     )
 

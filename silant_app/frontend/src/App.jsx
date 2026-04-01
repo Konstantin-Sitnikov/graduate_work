@@ -13,7 +13,7 @@ function App() {
     const [showModal, setShowModal] = useState(false)
     const [user, setUser] = useState({})
     const [userGroup, setUserGroup] = useState("")
-    const [isAuthN, setIsAuthN] = useState(false)
+
 
   const updateSession = () => {
       axios.get('http://localhost:8000/_allauth/browser/v1/auth/session', {
@@ -32,7 +32,7 @@ function App() {
               getUser(userId).then((result) => {
                 setUser(result.current_user)
                 setUserGroup(result.user_group)
-                setIsAuthN(true)
+
               }
             )
 
@@ -40,7 +40,7 @@ function App() {
           } 
         }).catch(() => {
             setUser("")
-            setIsAuthN(false)
+
         }
 
         );

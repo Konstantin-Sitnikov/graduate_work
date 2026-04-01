@@ -1,5 +1,4 @@
 
-
 .table {
     table-layout: fixed;
     
@@ -14,30 +13,5 @@
     border: 1px solid black;
     text-align: center;
     vertical-align: middle
-
-}
-
-.container__body {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 20px  1fr  20px;
-    grid-template-rows:  20px 20px 1fr ;
-    grid-template-areas: 
-            ". . . "
-        ". child . "
-        ". table ."
-        ;
-    overflow: hidden;
-
-}
-
-
-.container__table {
-    grid-area: table;
-    overflow-x: auto;
-    overflow-y: auto;
-    border: 1px solid black;
-    background-color: white;
 
 }

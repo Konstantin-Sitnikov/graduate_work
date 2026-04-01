@@ -1,17 +1,12 @@
+@use "../variables/variables.scss" as var;
+
 .main {
     width: 100%;
     height: 100%;
     padding: 30px;
     grid-area: content;
     overflow: hidden;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: #EBE6D6;
+    border-radius: var.$border-radius;
+    background-color: var.$color-pearl-white;
 }
 
-
-.main__container_authn  {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}

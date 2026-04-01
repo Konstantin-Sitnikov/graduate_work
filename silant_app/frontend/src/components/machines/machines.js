@@ -52,25 +52,20 @@ export function Masine({machineData, complaintData, technicalMaintenanceData, re
                         </div>
                         <span className={style.text__info}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
 
-                        
-                        { user ? (<NavigationMachine />): null}
-                        
-
-
-
-                        <div className={style.left_block}>
+                        <div className={style.machine__container_navTable}>
                             
-                        </div>
-                        <div className={style.right_block}>
+                            <div className={style.machine__container_nav}>
+                                { user ? (<NavigationMachine />): null}
+                            </div>                       
+                        
+                            <div className={style.machine__container_table}>
+                                <Routes>
+                                    <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooksMasine} user={user}/>}></Route>
+                                    <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}/>}></Route>
+                                    <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
+                                </Routes>
+                            </div>
                             
-                        </div>
-
-                        <div className={style.test}>
-                            <Routes>
-                                <Route path="/" element={<TableMachine dataMachine={machineData} referenceBooks={referenceBooksMasine} user={user}/>}></Route>
-                                <Route path="/technical_maintenance" element={<TableTechnicalMaintenance technicalMaintenanceData={technicalMaintenanceData} referenceBooks={referenceBooksTechnicalMaintenance}/>}></Route>
-                                <Route path="/complaint" element={<TableComplaint complaintData={complaintData} referenceBooks={referenceBooksComplaint}/>}></Route>
-                            </Routes>
                         </div>
 
 
@@ -85,6 +80,11 @@ export function Masine({machineData, complaintData, technicalMaintenanceData, re
 }
 
 /**
+ * 
+ * 
+ * 
+ * 
+ * 
  {   user? ( <>                         <span className={style.text__result_search}>Добро пожаловать: {user.username}</span>
                                         <span className={style.text__result_search}>Информация о комплектации и технических зарактеристиках Вашей техники</span>
                                         <NavigationMachine />

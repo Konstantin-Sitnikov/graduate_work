@@ -5,40 +5,22 @@
     padding: 30px;
     display: grid;
     grid-template-columns: 20px 20px 0.75fr 20px 0.25fr 20px 20px;
-    grid-template-rows: 10% 20px 10% 20px 10% 1fr ;
+    grid-template-rows: 10% 10% 1fr ;
     grid-template-areas: 
         ". info info . create . ."
-        ". . . . . . . "
         ". text text text text text ."
-        ". . . . . . . "
-        ". nav nav nav nav nav."
-        ". left_block content content content right_block .  "
+        ". content content content content content .  "
     ;
-    overflow: hidden;
-
+    row-gap: 20px;
 }
 
 .machine__container_info {
     grid-area: info;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: start;
-    margin-bottom: 30px;
     row-gap: 10px;
-}
-
-.left_block {
-    grid-area: left_block;
-    background-color: white;
-    border: none;
-    border-radius: 0 0 0 10px;
-}
-.right_block {
-    grid-area: right_block;
-    background-color: white;
-    border: none;
-    border-radius: 0 0 10px 0 ;
 }
 
 .text__info {    
@@ -82,7 +64,27 @@
 }
 
 
-.test {
+.machine__container_navTable {
     grid-area: content;
     overflow: hidden;
+    display: grid;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-rows: 10% 1fr ;
+    grid-template-areas: 
+        ". nav ."
+        ". table ."
+
+}
+.machine__container_nav {
+    grid-area: nav;
+
+}
+
+.machine__container_table {
+    grid-area: table;
+    overflow-x: auto;
+    overflow-y: auto;
 }
