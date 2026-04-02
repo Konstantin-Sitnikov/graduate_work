@@ -43,18 +43,25 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
                     }
     
     const Create = () => {
-                        if((pathName ==="/detail/technical_maintenance") & ((userGroup === "Manager") || (userGroup === "Service_company"))) {return <Link to="/create_technical_maintenance/">Добавить ТО</Link> }
-                        if(pathName ==="/detail/complaint") {return <Link to="/create_complaint/">Добавить Поломку</Link> }
+                        if((pathName ==="/detail/technical_maintenance") & ((userGroup === "Manager") || (userGroup === "Service_company"))) {return <Link className={style.machineDetail__link_createUpdate} to="/create_technical_maintenance/">Добавить ТО</Link> }
+                        if(pathName ==="/detail/complaint") {return <Link className={style.machineDetail__link_createUpdate} to="/create_complaint/">Добавить Поломку</Link> }
                     }
-
+    function addUpdateMachineToHTML() {
+        if (userGroup === "Manager") {return <Link className={style.machineDetail__link_createUpdate} to="/update_mashine/">Редактировать</Link>}
+    }
 
     return (
 
             <div className={style.machineDetail__container_body}>
 
                 <div className={style.machineDetail__container_update}>
-                    { <Link to="/update_mashine/">Редактировать</Link> }
+                    { addUpdateMachineToHTML() }
                 </div>
+
+                <div className={style.machineDetail__container_add}>
+                    { Create() }
+                </div>
+
 
                 <div className={style.machineDetail__container_info}>
                     <span className={style.text__result_search}>{`Машина: ${getDataReferenceBooks(machineData.model_technic, referenceBooksMasine.model_technic) }`}</span>
@@ -72,7 +79,7 @@ export const MachineDetail = ({referenceBooksMasine, referenceBooksComplaint, re
                             <tr><td>Ведущий мост</td><td>{getDataReferenceBooks(machineData.model_driving_bridge, referenceBooksMasine.model_driving_bridge)}</td><td>{machineData.number_driving_bridge}</td></tr>
                             <tr><td>Управляемый мост</td><td>{getDataReferenceBooks(machineData.model_controlled_bridge, referenceBooksMasine.model_controlled_bridge)}</td><td>{machineData.number_controlled_bridge}</td></tr>
                             <tr><td>Дополнительная комплектация</td><td></td><td colSpan={2}>{machineData.Equipment}</td></tr>
-                        </tbody>                         {Create()}
+                        </tbody>                         
                         
                     </table>
                 </div>

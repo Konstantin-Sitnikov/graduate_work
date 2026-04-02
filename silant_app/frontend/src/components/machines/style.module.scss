@@ -1,3 +1,5 @@
+@use "../variables/variables.scss" as var;
+
 
 .machine__container {
     width: 100%;
@@ -13,6 +15,16 @@
     ;
     row-gap: 20px;
 }
+
+
+.machine__link_createUpdate {
+border: none;
+padding: 10px;
+color: var.$color-white;
+background-color: var.$color-red;
+text-decoration: none;
+}
+
 
 .machine__container_info {
     grid-area: info;

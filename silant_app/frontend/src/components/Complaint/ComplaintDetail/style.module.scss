@@ -1,0 +1,88 @@
+@use "../../variables/variables.scss" as var;
+
+
+.complaintDetail__container_body {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    row-gap: 20px;
+}
+
+.complaintDetail__container_backUpdate {
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.complaintDetail__link_createUpdate {
+border: none;
+padding: 10px;
+color: var.$color-white;
+background-color: var.$color-red;
+text-decoration: none;
+}
+
+.complaintDetail__container_numberComplaint {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: white;
+}
+
+
+.complaintDetail__container_info {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 40px;
+}
+
+
+.complaintDetail__container_column {
+    width: 40%;
+    height: 100%;
+    max-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.complaintDetail__container_row {
+    width: 100%;
+    padding: 10px 20px 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.complaintDetail__container_description_parts {
+    width: 100%;
+    height: 60%; 
+    padding: 10px 20px 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    background-color: white;
+    border-radius: 10px;
+    
+}
+.complaintDetail__container_description {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}

@@ -6,7 +6,8 @@ import { Routes, Route} from 'react-router-dom'
 import { Masine } from "../machines/machines";
 import { CreateUpdateMachine } from "../machines/CreateUpdateMaсhine/CreateUpdateMachine";
 import { MachineDetail } from "../machines/MachineDetail/MachineDetail";
-import { ComplaintDetail, CreateUpdateComplaint } from "../Complaint/Complaint";
+import { CreateUpdateComplaint } from "../Complaint/Complaint";
+import { ComplaintDetail } from "../Complaint/ComplaintDetail/ComplaintDetail";
 import { TechnicalMaintenanceDetail, CreateUpdateTechnicalMaintenance } from "../TechnicalMaintenance/TechnicalMaintenance";
 import { TechnicalNodeDetail } from "../TechnicalNodeDetail/TechnicalNodeDetail";
 

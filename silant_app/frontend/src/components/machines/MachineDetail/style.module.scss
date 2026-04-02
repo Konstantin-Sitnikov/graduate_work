@@ -5,24 +5,41 @@
     height: 100%;
     padding: 30px;
     display: grid;
-    grid-template-columns: 20px 20px 0.75fr 20px 0.25fr 20px 20px;
+    grid-template-columns: 20px 20px 0.7fr 20px 0.15fr 0.15fr 20px 20px;
     grid-template-rows: 4% 30% 10% 1fr ;
     grid-template-areas: 
 
-        ". info info . update . ."
-        ". equipment equipment equipment equipment equipment ."
-        ". text text text text text ."
-        ". content content content content content .  "
+        ". info info . update add . ."
+        ". equipment equipment equipment equipment equipment equipment ."
+        ". text text text text text text ."
+        ". content content content content content content .  "
     ;
     row-gap: 20px;
+
+}
+
+
+.machineDetail__container_add {
+    grid-area: add;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
 }
 
 .machineDetail__container_update {
     grid-area: update;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
 
+}
+
+.machineDetail__link_createUpdate {
+border: none;
+padding: 10px;
+color: var.$color-white;
+background-color: var.$color-red;
+text-decoration: none;
 }
 
 .machineDetail__container_info {

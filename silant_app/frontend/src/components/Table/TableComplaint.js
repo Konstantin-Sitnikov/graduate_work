@@ -78,10 +78,10 @@ return (
 
                                         <td className={style.table__column}>{getDataReferenceBooks(row.failure_node, referenceBooks.failure_node)}</td>
 
-                                        <td className={style.table__column}>{row.description_failure}</td>
+                                        <td className={style.table__column}> <div className={style.big_text}>{ row.description_failure }</div></td>
 
                                         <td className={style.table__column}>{getDataReferenceBooks(row.recovery_method, referenceBooks.recovery_method)}</td>
-                                        <td className={style.table__column}>{row.used_parts}</td>
+                                        <td className={style.table__column}> <div className={style.big_text}>{row.used_parts}</div></td>
 
                                         <td className={style.table__column}>{row.date_restoration}</td>
                                         <td className={style.table__column}>{row.downtime}</td>

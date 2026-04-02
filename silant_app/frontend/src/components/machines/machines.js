@@ -14,7 +14,7 @@ export function Masine({machineData, complaintData, technicalMaintenanceData, re
             const refInput = useRef(null) 
 
             function addCrateMachineToHTML() {
-                if (userGroup === "Manager") {return <Link to="/create_mashine/">Добавить машину</Link>}
+                if (userGroup === "Manager") {return <Link className={style.machine__link_createUpdate} to="/create_mashine/">Добавить машину</Link>}
             }
 
             function Search() {
