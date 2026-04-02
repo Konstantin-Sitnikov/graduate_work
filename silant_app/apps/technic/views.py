@@ -27,7 +27,8 @@ def reference_books_machines(request):
     transmission = TransmissionSerializer(Transmission.objects.all(), many=True)
     driving_bridge = DrivingBridgeSerializer(DrivingBridge.objects.all(), many=True)
     controlled_bridge = ControlledBridgeSerializer(ControlledBridge.objects.all(), many=True)
-    user = UserSerializer(User.objects.all(), many=True)
+
+    user = UserSerializer(User.objects.filter(groups__name="Client"), many=True)
     service_company = ServiceCompanySerializer(ServiceCompany.objects.all(), many=True)
 
     return (Response({"model_technic": technic.data,

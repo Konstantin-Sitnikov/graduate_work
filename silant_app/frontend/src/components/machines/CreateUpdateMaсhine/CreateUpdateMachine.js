@@ -1,12 +1,13 @@
 import { useRef, useEffect, useState } from "react";
 import { getDataMasineDetail,  getReferenceBooksMasine, createUpdate } from '../../PostService';
+import { useLocation} from 'react-router-dom'
 import { getLocalStorage } from '../../AuxiliaryFunctions/LocalStorage';
 import { GoBackButton } from '../../Button/Button';
 import  style  from "./style.module.scss"
 
 
 
-export function CreateUpdateMachine ({type}) {
+export function CreateUpdateMachine ({type, updateDateMachine}) {
     
     const [modelTechnic, setModelTechnic] = useState([])
     const [modelEngine, setModelEngine] = useState([])
@@ -16,7 +17,18 @@ export function CreateUpdateMachine ({type}) {
     const [client, setClient] = useState([])
     const [serviceCompany, setServiceCompany] = useState([])
     const [serviceMessage, setServiceMessage] = useState("")
-    const [machineData, setMachineData] = useState({})
+
+
+    const [pathName, setPathName] = useState("")
+
+    const location = useLocation()
+    useEffect(()=> {
+        setPathName(location.pathname)
+    },[location])
+
+
+
+
 
     useEffect(()=>{
             getReferenceBooksMasine().then(result => {
@@ -53,7 +65,6 @@ export function CreateUpdateMachine ({type}) {
         if(type === "update") {
         getDataMasineDetail(getLocalStorage('number_machine_to_detail')).then(result => {
             const mashine = result.machine_data
-            setMachineData(mashine[0])
             updateForm(mashine[0])
         })}
 
@@ -141,6 +152,7 @@ export function CreateUpdateMachine ({type}) {
                 alert(data.data.message)
                 if(type === "create") {clearForm()}
                 setServiceMessage("")
+                updateDateMachine()
             })
         .catch(error => {
             if (error.response.status === 400) {setServiceMessage(error.response.data.message)}
@@ -153,131 +165,111 @@ export function CreateUpdateMachine ({type}) {
         event.preventDefault();
     };
 
+    console.log(pathName)
+
+    function addToHTMLButtonCreateOrUpdate () {
+        if (pathName === "/create_mashine/") {return "Создать"}
+        if (pathName === "/update_mashine/") {return "Редактировать"}
+    }
+
     return (
-            <>  
+         <div className={style.createUpdate__container_body}> 
                 <GoBackButton />
-                <span>{serviceMessage}</span>
-                <form className={style.form} onSubmit={handleSubmit}> 
-                    <div className={style.container__row}> 
-                        <span className={style.row__header}>Введите данные машины:</span>
-                        <div className={style.container__column}>
-                            <span>Введите серийный номер автомобиля</span>
-                            <input ref={refNumberMachine} type='text' required/>
-                        </div>
+                
+                <form className={style.createUpdate__form} onSubmit={handleSubmit}>
+                    <span className={style.text__servicemessage}>{serviceMessage}</span>
+                    <span className={style.text__machine_data}>Введите данные машины:</span>
                     
-                        <div className={style.container__column}>
-                            <label htmlFor="modelTechnic">Выберете модель техники</label>
-                            <select id="modelTechnic" ref={refModelTechnic}>
-                                {modelTechnic.map((item,) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
-                            </select>
-                        </div>
-
-                    </div>
+                    <span className={style.text__machine_model}>Выберете модель техники:</span>
+                    <select className={style.select__machine_model} id="modelTechnic" ref={refModelTechnic}>
+                        {modelTechnic.map((item,) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
+                    </select>
+                    <input className={style.input__machine_number} ref={refNumberMachine} type='text' required placeholder="Серийный номер автомобиля"/>
                     
-                    <div className={style.container__row}>
-                        <span className={style.row__header}>Введите данные двигателя:</span>
-                        <div className={style.container__column}>
-                            <label htmlFor="modelEngine">Выберете модель двигателя</label>
-                            <select id="modelEngine" ref={refModelEngine}>
+                    
+                    <span className={style.text__engine_model}>Выберете модель двигателя:</span>
+                    <select className={style.select__engine_model} ref={refModelEngine}>
                                 {modelEngine.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
-                            </select>
-                        </div>
-                        
+                    </select>
+                    <input className={style.input__engine_number} ref={refNumberEngine} type='text' required placeholder="Серийный номер двигателя"/>
 
-                        <div className={style.container__column}>
-                            <label htmlFor="NumberEngine">Зав. № двигателя</label>
-                            <input id="NumberEngine" ref={refNumberEngine} type='text' required/>
-                        </div>  
-                     </div>
 
-                    <div className={style.container__row}>
-                        <span className={style.row__header}>Введите данные трансмиссии:</span>
-                        <div className={style.container__column}> 
-                            <label htmlFor="ModelTransmission">Выберете модель трансмиссии</label>
-                            <select id="ModelTransmission" ref={refModelTransmission}>
-                                {modelTransmission.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
-                            </select>
-                        </div>                   
 
-                        <div className={style.container__column}>
-                            <label htmlFor="NumberTransmission">Зав. № трансмиссии</label>
-                            <input id="NumberTransmission" ref={refNumberTransmission} type='text' required/>
-                        </div>
-                    </div>
-                    
-                    <div className={style.container__row}>
-                        <span className={style.row__header}>Введите данные ведущего моста:</span>
-                        <div className={style.container__column}>
-                            <label htmlFor="ModelDrivingBridge">Выберете модель ведущего моста</label>
-                            <select id="ModelDrivingBridge" ref={refModelDrivingBridge}>
-                                {modelDrivingBridge.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
-                            </select>
-                        </div>
-                        
+                    <span className={style.text__transmission_model}>Выберете модель трансмиссии:</span>
+                    <select className={style.select__transmission_model} ref={refModelTransmission}>
+                        {modelTransmission.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
+                    </select>
+                    <input className={style.input__transmission_number} ref={refNumberTransmission} type='text' required placeholder="Серийный номер трансмиссии"/>
 
-                        <div className={style.container__column}>
-                            <label htmlFor="NumberDrivingBridge">Зав. № ведущего моста</label>
-                            <input id="NumberDrivingBridge" ref={refNumberDrivingBridge} type='text' required/>
-                        </div>                        
-                    </div>
-                    
-
-                    <div className={style.container__row}>
-                        <span className={style.row__header}>Введите данные управляемого моста:</span>
-                        <div className={style.container__column}>
-                            <label htmlFor="ModelControlledBridge">Выберете модель управляемого моста</label>
-                            <select id="ModelControlledBridge" ref={refModelControlledBridge}>
-                                {modelControlledBridge.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
-                            </select>
-                        </div>
-                        
-
-                        <div className={style.container__column}>
-                            <label htmlFor="NumberControlledBridge">Зав. № управляемого моста</label>
-                            <input id="NumberControlledBridge" ref={refNumberControlledBridge} type='text' required/>
-                        </div>
-                            
-                    </div>
-                                          
-                    <div className={style.container__row}>
-                        <span className={style.row__header}>Введите данные договора:</span>
-                        <div className={style.container__column}>
-                            <label htmlFor="DeliveryAgreement">Договор поставки №, дата'</label>
-                            <input id="DeliveryAgreement" ref={refDeliveryAgreement} type='text'required/>  
-                        </div>
-                        
-                        <div className={style.container__column}>
-                            <label htmlFor="DateShipment">Дата отгрузки с завода</label>
-                            <input id="DateShipment" ref={refDateShipment} type='date' required/>
-                        </div>
-                    </div>
 
                     
-                    
+                    <span className={style.text__drivingbridge_model}> Выберете модель ведущего моста:</span>
+                    <select  className={style.select__drivingbridge_model} ref={refModelDrivingBridge}>
+                        {modelDrivingBridge.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
+                    </select>
+                    <input className={style.input__drivingbridge_number} ref={refNumberDrivingBridge} type='text' required placeholder="Серийный номер ведущего моста"/>
 
-                    <div className={style.container__row}>
-                        <span className={style.row__header}>Введите данные пользователя:</span>
-                        <div className={style.container__column}>
-                            <label htmlFor="EndUser">Конечный потребитель'</label>
-                            <input id="EndUser" ref={refEndUser} type='text' required/>
-                        </div>
-                        
 
-                        <div className={style.container__column}>
-                            <label htmlFor="DeliveryAddress">Адрес поставки'</label>
-                            <input id="DeliveryAddress" ref={refDeliveryAddress} type='text' required/>
-                        </div>
-                    </div>
-                    
-                    
-
-                    <div className={style.container__row}>
-                        <label htmlFor="Equipment">Дополнительная комплектация</label>
-                        <textarea ref={refEquipment} id="Equipment"></textarea>
-                    </div>
-                    
 
                     
+                    <span className={style.text__controlledbridge_model}> Выберете модель управляемого моста:</span>
+                    <select className={style.select__controlledbridge_model} ref={refModelControlledBridge}>
+                        {modelControlledBridge.map((item) => {return <option value={item.id} key={item.id}>{item.model}</option>})}
+                    </select>
+                    <input className={style.input__controlledbridge_number} ref={refNumberControlledBridge} type='text' required placeholder="Серийный номер управляемого моста"/>
+
+
+
+  
+                    <span className={style.text__deliveryagreement_model}>Договор поставки №, дата:</span>
+                    <input className={style.input__deliveryagreement_number} ref={refDeliveryAgreement} type='text'required/>  
+
+
+                   
+                    <span className={style.text__dateshipment_model}>Дата отгрузки с завода:</span>
+                    <input className={style.input__dateshipment_number} ref={refDateShipment} type='date' required/>
+                    
+
+
+                    <span className={style.text__enduser}>Конечный пользователь:</span>
+                    <input className={style.input__enduser} ref={refEndUser} type='text' required/>
+
+
+                    <span className={style.text__deliveryaddress}>Адрес поставки:</span>
+                    <input className={style.input__deliveryaddress} ref={refDeliveryAddress} type='text' required/>
+
+                    <span className={style.text__equipment}>Дополнительная комплектация:</span>
+                    <textarea ref={refEquipment} className={style.input__equipment}></textarea>
+                    
+
+
+
+                    <span className={style.text__client}>Клиент:</span>
+                    <select className={style.select__client} ref={refClient}>
+                        {client.map((item) => {return <option value={item.id} key={item.id}>{item.username}</option>})}
+                    </select>
+
+
+
+                    <span className={style.text__servicecompany}>Сервисная компания:</span>
+                    <select className={style.select__servicecompany} ref={refServiceCompany}>
+                        {serviceCompany.map((item) => {return <option value={item.id} key={item.id}>{item.name}</option>})}
+                    </select>
+                    <button className={style.button} onClick={send}>{addToHTMLButtonCreateOrUpdate()}</button>
+                </form>
+                
+
+                </div>
+
+
+    )
+
+}
+
+
+/*
+<div className={style.createUpdate__container_row}>
+                                                                
                     <div className={style.container__row}>
 
                         <div className={style.container__column}>
@@ -295,22 +287,6 @@ export function CreateUpdateMachine ({type}) {
                         </div>
 
                     </div>
-                    
-
-                    <button onClick={send}>Создать</button>
-                </form>
-                
-
-
-            </>
-
-    )
-
-}
-
-
-/*
-
 
 
 */

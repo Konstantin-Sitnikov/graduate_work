@@ -1,6 +1,6 @@
 import  style  from "./style.module.scss"
-import { useEffect, useRef, useState } from "react";
-import {  getDataMasine, getReferenceBooksMasine, getReferenceBooksComplaint, searchMasine,
+import { useEffect, useState } from "react";
+import {  getDataMasine, getReferenceBooksMasine, getReferenceBooksComplaint, 
     getReferenceBooksTechnicalMaintenance } from '../PostService';
 import { Routes, Route} from 'react-router-dom'
 import { Masine } from "../machines/machines";
@@ -22,18 +22,22 @@ const Main = ({user, userGroup}) =>  {
 
         useEffect(()=>{     
   
-                if(user.id) {
-                    getDataMasine(user.id, userGroup).then((result) => {
-                        setMachineData(result.machine_data)
-                        setComplaintData(result.complaint_data)
-                        setTechnicalMaintenanceData(result.technical_maintenance_data)                    
-                    })
-                    } else { 
-                    setMachineData([])
-                    setComplaintData([])
-                    setTechnicalMaintenanceData([])}
+                updateDateMachine()
                 
             },[user])
+
+        function updateDateMachine() {
+            if(user.id) {
+                getDataMasine(user.id, userGroup).then((result) => {
+                    setMachineData(result.machine_data)
+                    setComplaintData(result.complaint_data)
+                    setTechnicalMaintenanceData(result.technical_maintenance_data)                    
+                })
+                } else { 
+                setMachineData([])
+                setComplaintData([])
+                setTechnicalMaintenanceData([])}
+        }
 
 
 
@@ -68,7 +72,7 @@ const Main = ({user, userGroup}) =>  {
 
                     <Route path="/detail_node/" element={<TechnicalNodeDetail/>}></Route>
 
-                    <Route path="/create_mashine/*" element={<CreateUpdateMachine type={"create"}/>}></Route>
+                    <Route path="/create_mashine/*" element={<CreateUpdateMachine type={"create"} updateDateMachine={updateDateMachine}/>}></Route>
                     <Route path="/update_mashine/*" element={<CreateUpdateMachine type={"update"}/>}></Route>
                     
                     <Route path="/detail_complaint/*" element={<ComplaintDetail referenceBooksComplaint={referenceBooksComplaint}/>}></Route>

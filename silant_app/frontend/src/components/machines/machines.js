@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Routes, Route, Link } from 'react-router-dom'
-import {  getDataMasine, getReferenceBooksMasine, getReferenceBooksComplaint, searchMasine,
-    getReferenceBooksTechnicalMaintenance } from '../PostService';
+import { searchMasine } from '../PostService';
 import { TableMachine } from '../Table/TableMachine';
 import { TableComplaint } from '../Table/TableComplaint';
 import { TableTechnicalMaintenance } from '../Table/TableTechnicalMaintenance';
-
 import { NavigationMachine } from '../Navigation/Navigation';
 
 import  style  from "./style.module.scss"

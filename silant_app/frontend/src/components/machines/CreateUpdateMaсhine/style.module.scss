@@ -1,55 +1,294 @@
-.form {
-    display: flex;
-    flex-direction: column;
-}
+@use "../../variables/variables.scss" as var;
 
-
-.machine__container {
+.createUpdate__container_body {
     width: 100%;
     height: 100%;
+    min-height: 100%;
+    padding: 20px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
-
-.machineDetail__container_body {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: start;
-    row-gap: 20px
+
 }
 
 
-.machineDetail__container_info {
-    width: 50%;
-    display: flex;
-    justify-content: start;
-    gap: 20px;
-}
-
-.container__table {
+.createUpdate__form {
     width: 100%;
     height: 100%;
+    display: grid;
+    grid-template-columns:  repeat(4, 1fr);
+    grid-template-rows: repeat(13, 1fr) ;
+    grid-template-areas: 
+    
+        "text__machine_data text__servicemessage text__servicemessage . "
+        "text__machine_model select__machine_model input__machine_number . "
+        "text__engine_model select__engine_model input__engine_number . "
+        "text__transmission_model select__transmission_model input__transmission_number . "
+        "text__drivingbridge_model select__drivingbridge_model input__drivingbridge_number . "
+        "text__controlledbridge_model select__controlledbridge_model input__controlledbridge_number . "
+        "text__deliveryagreement_model input__deliveryagreement_number text__dateshipment_model input__dateshipment_number "
+        "text__enduser input__enduser text__deliveryaddress input__deliveryaddress "
+        "text__equipment input__equipment input__equipment . "
+        ". input__equipment input__equipment . "
+        ". input__equipment input__equipment . "
+        "text__client select__client text__servicecompany select__servicecompany "
+        ". button button . "
+        
+        
+        ;
 
-    overflow-x: auto; 
-    overflow-y: auto;
+
+        row-gap: 10px;
+        column-gap: 10px
+    ;
+}
+.button {
+    grid-area: button;
+    padding: 10px 30px 10px 30px;
+
+    justify-self: center;
+    align-self: center;
+    background-color: var.$color-red;
+    color: var.$color-white;
+    border: none;
+}
+.button:hover {
+    cursor: pointer;
+}
+
+.text__servicemessage {
+    grid-area: text__servicemessage;
+    justify-self: start;
+    align-self: center;
+    color: var.$color-red;
+}
+
+
+.text__machine_data {
+    grid-area: text__machine_data;
+    justify-self: start;
+    align-self: center;
+}
+.text__machine_model {
+    grid-area: text__machine_model;
+    justify-self: start;
+    align-self: center;
+}
+.select__machine_model {
+    grid-area: select__machine_model;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+
+}
+.input__machine_number {
+    grid-area: input__machine_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+
+.text__engine_model {
+    grid-area: text__engine_model;
+    justify-self: start;
+    align-self: center;
+}
+.select__engine_model {
+    grid-area: select__engine_model;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+
+}
+.input__engine_number {
+    grid-area: input__engine_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+
+.text__transmission_model {
+    grid-area: text__transmission_model;
+    justify-self: start;
+    align-self: center;
+}
+.select__transmission_model {
+    grid-area: select__transmission_model;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+}
+
+.input__transmission_number {
+    grid-area: input__transmission_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+
+.text__drivingbridge_model {
+    grid-area: text__drivingbridge_model;
+    justify-self: start;
+    align-self: center;
+}
+.select__drivingbridge_model {
+    grid-area: select__drivingbridge_model;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+}
+
+.input__drivingbridge_number {
+    grid-area: input__drivingbridge_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+
+.text__controlledbridge_model {
+    grid-area: text__controlledbridge_model;
+    justify-self: start;
+    align-self: center;
+}
+.select__controlledbridge_model {
+    grid-area: select__controlledbridge_model;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+}
+
+.input__controlledbridge_number {
+    grid-area: input__controlledbridge_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+.text__deliveryagreement_model {
+    grid-area: text__deliveryagreement_model;
+    justify-self: start;
+    align-self: center;
+}
+
+.input__deliveryagreement_number {
+    grid-area: input__deliveryagreement_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+.text__dateshipment_model {
+    grid-area: text__dateshipment_model;
+    justify-self: start;
+    align-self: center;
+}
+
+.input__dateshipment_number {
+    grid-area: input__dateshipment_number;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+
+.text__enduser {
+    grid-area: text__enduser;
+    justify-self: start;
+    align-self: center;
+}
+
+.input__enduser {
+    grid-area: input__enduser;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+.text__deliveryaddress {
+    grid-area: text__deliveryaddress;
+    justify-self: start;
+    align-self: center;
+}
+
+.input__deliveryaddress {
+    grid-area: input__deliveryaddress;
+    width: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+.text__equipment {
+    grid-area: text__equipment;
+    justify-self: start;
+    align-self: center;
+}
+
+.input__equipment {
+    grid-area: input__equipment;
+    width: 100%;
+    height: 100%;
+    justify-self: start;
+    align-self: center;
+}
+
+.text__client {
+    grid-area: text__client;
+    justify-self: start;
+    align-self: center;
+}
+.select__client {
+    grid-area: select__client;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+}
+
+
+.text__servicecompany {
+    grid-area: text__servicecompany;
+    justify-self: start;
+    align-self: center;
+}
+.select__servicecompany {
+    grid-area: select__servicecompany;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
 }
 
 
 
 
-.container__row {
+
+
+
+
+.createUpdate__container_row {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.container__column {
+
+.createUpdate__container_columnHead {
+    width: 25%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.createUpdate__text_column {
+    text-wrap: nowrap;
+}
+
+.createUpdate__container_column {
     display: flex;
     width: 30%;
     flex-direction: row;

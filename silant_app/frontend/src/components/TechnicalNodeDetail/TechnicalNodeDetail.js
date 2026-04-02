@@ -6,7 +6,6 @@ import  style  from "./style.module.scss"
 
 export function TechnicalNodeDetail () { 
     let value = getLocalStorage('detail_node')
-    console.log(value)
    
     return (
             <> 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, useLocation} from 'react-router-dom'
-import { getDataMasineDetail,  getReferenceBooksMasine, getReferenceBooksComplaint, getReferenceBooksTechnicalMaintenance } from '../../PostService';
+import { getDataMasineDetail } from '../../PostService';
 import { TableComplaint } from '../../Table/TableComplaint';
 import { TableTechnicalMaintenance } from '../../Table/TableTechnicalMaintenance';
 import { getLocalStorage } from '../../AuxiliaryFunctions/LocalStorage';
