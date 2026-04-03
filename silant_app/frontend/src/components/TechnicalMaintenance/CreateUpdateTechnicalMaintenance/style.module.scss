@@ -1,4 +1,4 @@
-@use "../variables/variables.scss" as var;
+@use "../../variables/variables.scss" as var;
 
 .createUpdate__container_body {
     width: 100%;
@@ -19,25 +19,19 @@
     height: 100%;
     display: grid;
     grid-template-columns:  repeat(4, 1fr);
-    grid-template-rows: repeat(15, 1fr) ;
+    grid-template-rows: repeat(9, 1fr) ;
     grid-template-areas: 
     
         " . text__servicemessage text__servicemessage . "
-        " . text__DateFailure input__DateFailure . "
+        " . text__TypeTechnicalMaintenance select__TypeTechnicalMaintenance . "
+        " . text__DateMaintenance input__DateMaintenance . "
         " . text__OperatingTime input__OperatingTime . "
-        " . text__FailureNode select__FailureNode . "
-        " . text__DescriptionFailure . . "
-        " . bigText__DescriptionFailure bigText__DescriptionFailure . "
-        " . bigText__DescriptionFailure bigText__DescriptionFailure . "
-        " . text__RecoveryMethod select__RecoveryMethod . "
-        " . text__UsedParts . . "
-        " . bigText__UsedParts bigText__UsedParts . "
-        " . bigText__UsedParts bigText__UsedParts . "
-        " . text__DateRestoration input__DateRestoration . "
-         " . text__SerialNumber text__SerialNumberValue . "
+        " . text__OrderNumber input__OrderNumber . "
+        " . text__DateOrderNumber input__DateOrderNumber . "
+        " . text__SerialNumber text__SerialNumberValue . "
         " . text__ServiceCompany select__ServiceCompany . "
          " . button button . "
-               
+                
         ;
 
         row-gap: 10px;
@@ -67,15 +61,26 @@
 }
 
 
-.text__DateFailure {
-    grid-area: text__DateFailure;
+.text__TypeTechnicalMaintenance {
+    grid-area: text__TypeTechnicalMaintenance;
     justify-self: start;
     align-self: center;
 }
 
-.input__DateFailure {
-    grid-area: input__DateFailure;
-    width: 100%;
+.select__TypeTechnicalMaintenance {
+    grid-area: select__TypeTechnicalMaintenance;
+    justify-self: start;
+    align-self: center;
+}
+
+.text__DateMaintenance {
+    grid-area: text__DateMaintenance;
+    justify-self: start;
+    align-self: center;
+}
+
+.input__DateMaintenance {
+    grid-area: input__DateMaintenance;
     justify-self: start;
     align-self: center;
 }
@@ -88,88 +93,34 @@
 
 .input__OperatingTime {
     grid-area: input__OperatingTime;
-    width: 100%;
     justify-self: start;
     align-self: center;
 }
 
-.text__FailureNode {
-    grid-area: text__FailureNode;
+.text__OrderNumber {
+    grid-area: text__OrderNumber;
     justify-self: start;
     align-self: center;
 }
 
-.select__FailureNode {
-    grid-area: select__FailureNode;
-    width: 100%;
+.input__OrderNumber {
+    grid-area: input__OrderNumber;
     justify-self: start;
     align-self: center;
 }
 
 
-
-
-.text__DescriptionFailure {
-    grid-area: text__DescriptionFailure;
+.text__DateOrderNumber {
+    grid-area: text__DateOrderNumber;
     justify-self: start;
     align-self: center;
 }
 
-.bigText__DescriptionFailure {
-    width: 100%;
-    height: 100%;
-    grid-area: bigText__DescriptionFailure;
-    justify-self: start;
-    align-self: center;
-    resize: none
-}
-
-.text__RecoveryMethod {
-    grid-area: text__RecoveryMethod;
+.input__DateOrderNumber {
+    grid-area: input__DateOrderNumber;
     justify-self: start;
     align-self: center;
 }
-
-.select__RecoveryMethod {
-    grid-area: select__RecoveryMethod;
-    justify-self: start;
-    align-self: center;
-    width: 100%;
-}
-
-.text__UsedParts {
-    grid-area: text__UsedParts;
-    justify-self: start;
-    align-self: center;
-}
-
-.bigText__UsedParts {
-    width: 100%;
-    height: 100%;
-    grid-area: bigText__UsedParts;
-    justify-self: start;
-    align-self: center;
-    resize: none
-}
-
-
-.text__DateRestoration {
-    grid-area: text__DateRestoration;
-    justify-self: start;
-    align-self: center;
-}
-
-.input__DateRestoration {
-    grid-area: input__DateRestoration;
-    justify-self: start;
-    align-self: center;
-    width: 100%;
-}
-
-
-
-
-
 
 .text__SerialNumber {
     grid-area: text__SerialNumber;
@@ -194,5 +145,4 @@
     grid-area: select__ServiceCompany;
     justify-self: start;
     align-self: center;
-     width: 100%;
 }

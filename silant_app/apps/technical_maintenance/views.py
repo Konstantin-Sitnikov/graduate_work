@@ -28,7 +28,6 @@ class CreateTechnicalMaintenance(APIView):
 
     def post(self, request):
         data = request.data
-        print(data)
         type_technical_maintenance = TypeTechnicalMaintenance.objects.get(id=data["type_technical_maintenance"])
         date_maintenance = datetime.strptime(data["date_maintenance"], "%Y-%m-%dT%H:%M")
         operating_time = int(data["operating_time"])

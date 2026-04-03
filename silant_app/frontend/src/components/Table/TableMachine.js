@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
 import { Link } from 'react-router-dom'
-import { Filter } from "../Filter/Filter"
+import { Filter, FilterMachine } from "../Filter/Filter"
 import { getDataReferenceBooks } from "../AuxiliaryFunctions/AuxiliaryFunctions"
 import { setLocalStorage } from "../AuxiliaryFunctions/LocalStorage"
 
@@ -42,7 +42,7 @@ return ( referenceBooks?
                     
     <table className={style.table}>
         <thead>
-            <tr className={style.table__row}> 
+            <tr className={style.table__row_header}> 
                 <td className={style.table__column} colSpan={2}>  
                     Техника
                     <Filter listSelect={referenceBooks.model_technic} 
@@ -94,8 +94,11 @@ return ( referenceBooks?
                 }
                 
             </tr>
-            <tr className={style.table__row}> 
-                <td className={style.table__column}>Зав. №</td>
+            <tr className={style.table__row_header}> 
+                <td className={style.table__column}> 
+                     Зав. №
+                     <FilterMachine refList={refFilterList} setFilterlist={setFilterlist} dataTable={dataTable}/>
+                </td>
                 <td className={style.table__column}>Модель</td>
 
                 <td className={style.table__column}>Модель</td>
@@ -178,7 +181,7 @@ return ( referenceBooks?
                                 <td className={style.table__column}>{row.end_user}</td>
                                 <td className={style.table__column}>{row.delivery_address}</td>
                                 
-                                <td className={style.table__column}>{row.Equipment}</td>
+                                <td className={style.table__column_bigText}> <div className={style.TableComplaint__container_bigText}>{row.Equipment}</div></td>
 
                                 <td className={style.table__column}>{getDataReferenceBooks(row.client, referenceBooks.client)}</td>
 

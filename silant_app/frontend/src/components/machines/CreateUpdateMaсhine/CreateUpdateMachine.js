@@ -155,8 +155,9 @@ export function CreateUpdateMachine ({type, updateDateMachine}) {
                 updateDateMachine()
             })
         .catch(error => {
-            if (error.response.status === 400) {setServiceMessage(error.response.data.message)}
-            if (error.response.status === 501) {setServiceMessage(error.response.data.message)}
+            console.log(error)
+            //if (error.response.status === 400) {setServiceMessage(error.response.data.message)}
+            //if (error.response.status === 501) {setServiceMessage(error.response.data.message)}
         });
         }
     }

@@ -11,25 +11,38 @@
 
 }
 
+.table__row_header {
+    border: 1px solid black;
+    height: 30px;
+    max-height: 35px;
+}
 
 .table__column {
     min-width: 200px;
-    width: 100%;
-    max-width: 100%;
-    height: 80px;
-    max-height: 70px;
+    height: 50px;
     border: 1px solid black;
     text-align: center;
     vertical-align: middle;
  
 }
 
+.table__column_bigText {
+    min-width: 400px;
+    max-width: 400px;
+    height: 50px;
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+ 
+}
 
-.big_text {
-    width: 100%;
+.TableComplaint__container_bigText {
+    width: 95%;
     height: 100%;
-    overflow: auto;
-    display: flex;
-    justify-content: center;
-    align-items: start;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
 }

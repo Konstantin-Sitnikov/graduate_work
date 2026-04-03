@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
-import { Link } from 'react-router-dom'
-import { Filter } from "../Filter/Filter"
+import { Link, useLocation } from 'react-router-dom'
+import { Filter, FilterMachine } from "../Filter/Filter"
 import { getDataReferenceBooks } from "../AuxiliaryFunctions/AuxiliaryFunctions"
 import { setLocalStorage } from "../AuxiliaryFunctions/LocalStorage"
 
@@ -15,6 +15,7 @@ export const TableComplaint = ({complaintData, referenceBooks}) => {
         const refFilterFailureNode = useRef()
         const refFilterRecoveryMethod = useRef()
         const refFilterServiceCompany = useRef()
+        const [pathName, setPathName] = useState("")
 
         const refFilterList = [refFilterFailureNode, refFilterRecoveryMethod, refFilterServiceCompany]
 
@@ -26,13 +27,27 @@ export const TableComplaint = ({complaintData, referenceBooks}) => {
             setDataTable(complaintData)
             },[complaintData])
 
+        const location = useLocation()
+        useEffect(()=> {
+            setPathName(location.pathname)
+        },[location])
+
+
+        function addToHTMLFilterMasine () {
+            if((pathName ==="/complaint")) {return <FilterMachine refList={refFilterList} setFilterlist={setFilterlist} dataTable={dataTable}/> }
+        }
+
+
     
 return ( 
             <table className={style.table}> 
                 <thead>
-                    <tr className={style.table__row}> 
+                    <tr className={style.table__row_header}> 
                         <td className={style.table__column}>№ Заявки</td>
-                        <td className={style.table__column}>Заводской № Машины</td>
+                        <td className={style.table__column}>
+                            Заводской № Машины
+                            {addToHTMLFilterMasine()}
+                        </td>
                         <td className={style.table__column}>Дата отказа</td>
                         <td className={style.table__column}>Наработка, м/час</td>
                         <td className={style.table__column}>
@@ -41,14 +56,14 @@ return (
                             keyFilter={"failure_node"} refSelect={refFilterFailureNode} 
                             refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>                                  
                         </td>
-                        <td className={style.table__column}>Описание отказа</td>
+                        <td className={style.table__column_bigText}>Описание отказа</td>
                         <td className={style.table__column}>
                             Способ восстановления
                             <Filter listSelect={referenceBooks.recovery_method} 
                             keyFilter={"recovery_method"} refSelect={refFilterRecoveryMethod} 
                             refList={refFilterList} dataTable={dataTable} setFilterlist={setFilterlist}/>    
                         </td>
-                        <td className={style.table__column}>Используемые запчасти</td>
+                        <td className={style.table__column_bigText}>Используемые запчасти</td>
                         <td className={style.table__column}>Дата восстановления</td>
                         <td className={style.table__column}>Время простоя техники</td>
                         <td className={style.table__column}>
@@ -78,10 +93,10 @@ return (
 
                                         <td className={style.table__column}>{getDataReferenceBooks(row.failure_node, referenceBooks.failure_node)}</td>
 
-                                        <td className={style.table__column}> <div className={style.big_text}>{ row.description_failure }</div></td>
+                                        <td className={style.table__column_bigText}> <div className={style.TableComplaint__container_bigText}>{ row.description_failure }</div></td>
 
                                         <td className={style.table__column}>{getDataReferenceBooks(row.recovery_method, referenceBooks.recovery_method)}</td>
-                                        <td className={style.table__column}> <div className={style.big_text}>{row.used_parts}</div></td>
+                                        <td className={style.table__column_bigText}> <div className={style.TableComplaint__container_bigText}>{row.used_parts}</div></td>
 
                                         <td className={style.table__column}>{row.date_restoration}</td>
                                         <td className={style.table__column}>{row.downtime}</td>

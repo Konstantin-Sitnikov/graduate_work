@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import  style  from "./style.module.scss"
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Filter, FilterMachine } from "../Filter/Filter"
 import { getDataReferenceBooks } from "../AuxiliaryFunctions/AuxiliaryFunctions"
 import { setLocalStorage } from "../AuxiliaryFunctions/LocalStorage"
@@ -12,6 +12,7 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
 
         const refFilterTypeTechnicalMaintenance = useRef()
         const refFilterServiceCompany = useRef()
+        const [pathName, setPathName] = useState("")
 
         const refFilterList = [refFilterTypeTechnicalMaintenance, refFilterServiceCompany]
 
@@ -23,13 +24,25 @@ export const TableTechnicalMaintenance = ({technicalMaintenanceData, referenceBo
             setDataTable(technicalMaintenanceData)
             },[technicalMaintenanceData])
 
+        const location = useLocation()
+        useEffect(()=> {
+            setPathName(location.pathname)
+        },[location])
+
+        console.log(pathName)
+
+        function addToHTMLFilterMasine () {
+            if((pathName ==="/technical_maintenance")) {return <FilterMachine refList={refFilterList} setFilterlist={setFilterlist} dataTable={dataTable}/> }
+        }
+
+
     
 return ( 
 
             <table className={style.table}>                                    
                         
                 <thead>
-                    <tr className={style.table__row}>
+                    <tr className={style.table__row_header}>
 
                         <td className={style.table__column}>№ заказ-наряда</td> 
                             
@@ -51,7 +64,7 @@ return (
 
                         <td className={style.table__column}>
                             Заводской № Машины
-                            <FilterMachine refList={refFilterList} setFilterlist={setFilterlist} dataTable={dataTable}/>
+                             {addToHTMLFilterMasine()}
                         </td>
 
                         <td className={style.table__column}>

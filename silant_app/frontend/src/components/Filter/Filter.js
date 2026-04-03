@@ -5,7 +5,7 @@ import  style  from "./style.module.scss"
 
 export const Filter = ({listSelect, keyFilter, refSelect, refList, dataTable, setFilterlist}) => {
 
-    return  listSelect?   <select ref={refSelect} 
+    return  listSelect?   <select className={style.filter__select} ref={refSelect} 
                                 onChange={(event)=> {
 
                                     if (event.target.value === "default") {
@@ -33,29 +33,24 @@ export const Filter = ({listSelect, keyFilter, refSelect, refList, dataTable, se
 
 export const FilterMachine = ({setFilterlist, refList, dataTable}) => {
     const refInput = useRef()
+    console.log(dataTable)
+    function test(item) {
+        if ("number_machine" in item) { return item.number_machine }
+        else {return item.machine}
+    }
     
-
-
-
-    return <div>
-        <input ref={refInput} onChange={()=>{
+    
+    return <input className={style.filter__input} ref={refInput} onChange={()=>{
             if (refInput.current.value) {
-                console.log(refInput.current.value)
+
                 for (const ref of refList){ref.current.value = "default"}
-                                        console.log(dataTable)
-                                        const filter = dataTable.filter(item=> String(item.machine).includes(String(refInput.current.value)))
+                                        const filter = dataTable.filter(item=> String(test(item)).includes(String(refInput.current.value)))
                                         setFilterlist(filter)
-                                        console.log(refInput.current.value)
+                                        console.log(filter)
             } else {setFilterlist(dataTable)}
 
 
         }} type="text"/>
-        
-        
-        </div>
-
-
-
-    
+            
     }
 

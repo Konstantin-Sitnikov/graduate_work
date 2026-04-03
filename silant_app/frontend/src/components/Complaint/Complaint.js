@@ -8,7 +8,7 @@ import  style  from "./style.module.scss"
 
 
 
-export function CreateUpdateComplaint ({type}) { 
+export function CreateUpdateComplaint ({type, updateDateMachine}) { 
     let value = getLocalStorage('number_machine_to_detail')
     
     const [failureNode, setFailureNode] = useState([])
@@ -115,6 +115,7 @@ export function CreateUpdateComplaint ({type}) {
                         alert(data.data.message)
                         if(type === "create") {clearForm()}
                         setServiceMessage("")
+                        updateDateMachine()
                     })
                 .catch(error => {
                     if (error.response.status === 400) {setServiceMessage(error.response.data.message)}
@@ -129,11 +130,6 @@ export function CreateUpdateComplaint ({type}) {
 
         };
 
-        function Header(type) {
-            if (type === "create") {return "Создать"}
-            if (type === "update") {return "Редактировать"}
-        }
-
         function Button(type) {
             if (type === "create") {return "Создать"}
             if (type === "update") {return "Редактировать"}
@@ -142,54 +138,57 @@ export function CreateUpdateComplaint ({type}) {
 
     return (
             <>  
+                <div className={style.createUpdate__container_body}>
+                <GoBackButton />
+                <form className={style.createUpdate__form} onSubmit={handleSubmit}> 
+            
+                    <span className={style.text__servicemessage}>{serviceMessage}</span>
 
-                <form onSubmit={handleSubmit}> 
-                    <GoBackButton />
-                    <span>{Header(type)}</span>                   
+    
+                    <span className={style.text__DateFailure}>Дата отказа</span>
+                    <input className={style.input__DateFailure} ref={refDateFailure} type='datetime-local' required/>
 
-                    <span>{serviceMessage}</span>
-
-                    <div> 
-                        <span>Дата отказа</span>
-                        <input ref={refDateFailure} type='datetime-local' required/>
-                    </div> 
-
-                    <label htmlFor="OperatingTime">Наработка м/ч</label>
-                    <input id="OperatingTime" ref={refOperatingTime} type='number' required/>
+                    <span className={style.text__OperatingTime}>Наработка м/ч</span>
+                    <input className={style.input__OperatingTime} ref={refOperatingTime} type='number' required/>
 
 
-                    <label htmlFor="FailureNode">Узел отказа</label>
-                    <select id="FailureNode" ref={refFailureNode}>
+                    <span className={style.text__FailureNode}>Узел отказа</span>
+                    <select className={style.select__FailureNode} ref={refFailureNode}>
                         {failureNode.map((item) => {return <option value={item.id} key={item.id}>{item.name}</option>})}
                     </select>
-                    <label htmlFor="DescriptionFailure">Описание отказа</label>
-                    <textarea ref={refDescriptionFailure} id="DescriptionFailure" required></textarea>
+
+  
+                    <span className={style.text__DescriptionFailure}>Описание отказа</span>
+                    <textarea className={style.bigText__DescriptionFailure} ref={refDescriptionFailure}  required></textarea>
 
 
-                    <label htmlFor="RecoveryMethod">Метод восстановления</label>
-                    <select id="RecoveryMethod" ref={refRecoveryMethod}>
+                    <span className={style.text__RecoveryMethod}>Метод восстановления</span>
+                    <select className={style.select__RecoveryMethod} ref={refRecoveryMethod}>
                         {recoveryMethod.map((item) => {return <option value={item.id} key={item.id}>{item.name}</option>})}
                     </select>
 
-                    <label htmlFor="UsedParts">Используемые запчасти</label>
-                    <textarea ref={refUsedParts} id="UsedParts"></textarea>
+
+                    <span className={style.text__UsedParts}>Используемые запчасти</span>
+                    <textarea className={style.bigText__UsedParts} ref={refUsedParts}></textarea>
                     
 
-                    <label htmlFor="DateRestoration">Дата восстановления</label>
-                    <input id="DateRestoration" ref={refDateRestoration} type='datetime-local'/>
+                    <span className={style.text__DateRestoration}>Дата восстановления</span>
+                    <input className={style.input__DateRestoration} ref={refDateRestoration} type='datetime-local'/>
 
                                        
-                    <label htmlFor="Machine">Серийный номер</label>
-                    <span>{`${value}`}</span>
+                    <span className={style.text__SerialNumber}>Серийный номер машины</span>
+                    <span className={style.text__SerialNumberValue}>{`${value}`}</span>
                     
 
-                    <label htmlFor="ServiceCompany">Сервисная компания</label>
-                    <select id="ServiceCompany" ref={refServiceCompany}>
+                    <span className={style.text__ServiceCompany}>Сервисная компания</span>
+                    <select className={style.select__ServiceCompany} ref={refServiceCompany}>
                         {serviceCompany.map((item) => {return <option value={item.id} key={item.id}>{item.name}</option>})}
                     </select>
 
-                    <button onClick={send}>{Button(type)}</button>
+                    <button className={style.button} onClick={send}>{Button(type)}</button>
+
                 </form>
+                </div>
 
 
             </>
@@ -197,48 +196,3 @@ export function CreateUpdateComplaint ({type}) {
     )
 
 }
-
-
-export const ComplaintDetail = ({referenceBooksComplaint}) => {
-
-    let value = getLocalStorage('number_complaint_detail')
-
-    const [complaintData, setComplaintData] = useState([])
-
-
-    useEffect(()=>{
-        getDataComplaintDetail(value).then(result => {
-            setComplaintData(result.complaint_data)            
-        })
-    },[])
-
-    return (
-
-            <div>
-                <GoBackButton />
-                <Link to="/update_complaint/">Редактировать</Link>
-                <span className={style.text__result_search}>{`Номер заявки: ${complaintData.id}`}</span>
-                <span className={style.text__result_search}>{`Заводской № Машины: ${complaintData.machine}`}</span>
-                <span className={style.text__result_search}>{`Дата отказа: ${complaintData.date_failure}`}</span>
-                <span className={style.text__result_search}>{`Наработка, м/час: ${complaintData.operating_time}`}</span>
-                <span className={style.text__result_search}>{`Узел отказа: ${getDataReferenceBooks(complaintData.failure_node, referenceBooksComplaint.failure_node)}`}</span>
-                <span className={style.text__result_search}>{`Описание отказа: ${complaintData.description_failure}`}</span>
-                <span className={style.text__result_search}>{`Способ восстановления: ${getDataReferenceBooks(complaintData.recovery_method, referenceBooksComplaint.recovery_method)}`}</span>
-                <span className={style.text__result_search}>{`Используемые запчасти: ${complaintData.used_parts}`}</span>
-                <span className={style.text__result_search}>{`Дата восстановления: ${complaintData.date_restoration}`}</span>
-                <span className={style.text__result_search}>{`Время простоя техники: ${complaintData.downtime}`}</span>
-                <span className={style.text__result_search}>{`Сервисная компания: ${getDataReferenceBooks(complaintData.service_company, referenceBooksComplaint.service_company)}`}</span>
-            </div>
-
-
-    )
-    
-
-}
-
-
-
-
-
-
-
