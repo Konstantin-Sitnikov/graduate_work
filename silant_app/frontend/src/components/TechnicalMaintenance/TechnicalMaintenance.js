@@ -8,7 +8,7 @@ import  style  from "./style.module.scss"
 
 
 
-export const TechnicalMaintenanceDetail = ({referenceBooksTechnicalMaintenance}) => {
+export const TechnicalMaintenanceDetail = ({referenceBooksTechnicalMaintenance, userGroup}) => {
 
     let value = getLocalStorage('number_technical_maintenance_detail')    
 
@@ -21,13 +21,17 @@ export const TechnicalMaintenanceDetail = ({referenceBooksTechnicalMaintenance})
         })
     },[])
 
+    const Create = () => {
+                        if(((userGroup === "Manager") || (userGroup === "Service_company"))) {return <Link className={style.TechnicalMaintenanceDetail__link_createUpdate} to="/update_technical_maintenance/">Редактировать</Link> }
+                        }
+
    
     return (
 
             <div className={style.TechnicalMaintenanceDetail__container_body}>
                 <div className={style.TechnicalMaintenanceDetail__container_backUpdate}>
                     <GoBackButton />
-                    <Link className={style.TechnicalMaintenanceDetail__link_createUpdate} to="/update_technical_maintenance/">Редактировать</Link>
+                    {Create()}
                 </div>
                 <div className={style.TechnicalMaintenanceDetail__container_info}>
                     <div className={style.TechnicalMaintenanceDetail__container_row}>

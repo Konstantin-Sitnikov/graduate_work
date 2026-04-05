@@ -77,11 +77,11 @@ const Main = ({user, userGroup}) =>  {
                     <Route path="/create_mashine/*" element={<CreateUpdateMachine type={"create"} updateDateMachine={updateDateMachine}/>}></Route>
                     <Route path="/update_mashine/*" element={<CreateUpdateMachine type={"update"} updateDateMachine={updateDateMachine}/>}></Route>
                     
-                    <Route path="/detail_complaint/*" element={<ComplaintDetail referenceBooksComplaint={referenceBooksComplaint}/>}></Route>
+                    <Route path="/detail_complaint/*" element={<ComplaintDetail referenceBooksComplaint={referenceBooksComplaint} userGroup={userGroup}/>}></Route>
                     <Route path="/create_complaint/*" element={<CreateUpdateComplaint type={"create"} updateDateMachine={updateDateMachine}/>}></Route>
                     <Route path="/update_complaint/*" element={<CreateUpdateComplaint type={"update"} updateDateMachine={updateDateMachine}/>}></Route>
 
-                    <Route path="/detail_technical_maintenance/*" element={<TechnicalMaintenanceDetail referenceBooksTechnicalMaintenance={referenceBooksTechnicalMaintenance}/>}></Route>
+                    <Route path="/detail_technical_maintenance/*" element={<TechnicalMaintenanceDetail referenceBooksTechnicalMaintenance={referenceBooksTechnicalMaintenance} userGroup={userGroup}/>}></Route>
                     <Route path="/create_technical_maintenance/*" element={<CreateUpdateTechnicalMaintenance type={"create"} updateDateMachine={updateDateMachine}/>}></Route>
                     <Route path="/update_technical_maintenance/*" element={<CreateUpdateTechnicalMaintenance type={"update"} updateDateMachine={updateDateMachine}/>}></Route>
                 </Routes>

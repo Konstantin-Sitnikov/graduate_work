@@ -5,7 +5,7 @@ import  style  from "./style.module.scss"
 
 export function GoBackButton() {
     const navigate = useNavigate();
-    return <button onClick={() => navigate(-1)}>Назад</button>;
+    return <button className={style.goBackButton} onClick={() => navigate(-1)}>Назад</button>;
 }
 
 

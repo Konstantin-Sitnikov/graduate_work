@@ -198,5 +198,5 @@ REST_FRAMEWORK = {
 }
 
 
-
+ACCOUNT_ADAPTER = "apps.users.adapters.NoSignupAccountAdapter"
 
